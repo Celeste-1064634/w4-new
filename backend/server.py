@@ -11,7 +11,7 @@ app = Flask(__name__)
 import sqlite3
   
 # Connecting to sqlite
-conn = sqlite3.connect('instance/feedbacktool.db', check_same_thread=False)  
+conn = sqlite3.connect('database/database.db')
 
 
 
