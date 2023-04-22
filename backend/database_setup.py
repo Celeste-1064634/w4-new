@@ -92,7 +92,7 @@ def db_fill_user(database):
         cur = conn.cursor()
         cur.execute(sql_fill_user_query)
         conn.commit()
-    return 'Database is gevuld.'
+    return print('Database is gevuld.')
 
 
 
