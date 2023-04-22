@@ -75,6 +75,5 @@ def main():
         print("Error! Cannot create the database connection.")
 
 if __name__ == '__main__':
-    # Use the funtion below to create a new database
-    # create_connection('database/database.db')
+    create_connection('database/database.db')
     main()
