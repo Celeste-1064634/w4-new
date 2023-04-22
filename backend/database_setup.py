@@ -6,6 +6,8 @@ from faker import Faker
 fake = Faker()
 
 # Create a database connection to a SQLite database
+
+
 def create_connection(db_file):
     conn = None
     try:
@@ -17,12 +19,15 @@ def create_connection(db_file):
     return conn
 
 # Create database tables
+
+
 def create_table(conn, create_table_sql):
     try:
         c = conn.cursor()
         c.execute(create_table_sql)
     except Error as e:
         print(e)
+
 
 def table_queries():
     database = 'database/database.db'
@@ -34,14 +39,14 @@ def table_queries():
                                                     first_name text NOT NULL,
                                                     last_name text NOT NULL
                                                 )"""
-    
+
     sql_create_question_list_table = """CREATE TABLE IF NOT EXISTS question_list (
                                                                 id integer PRIMARY KEY AUTOINCREMENT NOT NULL ,
                                                                 name text NOT NULL,
                                                                 archive integer,
                                                                 anonymous integer
                                                             )"""
-    
+
     sql_create_question_table = """CREATE TABLE IF NOT EXISTS question (
                                                         id integer PRIMARY KEY AUTOINCREMENT NOT NULL ,
                                                         question text NOT NULL,
@@ -56,17 +61,17 @@ def table_queries():
                                                                 letter text NOT NULL,
                                                                 FOREIGN KEY (question_id) REFERENCES question (id)
                                                             )"""
-    
+
     sql_create_answer_table = """CREATE TABLE IF NOT EXISTS answer (
                                                     id integer PRIMARY KEY AUTOINCREMENT NOT NULL ,
                                                     answer text NOT NULL,
                                                     question_id integer NOT NULL,
                                                     FOREIGN KEY (question_id) REFERENCES question (id)
                                                 )"""
-    
+
     conn = create_connection(database)
 
-    if conn is not None: 
+    if conn is not None:
         # Create tables
         create_table(conn, sql_create_user_table)
         create_table(conn, sql_create_question_list_table)
@@ -74,10 +79,12 @@ def table_queries():
         create_table(conn, sql_create_multiple_choice_table)
         create_table(conn, sql_create_answer_table)
         conn.close()
-    else: 
+    else:
         print("Error! Cannot create the database connection.")
 
 # Fill database with fake data
+
+
 def db_fill_user(database):
     for i in range(10):
         random_admin = random.randint(0, 1)
@@ -93,6 +100,7 @@ def db_fill_user(database):
         cur.execute(sql_fill_user_query)
         conn.commit()
     return print('Database is gevuld.')
+
 
 
 
