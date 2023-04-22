@@ -93,8 +93,8 @@ def db_fill_user(database):
         l_name = name.split()[1]
         em = f'{f_name}@email.com'.lower()
         passw = 'werkplaats4'
-        sql_fill_user_query = f"""INSERT INTO user(first_name, last_name, email, password, admin)
-                                                VALUES('{f_name}', '{l_name}', '{em}', '{passw}', {random_admin})"""
+        sql_fill_user_query = f'''INSERT INTO user(first_name, last_name, email, password, admin)
+                                                VALUES("{f_name}", "{l_name}", "{em}", "{passw}", {random_admin})'''
         conn = create_connection(database)
         cur = conn.cursor()
         cur.execute(sql_fill_user_query)
