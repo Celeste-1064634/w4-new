@@ -2,6 +2,7 @@ import sqlite3
 import random
 from sqlite3 import Error
 from faker import Faker
+from bcrypt_init import bcrypt
 
 fake = Faker()
 
@@ -86,15 +87,25 @@ def table_queries():
 
 
 def db_fill_user(database):
+    name = fake.name()
+    f_name = name.split()[0]
+    l_name = name.split()[1]
+    em = 'admin@email.com'.lower()
+    passw = bcrypt.generate_password_hash("werkplaats4")
+    sql_fill_user_query = f'''INSERT INTO user(first_name, last_name, email, password, admin)
+                                            VALUES("{f_name}", "{l_name}", "{em}", "{passw}", True)'''
+    conn = create_connection(database)
+    cur = conn.cursor()
+    cur.execute(sql_fill_user_query)
+    conn.commit()
     for i in range(10):
-        random_admin = random.randint(0, 1)
         name = fake.name()
         f_name = name.split()[0]
         l_name = name.split()[1]
-        em = f'{f_name}@email.com'.lower()
-        passw = 'werkplaats4'
+        em = f'{f_name}{l_name}@email.com'.lower()
+        passw = bcrypt.generate_password_hash("werkplaats4")
         sql_fill_user_query = f'''INSERT INTO user(first_name, last_name, email, password, admin)
-                                                VALUES("{f_name}", "{l_name}", "{em}", "{passw}", {random_admin})'''
+                                                VALUES("{f_name}", "{l_name}", "{em}", "{passw}", False)'''
         conn = create_connection(database)
         cur = conn.cursor()
         cur.execute(sql_fill_user_query)
