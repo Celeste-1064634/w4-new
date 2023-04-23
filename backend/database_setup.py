@@ -2,6 +2,7 @@ import sqlite3
 import random
 from sqlite3 import Error
 from faker import Faker
+from bcrypt_init import bcrypt
 
 fake = Faker()
 
@@ -92,7 +93,7 @@ def db_fill_user(database):
         f_name = name.split()[0]
         l_name = name.split()[1]
         em = f'{f_name}@email.com'.lower()
-        passw = 'werkplaats4'
+        passw = bcrypt.generate_password_hash("werkplaats4")
         sql_fill_user_query = f'''INSERT INTO user(first_name, last_name, email, password, admin)
                                                 VALUES("{f_name}", "{l_name}", "{em}", "{passw}", {random_admin})'''
         conn = create_connection(database)
