@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 import Blogs from "./pages/Blogs";
 import Contact from "./pages/Contact";
 import NoPage from "./pages/NoPage";
-import Awnsers from "./pages/Awnsers";
+import Answers from "./pages/Answers";
 import "./main.css";
 
 export default function App() {
@@ -15,7 +15,7 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="blogs" element={<Blogs />} />
-          <Route path="antwoorden" element={<Awnsers />} />
+          <Route path="antwoorden" element={<Answers />} />
           <Route path="contact" element={<Contact />} />
           <Route path="*" element={<NoPage />} />
         </Route>

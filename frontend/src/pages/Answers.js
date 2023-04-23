@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { React, useEffect}  from "react";
-import "./Awnsers.css";
+import "./Answers.css";
 import Chart from 'chart.js/auto';
 
 const Contact = () => {
@@ -51,13 +51,13 @@ const Contact = () => {
                 <div className="bg-light-grey light-shadow">
                     <h3 className="question-box"><span className="question-number">1</span>Dit is de vraag</h3>
                     <p className="label">Open vraag</p>
-                    <div className="bg-white awnsers">
+                    <div className="bg-white answers">
                         
-                        <div className="awnser-item">
+                        <div className="answer-item">
                             <div className="user-part"><i style={{backgroundColor: getColor() }} className="fa fa-solid fa-user user-icon"></i>Gebruiker</div>
                             Antwoord 1
                         </div>
-                        <div className="awnser-item">
+                        <div className="answer-item">
                             <div className="user-part"><i style={{backgroundColor: getColor() }} className="fa fa-solid fa-user user-icon"></i>Gebruiker</div>
                             Antwoord 2
                         </div>
@@ -70,10 +70,10 @@ const Contact = () => {
                     <div className="grid-halves">
                         <div className="grid-part bg-white justify-center column">
                             <h3>Mogelijke antwoorden</h3>
-                            <p className="awnser-row" ><span style={{backgroundColor: "rgb(255, 99, 132)"}} className="awnser-letter">A</span> 1</p>
-                            <p className="awnser-row" ><span style={{backgroundColor: "rgb(54, 162, 235)"}} className="awnser-letter">B</span>2</p>
-                            <p className="awnser-row" ><span style={{backgroundColor: "rgb(255, 205, 86)"}} className="awnser-letter">C</span>3</p>
-                            <p className="awnser-row" ><span style={{backgroundColor: "rgb(100, 205, 86)"}} className="awnser-letter">D</span>4</p>
+                            <p className="answer-row" ><span style={{backgroundColor: "rgb(255, 99, 132)"}} className="answer-letter">A</span> 1</p>
+                            <p className="answer-row" ><span style={{backgroundColor: "rgb(54, 162, 235)"}} className="answer-letter">B</span>2</p>
+                            <p className="answer-row" ><span style={{backgroundColor: "rgb(255, 205, 86)"}} className="answer-letter">C</span>3</p>
+                            <p className="answer-row" ><span style={{backgroundColor: "rgb(100, 205, 86)"}} className="answer-letter">D</span>4</p>
                         </div>
                         <div className="grid-part bg-grey">
                         <div>
