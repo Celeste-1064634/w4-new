@@ -1,3 +1,4 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./pages/Layout";
@@ -6,6 +7,8 @@ import Blogs from "./pages/Blogs";
 import Contact from "./pages/Contact";
 import NoPage from "./pages/NoPage";
 import Answers from "./pages/Answers";
+import EnqueteOverview from "./pages/EnqueteOverview";
+
 import "./main.css";
 
 export default function App() {
@@ -18,6 +21,7 @@ export default function App() {
           <Route path="antwoorden" element={<Answers />} />
           <Route path="contact" element={<Contact />} />
           <Route path="*" element={<NoPage />} />
+          <Route path="vragenlijsten" element={<EnqueteOverview />} />
         </Route>
       </Routes>
     </BrowserRouter>
