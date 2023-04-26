@@ -28,7 +28,8 @@ function EnqueteOverview() {
         {/* Render the other cards */}
         {vragenlijsten.map((vragenlijst) => (
           <Col xs={12} md={4} key={vragenlijst.id}>
-            <Link to={`/vragenlijst/${vragenlijst.id}`} style={{ textDecoration: 'none' }}>
+            <Link to={`/vragen/`} style={{ textDecoration: 'none' }}>
+              {/* <Link to={`/vragen/${vragenlijst.id}`} style={{ textDecoration: 'none' }}> */}
               <Card className="mb-3" style={{ cursor: 'pointer' }}>
                 <Button variant="outline-secondary" size="sm" style={{ position: 'absolute', top: '0.5rem', right: '0.5rem' }}>Edit</Button>
                 <Card.Body>

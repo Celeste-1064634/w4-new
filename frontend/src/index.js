@@ -8,6 +8,7 @@ import Contact from "./pages/Contact";
 import NoPage from "./pages/NoPage";
 import Answers from "./pages/Answers";
 import EnqueteOverview from "./pages/EnqueteOverview";
+import AdjustEnquete from "./pages/AdjustEnquete";
 
 import "./main.css";
 
@@ -22,6 +23,7 @@ export default function App() {
           <Route path="contact" element={<Contact />} />
           <Route path="*" element={<NoPage />} />
           <Route path="vragenlijsten" element={<EnqueteOverview />} />
+          <Route path="vragen" element={<AdjustEnquete />} />
         </Route>
       </Routes>
     </BrowserRouter>
