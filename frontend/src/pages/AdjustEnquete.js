@@ -2,22 +2,17 @@ import { React, useState } from "react";
 import { Link } from "react-router-dom";
 import { Card, Button, Container, Row, Col } from "react-bootstrap";
 import QuestionItem from "./QuestionItem";
-
-
-const editSpace = () => {
-    return (
-        <textarea className="textarea"> </textarea>
-    )
-}
+import NewQuestionItem from "./NewQuestionItem";
 
 
 function AdjustEnquete() {
 
-    const [isEdit, setIsEdit] = useState(false);
+    const [isAdd, setIsAdd] = useState(false);
 
     function toggle() {
-        setIsEdit((isEdit) => !isEdit);
+        setIsAdd((isAdd) => !isAdd);
     }
+
 
     const vragenlijsten = [
         { id: 1, title: "Vraag 1", description: "Dit is vraag 1" },
@@ -30,7 +25,27 @@ function AdjustEnquete() {
         <Container className="mt-3">
             <h1>Vragenlijst aanpassen</h1>
             <Row>
+                {/* Add the card to create a new vragenlijst */}
+                <Col xs={12} md={4}>
+                    <Card className="mb-3" style={{ cursor: 'pointer' }}>
+                        <Card.Body>
+                            <Card.Title>Nieuwe Vraag</Card.Title>
+                            <Card.Text>Maak een nieuwe vraag aan</Card.Text>
+                            {!isAdd &&
+                                <Button onClick={toggle} variant="primary" size="sm" style={{ position: 'absolute', bottom: '0.5rem', right: '0.5rem' }}>+</Button>
+                            }
 
+
+                        </Card.Body>
+                    </Card>
+                </Col>
+                {isAdd &&
+                    <Col>
+                        <NewQuestionItem></NewQuestionItem>
+                    </Col>
+                }
+            </Row>
+            <Row>
                 {/* Render the other cards */}
                 {vragenlijsten.map((vragenlijst) => (
                     // <Col xs={12} md={4} key={vragenlijst.id}>
@@ -46,17 +61,8 @@ function AdjustEnquete() {
                     <QuestionItem vragenlijst={vragenlijst}> </QuestionItem>
                 ))}
                 {/* Add the card to create a new vragenlijst */}
-                <Col xs={12} md={4}>
-                    <Card className="mb-3" style={{ cursor: 'pointer' }}>
-                        <Card.Body>
-                            <Card.Title>Nieuwe Vraag</Card.Title>
-                            <Card.Text>Maak een nieuwe vraag aan</Card.Text>
-                            <Button variant="primary" size="sm" style={{ position: 'absolute', bottom: '0.5rem', right: '0.5rem' }}>+</Button>
-                        </Card.Body>
-                    </Card>
-                </Col>
             </Row>
-        </Container>
+        </Container >
     );
 }
 
