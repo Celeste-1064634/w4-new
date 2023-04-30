@@ -9,6 +9,7 @@ import NoPage from "./pages/NoPage";
 import Answers from "./pages/Answers";
 import EnqueteOverview from "./pages/EnqueteOverview";
 import AdjustEnquete from "./pages/AdjustEnquete";
+import Login from './pages/Login';
 
 import "./main.css";
 
@@ -24,6 +25,7 @@ export default function App() {
           <Route path="*" element={<NoPage />} />
           <Route path="vragenlijsten" element={<EnqueteOverview />} />
           <Route path="vragen" element={<AdjustEnquete />} />
+          <Route path="inloggen" element={<Login />} />
         </Route>
       </Routes>
     </BrowserRouter>
