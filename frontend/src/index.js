@@ -10,24 +10,29 @@ import Answers from "./pages/Answers";
 import EnqueteOverview from "./pages/EnqueteOverview";
 import AdjustEnquete from "./pages/AdjustEnquete";
 import Login from './pages/Login';
+import { UserContext } from './UserContext';
 
 import "./main.css";
+import { useState } from 'react';
 
 export default function App() {
+  const [user, setUser] = useState(sessionStorage.getItem("token"));
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="blogs" element={<Blogs />} />
-          <Route path="antwoorden" element={<Answers />} />
-          <Route path="contact" element={<Contact />} />
-          <Route path="*" element={<NoPage />} />
-          <Route path="vragenlijsten" element={<EnqueteOverview />} />
-          <Route path="vragen" element={<AdjustEnquete />} />
-          <Route path="inloggen" element={<Login />} />
-        </Route>
-      </Routes>
+      <UserContext.Provider value={{user, setUser}}>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="blogs" element={<Blogs />} />
+            <Route path="antwoorden" element={<Answers />} />
+            <Route path="contact" element={<Contact />} />
+            <Route path="*" element={<NoPage />} />
+            <Route path="vragenlijsten" element={<EnqueteOverview />} />
+            <Route path="vragen" element={<AdjustEnquete />} />
+            <Route path="inloggen" element={<Login />} />
+          </Route>
+        </Routes>
+      </UserContext.Provider>
     </BrowserRouter>
   );
 }

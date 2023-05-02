@@ -91,7 +91,7 @@ def db_fill_user(database):
     f_name = name.split()[0]
     l_name = name.split()[1]
     em = 'admin@email.com'.lower()
-    passw = bcrypt.generate_password_hash("werkplaats4")
+    passw = bcrypt.generate_password_hash("werkplaats4").decode("utf-8")
     sql_fill_user_query = f'''INSERT INTO user(first_name, last_name, email, password, admin)
                                             VALUES("{f_name}", "{l_name}", "{em}", "{passw}", True)'''
     conn = create_connection(database)

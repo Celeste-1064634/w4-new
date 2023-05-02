@@ -1,6 +1,21 @@
+import { useContext } from "react";
 import { Outlet, Link, NavLink } from "react-router-dom";
+import { UserContext } from "../UserContext";
 
 const Layout = () => {
+	const {user, setUser} = useContext(UserContext)
+
+	function logout(){
+		
+        sessionStorage.removeItem("token")
+		setUser(null)
+    }
+
+	// const [token, setToken] = useState('')
+
+	// useEffect(() =>{
+	// 	setToken(sessionStorage.getItem("token"))
+	// })
 	return (
 		<>
 			<nav className="main-header">
@@ -30,7 +45,7 @@ const Layout = () => {
 								<NavLink className="button-1" to="/inloggen">Inloggen</NavLink>
 							</li>
 							<li>
-								<NavLink className="button-2" to="/uitloggen">Uitloggen</NavLink>
+								<button className="button-2" onClick={logout}>Uitloggen</button>
 							</li>
 						</ul>
 					</div>
