@@ -11,8 +11,7 @@ const Login = () => {
 
     async function handleSubmit(e) {
         e.preventDefault()
-        console.log("test")
-
+        // send request to create jwt token for logging in
         let info = {
             method: "POST",
             headers: {
@@ -32,6 +31,7 @@ const Login = () => {
                 console.log("Something went wrong")
                 // setError(res)
                 console.log("test", data)
+                setError(data.msg)
                 return false
             }
             
@@ -40,50 +40,37 @@ const Login = () => {
             sessionStorage.setItem("token", data.access_token)
             setEmail('')
             setPassword('')
-            setUser(data.access_token)
+            setError('')
+            // setUser(data.access_token)
+            setUser({
+                "token": data.access_token,
+                "firstName": data.first_name,
+                "lastName": data.last_name,
+                "fullName": data.full_name,
+                "email": data.email,
+            })
         }
         catch (error) {
             console.log("AWAIT", error)
         }
-
-
-        // fetch("/token", info)
-        //     .then(res => {
-        //         console.log(res)
-        //         if (res.status === 200) {
-        //             return res.json()
-        //         }
-        //         else {
-        //             console.log("Something went wrong")
-        //             return
-        //         }
-        //     })
-        //     .then(data => {
-        //         console.log("DATA: ", data)
-        //         sessionStorage.setItem("token", data.access_token)
-        //         setEmail('')
-        //         setPassword('')
-        //         setUser(data.access_token)
-        //     })
-        //     .catch(error => {
-        //         console.error("FETCH ERROR:", error)
-        //     })
     }
     return (
 
         <div className="auto-container bg-light-grey">
             <div className="section">
                 <h1 className="blue text-center">Inloggen</h1>
-                {user && user != "" && user != undefined
+                {user.token && user.token != "" && user.token != undefined
                     ?
-                    "Logged in with " + user
+                    "Logged in with " + user.fullName
                     :
                     <form className="form-container" onSubmit={handleSubmit}>
-                        <p>{error}</p>
+                        {error &&
+                            <p className="form-error">{error}</p>
+                        }
                         <label>E-mail</label>
-                        <input className="custom-input" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email"></input>
+                        <input className="custom-input" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email"></input>
                         <label>Wachtwoord</label>
-                        <input className="custom-input" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="wachtwoord"></input>
+                        <input className="custom-input" required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="wachtwoord"></input>
                         <input className="custom-submit" type="submit" value="Inloggen"  ></input>
                     </form>
                 }

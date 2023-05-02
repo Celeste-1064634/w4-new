@@ -13,13 +13,42 @@ import Login from './pages/Login';
 import { UserContext } from './UserContext';
 
 import "./main.css";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function App() {
-  const [user, setUser] = useState(sessionStorage.getItem("token"));
+  const [user, setUser] = useState({});
+
+  useEffect( () => {
+    // update user info by jwt token
+    async function fetchData(){
+      
+      let info = {
+        method: "GET",
+        headers: {
+          "Authorization": "Bearer "+sessionStorage.getItem("token")
+        }
+      }
+  
+      try {
+        const res = await fetch("/who_am_i", info)
+        const data = await res.json()
+        setUser({
+          "token": sessionStorage.getItem("token"),
+          "firstName": data.firstName,
+          "lastName": data.lastName,
+          "fullName": data.fullName,
+          "email": data.email,
+        })
+      }
+      catch (error) {
+        console.log("INDEX", error)
+      }
+    }
+    fetchData()
+  }, [])
   return (
     <BrowserRouter>
-      <UserContext.Provider value={{user, setUser}}>
+      <UserContext.Provider value={{ user, setUser }}>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />

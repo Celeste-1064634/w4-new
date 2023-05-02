@@ -3,13 +3,13 @@ import { Outlet, Link, NavLink } from "react-router-dom";
 import { UserContext } from "../UserContext";
 
 const Layout = () => {
-	const {user, setUser} = useContext(UserContext)
+	const { user, setUser } = useContext(UserContext)
 
-	function logout(){
-		
-        sessionStorage.removeItem("token")
-		setUser(null)
-    }
+	function logout() {
+
+		sessionStorage.removeItem("token")
+		setUser({})
+	}
 
 	// const [token, setToken] = useState('')
 
@@ -27,26 +27,42 @@ const Layout = () => {
 						<ul className="header-items">
 							<li>
 								<NavLink className={({ isActive, isPending }) => isPending ? "pending header-link" : isActive ? "header-link active" : "header-link"}
-  								to="/">Home</NavLink>
-							</li>
-							<li>
-								<NavLink className={({ isActive, isPending }) => isPending ? "pending header-link" : isActive ? "header-link active" : "header-link"} 
-								to="/vragenlijsten">Vragenlijsten</NavLink>
-							</li>
-							<li>
-								<NavLink className={({ isActive, isPending }) => isPending ? "pending header-link" : isActive ? "header-link active" : "header-link"} 
-								to="/blogs">Blogs</NavLink>
+									to="/">Home</NavLink>
 							</li>
 							<li>
 								<NavLink className={({ isActive, isPending }) => isPending ? "pending header-link" : isActive ? "header-link active" : "header-link"}
-								 to="/contact">Contact</NavLink>
+									to="/vragenlijsten">Vragenlijsten</NavLink>
 							</li>
 							<li>
-								<NavLink className="button-1" to="/inloggen">Inloggen</NavLink>
+								<NavLink className={({ isActive, isPending }) => isPending ? "pending header-link" : isActive ? "header-link active" : "header-link"}
+									to="/blogs">Blogs</NavLink>
 							</li>
 							<li>
-								<button className="button-2" onClick={logout}>Uitloggen</button>
+								<NavLink className={({ isActive, isPending }) => isPending ? "pending header-link" : isActive ? "header-link active" : "header-link"}
+									to="/contact">Contact</NavLink>
 							</li>
+
+
+							{user.token && user.token != "" && user.token != undefined
+								?
+								<>
+									<li>
+										<NavLink className={({ isActive, isPending }) => isPending ? "pending header-link" : isActive ? "header-link active" : "header-link"}
+											to="/profile">{user.fullName}</NavLink>
+									</li>
+									<li>
+										<button className="button-2" onClick={logout}>Uitloggen</button>
+									</li>
+
+								</>
+								:
+								<>
+									<li>
+										<NavLink className="button-1" to="/inloggen">Inloggen</NavLink>
+									</li>
+
+								</>
+							}
 						</ul>
 					</div>
 				</div>
