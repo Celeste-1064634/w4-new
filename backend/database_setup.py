@@ -35,7 +35,7 @@ def create_table(conn, create_table_sql):
 def table_queries():
     database = 'database/database.db'
     sql_create_user_table = """CREATE TABLE IF NOT EXISTS user (
-                                                    id integer PRIMARY KEY AUTOINCREMENT NOT NULL ,
+                                                    user_id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
                                                     admin integer NOT NULL,
                                                     email text NOT NULL UNIQUE,
                                                     password text NOT NULL,
@@ -43,33 +43,44 @@ def table_queries():
                                                     last_name text NOT NULL
                                                 )"""
 
-    sql_create_question_list_table = """CREATE TABLE IF NOT EXISTS question_list (
-                                                                id integer PRIMARY KEY AUTOINCREMENT NOT NULL ,
+    sql_create_survey_table = """CREATE TABLE IF NOT EXISTS survey (
+                                                                survey_id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
                                                                 name text NOT NULL,
+                                                                sequence integer NOT NULL,
                                                                 archive integer,
-                                                                anonymous integer
+                                                                anonymous integer,
+                                                                user_id integer NOT NULL,
+                                                                FOREIGN KEY (user_id) REFERENCES user (user_id)
                                                             )"""
 
     sql_create_question_table = """CREATE TABLE IF NOT EXISTS question (
-                                                        id integer PRIMARY KEY AUTOINCREMENT NOT NULL ,
-                                                        question text NOT NULL,
-                                                        question_list_id integer NOT NULL,
-                                                        sequence integer NOT NULL,
-                                                        archive integer,
-                                                        FOREIGN KEY (question_list_id) REFERENCES question_list (id)
+                                                        question_id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+                                                        question_collection_id integer NOT NULL,
+                                                        survey_id integer NOT NULL,
+                                                        FOREIGN KEY (question_collection_id) REFERENCES  question_collection (question_collection_id),
+                                                        FOREIGN KEY (survey_id) REFERENCES survey (survey_id)
                                                     )"""
+    
+    sql_create_question_collection_table = """CREATE TABLE IF NOT EXISTS question_collection (
+                                                                        question_collection_id integer PRIMARY KEY AUTOINCREMENT NOT NULL, 
+                                                                        question_text text NOT NULL,
+                                                                        archive integer,
+                                                                        type integer
+                                                                    )"""
     sql_create_multiple_choice_table = """CREATE TABLE IF NOT EXISTS multiple_choice (
-                                                                id integer PRIMARY KEY AUTOINCREMENT NOT NULL ,
-                                                                question_id integer NOT NULL,
+                                                                multiple_choice_id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
                                                                 letter text NOT NULL,
-                                                                FOREIGN KEY (question_id) REFERENCES question (id)
+                                                                question_collection_id integer NOT NULL,
+                                                                FOREIGN KEY (question_collection_id) REFERENCES question_collection (question_collection_id)
                                                             )"""
 
     sql_create_answer_table = """CREATE TABLE IF NOT EXISTS answer (
-                                                    id integer PRIMARY KEY AUTOINCREMENT NOT NULL ,
+                                                    answer_id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
                                                     answer text NOT NULL,
                                                     question_id integer NOT NULL,
-                                                    FOREIGN KEY (question_id) REFERENCES question (id)
+                                                    user_id integer NOT NULL,
+                                                    FOREIGN KEY (question_id) REFERENCES question (question_id),
+                                                    FOREIGN KEY (user_id) REFERENCES user (user_id)
                                                 )"""
 
     conn = create_connection(database)
@@ -77,8 +88,9 @@ def table_queries():
     if conn is not None:
         # Create tables
         create_table(conn, sql_create_user_table)
-        create_table(conn, sql_create_question_list_table)
+        create_table(conn, sql_create_survey_table)
         create_table(conn, sql_create_question_table)
+        create_table(conn, sql_create_question_collection_table)
         create_table(conn, sql_create_multiple_choice_table)
         create_table(conn, sql_create_answer_table)
         conn.close()
@@ -88,7 +100,7 @@ def table_queries():
 # Fill database with fake data
 
 
-def db_fill_user(database):
+def db_fill_user():
     try:
         name = fake.name()
         f_name = name.split()[0]
@@ -118,4 +130,4 @@ def db_fill_user(database):
 if __name__ == '__main__':
     create_connection('database/database.db')
     table_queries()
-    db_fill_user('database/database.db')
+    db_fill_user()
