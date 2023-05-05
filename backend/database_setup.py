@@ -61,16 +61,20 @@ def table_queries():
                                                         FOREIGN KEY (survey_id) REFERENCES survey (survey_id)
                                                     )"""
     
+    # 0 is open-ended question, 1 is closed-ended question
     sql_create_question_collection_table = """CREATE TABLE IF NOT EXISTS question_collection (
                                                                         question_collection_id integer PRIMARY KEY AUTOINCREMENT NOT NULL, 
                                                                         question_text text NOT NULL,
-                                                                        archive integer,
-                                                                        type integer
+                                                                        archive integer NOT NULL,
+                                                                        type integer NOT NULL
                                                                     )"""
+    
     sql_create_multiple_choice_table = """CREATE TABLE IF NOT EXISTS multiple_choice (
-                                                                multiple_choice_id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-                                                                letter text NOT NULL,
                                                                 question_collection_id integer NOT NULL,
+                                                                option_1 text NOT NULL,
+                                                                option_2 text NOT NULL,
+                                                                option_3 text,
+                                                                option_4 text,
                                                                 FOREIGN KEY (question_collection_id) REFERENCES question_collection (question_collection_id)
                                                             )"""
 
@@ -99,7 +103,6 @@ def table_queries():
 
 # Fill database with fake data
 
-
 def db_fill_user():
     try:
         name = fake.name()
@@ -122,8 +125,44 @@ def db_fill_user():
     except Error as e:
         print(e)
     finally: 
-        print('Database is gevuld.')
+        print("User table is filled.")
 
+def db_fill_question_collection():
+    try: 
+        text = [
+            "Hoe is je dag?",
+            "Wat vind je van deze vraag?"
+        ]
+        for question in text:
+            sql_fill_question_collection_query = f'''INSERT INTO question_collection(question_text, archive, type)
+                                                                            VALUES("{question}", False, False)'''
+            query_model.execute_update(sql_fill_question_collection_query)
+    except Error as e:
+        print(e)
+    finally:
+        print("Question collection open-ended table is filled.")
+
+
+
+def db_fill_multiple_choice():
+    try:
+        text = [
+            "Regent het vandaag?",
+            "Heb je lekker geslapen?",
+            "Heb je een goed weekend gehad?"
+        ]
+        for question in text:
+            sql_fill_question_collection_query = f'''INSERT INTO question_collection(question_text, archive, type)
+                                                                            VALUES("{question}", False, True)'''
+            query_model.execute_update(sql_fill_question_collection_query)
+            id_query = query_model.execute_query('''SELECT max (question_collection_id) FROM question_collection''')
+            sql_fill_multiple_choice_query = f'''INSERT INTO multiple_choice(question_collection_id, option_1, option_2, option_3, option_4)
+                                                                        VALUES ({id_query[0][0]}, "option_1", "option_2", "option_3", "option_4")'''
+            query_model.execute_update(sql_fill_multiple_choice_query)
+    except Error as e:
+        print(e)
+    finally:
+        print("Question collection multiple choice table is filled.")
 
 
 
@@ -131,3 +170,5 @@ if __name__ == '__main__':
     create_connection('database/database.db')
     table_queries()
     db_fill_user()
+    db_fill_question_collection()
+    db_fill_multiple_choice()
