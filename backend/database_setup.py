@@ -46,7 +46,6 @@ def table_queries():
     sql_create_survey_table = """CREATE TABLE IF NOT EXISTS survey (
                                                                 survey_id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
                                                                 name text NOT NULL,
-                                                                sequence integer NOT NULL,
                                                                 archive integer,
                                                                 anonymous integer,
                                                                 user_id integer NOT NULL,
@@ -56,19 +55,20 @@ def table_queries():
     sql_create_question_table = """CREATE TABLE IF NOT EXISTS question (
                                                         question_id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
                                                         question_collection_id integer NOT NULL,
+                                                        sequence integer NOT NULL,
                                                         survey_id integer NOT NULL,
                                                         FOREIGN KEY (question_collection_id) REFERENCES  question_collection (question_collection_id),
                                                         FOREIGN KEY (survey_id) REFERENCES survey (survey_id)
                                                     )"""
-    
+
     # 0 is open-ended question, 1 is closed-ended question
     sql_create_question_collection_table = """CREATE TABLE IF NOT EXISTS question_collection (
-                                                                        question_collection_id integer PRIMARY KEY AUTOINCREMENT NOT NULL, 
+                                                                        question_collection_id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
                                                                         question_text text NOT NULL,
                                                                         archive integer NOT NULL,
                                                                         type integer NOT NULL
                                                                     )"""
-    
+
     sql_create_multiple_choice_table = """CREATE TABLE IF NOT EXISTS multiple_choice (
                                                                 question_collection_id integer NOT NULL,
                                                                 option_1 text NOT NULL,
@@ -103,6 +103,7 @@ def table_queries():
 
 # Fill database with fake data
 
+
 def db_fill_user():
     try:
         name = fake.name()
@@ -118,17 +119,19 @@ def db_fill_user():
             f_name = name.split()[0]
             l_name = name.split()[1]
             em = f'{f_name}{l_name}@email.com'.lower()
-            passw = bcrypt.generate_password_hash("werkplaats4").decode("utf-8")
+            passw = bcrypt.generate_password_hash(
+                "werkplaats4").decode("utf-8")
             sql_fill_user_query = f'''INSERT INTO user(first_name, last_name, email, password, admin)
                                                     VALUES("{f_name}", "{l_name}", "{em}", "{passw}", False)'''
             query_model.execute_update(sql_fill_user_query)
     except Error as e:
         print(e)
-    finally: 
+    finally:
         print("User table is filled.")
 
+
 def db_fill_question_collection():
-    try: 
+    try:
         text = [
             "Hoe is je dag?",
             "Wat vind je van deze vraag?"
@@ -143,7 +146,6 @@ def db_fill_question_collection():
         print("Question collection open-ended table is filled.")
 
 
-
 def db_fill_multiple_choice():
     try:
         text = [
@@ -155,7 +157,8 @@ def db_fill_multiple_choice():
             sql_fill_question_collection_query = f'''INSERT INTO question_collection(question_text, archive, type)
                                                                             VALUES("{question}", False, True)'''
             query_model.execute_update(sql_fill_question_collection_query)
-            id_query = query_model.execute_query('''SELECT max (question_collection_id) FROM question_collection''')
+            id_query = query_model.execute_query(
+                '''SELECT max (question_collection_id) FROM question_collection''')
             sql_fill_multiple_choice_query = f'''INSERT INTO multiple_choice(question_collection_id, option_1, option_2, option_3, option_4)
                                                                         VALUES ({id_query[0][0]}, "option_1", "option_2", "option_3", "option_4")'''
             query_model.execute_update(sql_fill_multiple_choice_query)
@@ -165,6 +168,66 @@ def db_fill_multiple_choice():
         print("Question collection multiple choice table is filled.")
 
 
+def db_fill_survey():
+    try:
+        text = [
+            ["Vragenlijst 1", 1],
+            ["Vragenlijst 2", 2],
+            ["Vragenlijst 3", 3]
+        ]
+        for item in text:
+            sql_fill_question_collection_query = f'''INSERT INTO survey(name, archive, anonymous, user_id)
+                                                                            VALUES("{item[0]}", False, False, 1)'''
+            query_model.execute_update(sql_fill_question_collection_query)
+            # id_query = query_model.execute_query('''SELECT max (survey) FROM survey''')
+
+            ids = [1, 2, 3, 4, 5]
+            for id in ids:
+                sql_fill_multiple_choice_query = f'''INSERT INTO question(question_collection_id, sequence, survey_id)
+                                                                        VALUES ({id}, {id}, {item[1]})'''
+                query_model.execute_update(sql_fill_multiple_choice_query)
+    except Error as e:
+        print(e)
+    finally:
+        print("Survey and Question table filled")
+
+
+def db_fill_answer():
+    try:
+        text = [
+            ["Dit is een antwoord", 1, 2],
+            ["Dit is nog een antwoord", 1, 3],
+            ["Je raad het al, dit is nog een antwoord", 1, 4],
+            ["WAUW! dit meen je niet, dit is nog een antwoord", 1, 5],
+            ["Ik ben niet blij", 2, 2],
+            ["Ik haat dit *** werk", 2, 3],
+            ["Is het al weekend", 2, 4],
+            ["Anja heeft mijn boterham opgegeten", 2, 5],
+            ["a", 3, 2],
+            ["b", 3, 3],
+            ["a", 3, 4],
+            ["b", 3, 5],
+            ["a", 4, 2],
+            ["b", 4, 3],
+            ["a", 4, 4],
+            ["b", 4, 5],
+            ["a", 5, 2],
+            ["b", 5, 3],
+            ["a", 5, 4],
+            ["b", 5, 5],
+
+        ]
+        for item in text:
+            sql_fill_answer_query = f'''INSERT INTO answer(answer, question_id, user_id)
+                                                                            VALUES("{item[0]}", {item[1]}, {item[2]})'''
+            query_model.execute_update(sql_fill_answer_query)
+
+    
+    except Error as e:
+        print(e)
+    finally:
+        print("Survey and Question table filled")
+
 
 if __name__ == '__main__':
     create_connection('database/database.db')
@@ -172,3 +235,5 @@ if __name__ == '__main__':
     db_fill_user()
     db_fill_question_collection()
     db_fill_multiple_choice()
+    db_fill_survey()
+    db_fill_answer()
