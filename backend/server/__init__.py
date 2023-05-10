@@ -5,10 +5,14 @@ from flask_jwt_extended import JWTManager
 
 from flask_bcrypt import Bcrypt
 
+from flask_cors import CORS
+
 x = datetime.datetime.now()
   
 # Initializing flask app
 app = Flask(__name__)
+
+CORS(app)
 
 bcrypt = Bcrypt(app)
 

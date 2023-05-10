@@ -14,6 +14,7 @@ const Login = () => {
         // send request to create jwt token for logging in
         let info = {
             method: "POST",
+            mode: 'cors',
             headers: {
                 "Content-Type": "application/json"
             },
@@ -24,7 +25,7 @@ const Login = () => {
         }
 
         try {
-            const res = await fetch("/token", info)
+            const res = await fetch("http://127.0.0.1:5000/token", info)
             console.log(res)
             const data = await res.json()
             if (res.status !== 200) {
