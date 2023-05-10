@@ -11,26 +11,30 @@ import EnqueteOverview from "./pages/EnqueteOverview";
 import AdjustEnquete from "./pages/AdjustEnquete";
 import Login from './pages/Login';
 import { UserContext } from './UserContext';
+import { useEffect, useState } from 'react';
+import ProtectedRoute from './components/ProtectedRoute';
 
 import "./main.css";
-import { useEffect, useState } from 'react';
 
 export default function App() {
   const [user, setUser] = useState({});
 
   useEffect( () => {
+    // console.log(user)
     // update user info by jwt token
     async function fetchData(){
       
       let info = {
         method: "GET",
+        mode: 'cors',
         headers: {
+          "Content-Type": "application/json",
           "Authorization": "Bearer "+sessionStorage.getItem("token")
         }
       }
   
       try {
-        const res = await fetch("/who_am_i", info)
+        const res = await fetch("http://127.0.0.1:5000/who_am_i", info)
         const data = await res.json()
         setUser({
           "token": sessionStorage.getItem("token"),
@@ -41,23 +45,28 @@ export default function App() {
         })
       }
       catch (error) {
-        console.log("INDEX", error)
+        console.error("INDEX", error)
       }
+      
     }
-    fetchData()
+    if(sessionStorage.getItem("token")!= '' && sessionStorage.getItem("token") != undefined && sessionStorage.getItem("token") != null){
+      fetchData()
+    }else{
+      console.log("No auth token")
+    }
   }, [])
   return (
     <BrowserRouter>
       <UserContext.Provider value={{ user, setUser }}>
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="blogs" element={<Blogs />} />
-            <Route path="antwoorden" element={<Answers />} />
-            <Route path="contact" element={<Contact />} />
-            <Route path="*" element={<NoPage />} />
-            <Route path="vragenlijsten" element={<EnqueteOverview />} />
-            <Route path="vragen" element={<AdjustEnquete />} />
+            <Route index element={<ProtectedRoute path=""><Home /></ProtectedRoute>} />
+            <Route path="blogs" element={<ProtectedRoute path="blogs"><Blogs /></ProtectedRoute>} />
+            <Route path="antwoorden" element={<ProtectedRoute path="antwoorden"><Answers /></ProtectedRoute>} />
+            <Route path="contact" element={<ProtectedRoute path="contact"><Contact /></ProtectedRoute>} />
+            <Route path="*" element={<ProtectedRoute path="*"><NoPage /></ProtectedRoute>} />
+            <Route path="vragenlijsten" element={<ProtectedRoute path="vragenlijsten"><EnqueteOverview /></ProtectedRoute>} />
+            <Route path="vragen" element={<ProtectedRoute path="vragen"><AdjustEnquete /></ProtectedRoute>} />
             <Route path="inloggen" element={<Login />} />
           </Route>
         </Routes>
