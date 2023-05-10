@@ -1,40 +1,42 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Card, Button, Container, Row, Col } from "react-bootstrap";
 
 function EnqueteOverview() {
-  const vragenlijsten = [
-    { id: 1, title: "Vragenlijst 1", description: "test" },
-    { id: 2, title: "Vragenlijst 2", description: "test" },
-    { id: 3, title: "Vragenlijst 3", description: "test" }
-  ];
+  const [vragenlijsten, setVragenlijsten] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:5000/surveys')
+      .then(response => response.json())
+      .then(data => {
+        setVragenlijsten(data);
+      })
+      .catch(error => {
+        console.error('There was an error!', error);
+      });
+  }, []);
 
   return (
     <Container className="mt-3">
-      <h1>Overzicht vragenlijsten</h1>
-      <Row>
-        {/* Add the card to create a new vragenlijst */}
-        <Col xs={12} md={4}>
+      <Row className="mb-3">
+        <Col xs={8}>
+          <h1>Overzicht vragenlijsten</h1>
+        </Col>
+        <Col xs={4} className="text-right">
           <Link to="/vragenlijst/nieuw" style={{ textDecoration: 'none' }}>
-            <Card className="mb-3" style={{ cursor: 'pointer' }}>
-              <Card.Body>
-                <Card.Title>Nieuwe vragenlijst</Card.Title>
-                <Card.Text>Maak een nieuwe vragenlijst aan</Card.Text>
-                <Button variant="primary" size="sm" style={{ position: 'absolute', bottom: '0.5rem', right: '0.5rem' }}>+</Button>
-              </Card.Body>
-            </Card>
+            <Button variant="primary">+</Button>
           </Link>
         </Col>
+      </Row>
+      <Row>
         {/* Render the other cards */}
         {vragenlijsten.map((vragenlijst) => (
-          <Col xs={12} md={4} key={vragenlijst.id}>
-            <Link to={`/vragen/`} style={{ textDecoration: 'none' }}>
-              {/* <Link to={`/vragen/${vragenlijst.id}`} style={{ textDecoration: 'none' }}> */}
+          <Col xs={12} md={4} key={vragenlijst.survey_id}>
+            <Link to={`/vragen/${vragenlijst.survey_id}`} style={{ textDecoration: 'none' }}>
               <Card className="mb-3" style={{ cursor: 'pointer' }}>
                 <Button variant="outline-secondary" size="sm" style={{ position: 'absolute', top: '0.5rem', right: '0.5rem' }}>Edit</Button>
                 <Card.Body>
-                  <Card.Title>{vragenlijst.title}</Card.Title>
-                  <Card.Text>{vragenlijst.description}</Card.Text>
+                  <Card.Title>{vragenlijst.name}</Card.Title>
                 </Card.Body>
               </Card>
             </Link>
@@ -43,6 +45,7 @@ function EnqueteOverview() {
       </Row>
     </Container>
   );
+  
 }
 
 export default EnqueteOverview;
