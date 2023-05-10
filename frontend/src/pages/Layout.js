@@ -11,6 +11,7 @@ const Layout = () => {
 		setUser({})
 	}
 
+
 	// const [token, setToken] = useState('')
 
 	// useEffect(() =>{
@@ -43,7 +44,7 @@ const Layout = () => {
 							</li>
 
 
-							{user.token && user.token != "" && user.token != undefined
+							{user?.token && user?.token != "" && user?.token != undefined
 								?
 								<>
 									<li>

@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import { UserContext } from "../UserContext";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Login = () => {
 
@@ -8,6 +9,9 @@ const Login = () => {
 
     const [error, setError] = useState("");
     const { user, setUser } = useContext(UserContext)
+
+    const navigate = useNavigate();
+    const state = useLocation();
 
     async function handleSubmit(e) {
         e.preventDefault()
@@ -50,6 +54,8 @@ const Login = () => {
                 "fullName": data.full_name,
                 "email": data.email,
             })
+            // return redirect('/vragen')
+            navigate("/"+state.state.next, { replace: true })
         }
         catch (error) {
             console.log("AWAIT", error)
@@ -60,7 +66,7 @@ const Login = () => {
         <div className="auto-container bg-light-grey">
             <div className="section">
                 <h1 className="blue text-center">Inloggen</h1>
-                {user.token && user.token != "" && user.token != undefined
+                {user?.token && user?.token != "" && user?.token != undefined
                     ?
                     "Logged in with " + user.fullName
                     :
