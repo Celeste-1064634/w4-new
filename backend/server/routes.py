@@ -8,6 +8,20 @@ from flask_jwt_extended import current_user
 from server import conn, app, bcrypt, jwt
 
 
+# Route for getting surveys
+@app.route('/surveys', methods=['GET'])
+def get_surveys():
+    cursor = conn.cursor()
+    cursor.execute('SELECT survey_id, name FROM survey')
+    surveys = cursor.fetchall()
+    cursor.close()
+
+    # Convert the surveys into a list of dictionaries to be converted into JSON
+    surveys_list = [{'survey_id': survey[0], 'name': survey[1]} for survey in surveys]
+
+    return jsonify(surveys_list)
+
+
 # Route for seeing a data
 @app.route('/data')
 def get_students():
