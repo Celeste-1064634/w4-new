@@ -27,6 +27,7 @@ const QuestionItem = (data) => {
         <Col xs={12} md={4} key={data.vragenlijst.id}>
             <Card className="mb-3" style={{ cursor: 'pointer' }}>
                 <Button onClick={toggle} variant="outline-secondary" size="sm" style={{ position: 'absolute', top: '0.5rem', right: '0.5rem' }}>Edit</Button>
+                <Button variant="outline-secondary" size="sm" style={{ position: 'absolute', top: '3rem', right: '0.5rem' }}>Delete</Button>
                 <Card.Body>
                     <Card.Title>{data.vragenlijst.title}</Card.Title>
                     {isEdit
