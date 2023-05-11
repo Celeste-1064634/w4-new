@@ -70,12 +70,11 @@ def table_queries():
                                                                     )"""
 
     sql_create_multiple_choice_table = """CREATE TABLE IF NOT EXISTS multiple_choice (
+                                                                multiple_choice_id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+                                                                letter text NOT NULL,
+                                                                answer text NOT NULL,
                                                                 question_collection_id integer NOT NULL,
-                                                                option_1 text NOT NULL,
-                                                                option_2 text NOT NULL,
-                                                                option_3 text,
-                                                                option_4 text,
-                                                                FOREIGN KEY (question_collection_id) REFERENCES question_collection (question_collection_id)
+                                                                FOREIGN KEY (question_collection_id) REFERENCES  question_collection (question_collection_id)
                                                             )"""
 
     sql_create_answer_table = """CREATE TABLE IF NOT EXISTS answer (
@@ -93,9 +92,9 @@ def table_queries():
         # Create tables
         create_table(conn, sql_create_user_table)
         create_table(conn, sql_create_survey_table)
-        create_table(conn, sql_create_question_table)
         create_table(conn, sql_create_question_collection_table)
         create_table(conn, sql_create_multiple_choice_table)
+        create_table(conn, sql_create_question_table)
         create_table(conn, sql_create_answer_table)
         conn.close()
     else:
@@ -149,19 +148,25 @@ def db_fill_question_collection():
 def db_fill_multiple_choice():
     try:
         text = [
-            "Regent het vandaag?",
-            "Heb je lekker geslapen?",
-            "Heb je een goed weekend gehad?"
+            ["Regent het vandaag?", [['a', 'Ja'], ['b', 'Nee'], ['c', 'Misschien']]],
+            ["Heb je lekker geslapen?", [['1', 'Ja'], ['2', 'Nee'],
+                                         ['3', 'Redelijk'], ['4', 'Nee totaal niet']]],
+            ["Heb je een goed weekend gehad?", [['a', 'Ja'], ['b', 'Nee']]]
         ]
+        i = 0
         for question in text:
             sql_fill_question_collection_query = f'''INSERT INTO question_collection(question_text, archive, type)
-                                                                            VALUES("{question}", False, True)'''
+                                                                            VALUES("{question[0]}", False, True)'''
             query_model.execute_update(sql_fill_question_collection_query)
             id_query = query_model.execute_query(
                 '''SELECT max (question_collection_id) FROM question_collection''')
-            sql_fill_multiple_choice_query = f'''INSERT INTO multiple_choice(question_collection_id, option_1, option_2, option_3, option_4)
-                                                                        VALUES ({id_query[0][0]}, "option_1", "option_2", "option_3", "option_4")'''
-            query_model.execute_update(sql_fill_multiple_choice_query)
+
+            for item in text[0][1]:
+                sql_fill_multiple_choice_query = f'''INSERT INTO multiple_choice(letter, answer, question_collection_id)
+                                                                        VALUES ("{item[0]}", "{item[1]}", "{id_query[0][0]}")'''
+                query_model.execute_update(sql_fill_multiple_choice_query)
+
+            i = i+1
     except Error as e:
         print(e)
     finally:
@@ -206,11 +211,11 @@ def db_fill_answer():
             ["a", 3, 2],
             ["b", 3, 3],
             ["a", 3, 4],
-            ["b", 3, 5],
-            ["a", 4, 2],
-            ["b", 4, 3],
-            ["a", 4, 4],
-            ["b", 4, 5],
+            ["c", 3, 5],
+            ["1", 4, 2],
+            ["4", 4, 3],
+            ["2", 4, 4],
+            ["3", 4, 5],
             ["a", 5, 2],
             ["b", 5, 3],
             ["a", 5, 4],
@@ -222,7 +227,6 @@ def db_fill_answer():
                                                                             VALUES("{item[0]}", {item[1]}, {item[2]})'''
             query_model.execute_update(sql_fill_answer_query)
 
-    
     except Error as e:
         print(e)
     finally:
