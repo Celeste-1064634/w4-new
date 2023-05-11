@@ -290,3 +290,9 @@ label{
     color: #a74343;
 	margin-bottom: 0;
 }
+
+.flex-gap{
+	display: flex;
+    flex-direction: column;
+    gap: 20px;
+}

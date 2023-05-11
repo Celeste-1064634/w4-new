@@ -36,6 +36,10 @@ export default function App() {
       try {
         const res = await fetch("http://127.0.0.1:5000/who_am_i", info)
         const data = await res.json()
+        if(data?.msg == 'Token has expired'){
+          sessionStorage.removeItem("token")
+		      setUser({})
+        }
         setUser({
           "token": sessionStorage.getItem("token"),
           "firstName": data.firstName,

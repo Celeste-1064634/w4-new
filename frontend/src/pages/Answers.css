@@ -71,8 +71,44 @@
 	align-items: center;
 	border: 1px solid transparent;
 	border-radius: 100px;
-	height: 10px;
-	width: 10px;
+	height: 20px;
+	width: 20px;
 	padding: 5px;
 	color: white;
+}
+
+.answer-details{
+	max-height: 0px;
+	overflow-y: auto;
+	overflow: hidden;
+	transition: 0.5s;
+}
+
+.answer-details.show{
+	max-height: 300px;
+}
+
+.answer-details-btn{
+	border: none;
+	border-bottom: 1px solid lightgrey;
+	padding: 5px 8px;
+	font-weight: 400;
+	font-size: 14px;
+	background-color: rgb(244, 247, 248);
+	margin-top: 5px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	gap: 20px;
+}
+
+.chevron{
+	font-size: 12px;
+	color: rgb(109, 109, 109);
+	transition: 0.2s;
+	align-self: center;
+}
+
+.chevron.rotate{
+	rotate: 90deg;
 }
