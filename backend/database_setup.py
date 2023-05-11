@@ -161,7 +161,7 @@ def db_fill_multiple_choice():
             id_query = query_model.execute_query(
                 '''SELECT max (question_collection_id) FROM question_collection''')
 
-            for item in text[0][1]:
+            for item in text[i][1]:
                 sql_fill_multiple_choice_query = f'''INSERT INTO multiple_choice(letter, answer, question_collection_id)
                                                                         VALUES ("{item[0]}", "{item[1]}", "{id_query[0][0]}")'''
                 query_model.execute_update(sql_fill_multiple_choice_query)
