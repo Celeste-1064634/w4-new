@@ -8,6 +8,7 @@ import Contact from "./pages/Contact";
 import NoPage from "./pages/NoPage";
 import Answers from "./pages/Answers";
 import EnqueteOverview from "./pages/EnqueteOverview";
+import NewSurveyMaker from "./pages/NewSurveyMaker"
 import AdjustEnquete from "./pages/AdjustEnquete";
 import Login from './pages/Login';
 import { UserContext } from './UserContext';
@@ -70,6 +71,7 @@ export default function App() {
             <Route path="contact" element={<ProtectedRoute path="contact"><Contact /></ProtectedRoute>} />
             <Route path="*" element={<ProtectedRoute path="*"><NoPage /></ProtectedRoute>} />
             <Route path="vragenlijsten" element={<ProtectedRoute path="vragenlijsten"><EnqueteOverview /></ProtectedRoute>} />
+            <Route path="vragenlijst/nieuw" element={<ProtectedRoute path="vragenlijst/nieuw"><NewSurveyMaker /></ProtectedRoute>} />
             <Route path="vragen" element={<ProtectedRoute path="vragen"><AdjustEnquete /></ProtectedRoute>} />
             <Route path="inloggen" element={<Login />} />
           </Route>
