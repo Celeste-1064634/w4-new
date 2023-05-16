@@ -12,8 +12,11 @@ function NewSurveyMaker() {
   console.log(addQuestion)
     return (
     <>
+    <div className={styles.divPageTitle}>
+    <h1 >Nieuwe vragenlijst</h1>
+    </div>
     <div className={styles.divAddNewQuestion}>
-    <Button onClick={addNewQuestion} className={styles.btnAddNewQuestion}>+</Button>
+        <Button onClick={addNewQuestion} className={styles.btnAddNewQuestion}>+</Button>
     </div>
     </>
   )
