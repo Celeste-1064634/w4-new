@@ -13,6 +13,7 @@ import Login from './pages/Login';
 import { UserContext } from './UserContext';
 import { useEffect, useState } from 'react';
 import ProtectedRoute from './components/ProtectedRoute';
+import SurveyForm from './pages/SurveyForm';
 
 import "./main.css";
 
@@ -72,6 +73,7 @@ export default function App() {
             <Route path="vragenlijsten" element={<ProtectedRoute path="vragenlijsten"><EnqueteOverview /></ProtectedRoute>} />
             <Route path="vragen" element={<ProtectedRoute path="vragen"><AdjustEnquete /></ProtectedRoute>} />
             <Route path="inloggen" element={<Login />} />
+            <Route path="vragenlijst_invullen" element={<ProtectedRoute path="vragenlijst_invullen"><SurveyForm /></ProtectedRoute>} />
           </Route>
         </Routes>
       </UserContext.Provider>
