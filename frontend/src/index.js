@@ -3,8 +3,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./pages/Layout";
 import Home from "./pages/Home";
-import Blogs from "./pages/Blogs";
-import Contact from "./pages/Contact";
+import Profile from "./pages/Profile";
 import NoPage from "./pages/NoPage";
 import Answers from "./pages/Answers";
 import EnqueteOverview from "./pages/EnqueteOverview";
@@ -65,9 +64,8 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<ProtectedRoute path=""><Home /></ProtectedRoute>} />
-            <Route path="blogs" element={<ProtectedRoute path="blogs"><Blogs /></ProtectedRoute>} />
-            <Route path="antwoorden" element={<ProtectedRoute path="antwoorden"><Answers /></ProtectedRoute>} />
-            <Route path="contact" element={<ProtectedRoute path="contact"><Contact /></ProtectedRoute>} />
+            <Route path="profiel" element={<ProtectedRoute path="profiel"><Profile /></ProtectedRoute>} />
+            <Route path="antwoorden/:id" element={<ProtectedRoute path="antwoorden"><Answers /></ProtectedRoute>} />
             <Route path="*" element={<ProtectedRoute path="*"><NoPage /></ProtectedRoute>} />
             <Route path="vragenlijsten" element={<ProtectedRoute path="vragenlijsten"><EnqueteOverview /></ProtectedRoute>} />
             <Route path="vragen" element={<ProtectedRoute path="vragen"><AdjustEnquete /></ProtectedRoute>} />

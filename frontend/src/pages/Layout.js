@@ -34,14 +34,7 @@ const Layout = () => {
 								<NavLink className={({ isActive, isPending }) => isPending ? "pending header-link" : isActive ? "header-link active" : "header-link"}
 									to="/vragenlijsten">Vragenlijsten</NavLink>
 							</li>
-							<li>
-								<NavLink className={({ isActive, isPending }) => isPending ? "pending header-link" : isActive ? "header-link active" : "header-link"}
-									to="/blogs">Blogs</NavLink>
-							</li>
-							<li>
-								<NavLink className={({ isActive, isPending }) => isPending ? "pending header-link" : isActive ? "header-link active" : "header-link"}
-									to="/contact">Contact</NavLink>
-							</li>
+
 
 
 							{user?.token && user?.token != "" && user?.token != undefined
@@ -49,7 +42,7 @@ const Layout = () => {
 								<>
 									<li>
 										<NavLink className={({ isActive, isPending }) => isPending ? "pending header-link" : isActive ? "header-link active" : "header-link"}
-											to="/profile">{user.fullName}</NavLink>
+											to="/profiel">{user.fullName}</NavLink>
 									</li>
 									<li>
 										<button className="button-2" onClick={logout}>Uitloggen</button>

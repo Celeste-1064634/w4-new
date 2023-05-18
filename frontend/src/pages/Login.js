@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { UserContext } from "../UserContext";
 import { useLocation, useNavigate } from "react-router-dom";
+import "./Login.css";
 
 const Login = () => {
 
@@ -8,6 +9,9 @@ const Login = () => {
     const [password, setPassword] = useState("");
 
     const [error, setError] = useState("");
+
+    const [showPass, setShowPass] = useState(false);
+
     const { user, setUser } = useContext(UserContext)
 
     const navigate = useNavigate();
@@ -77,8 +81,11 @@ const Login = () => {
                         <label>E-mail</label>
                         <input className="custom-input" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email"></input>
                         <label>Wachtwoord</label>
-                        <input className="custom-input" required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="wachtwoord"></input>
-                        <input className="custom-submit" type="submit" value="Inloggen"  ></input>
+                        <div class="password-container">
+                            <input className="custom-input" type={showPass ? 'text' : 'password'}  required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="wachtwoord"></input>
+                            <i onClick={() => setShowPass(!showPass)} class={"pass-icon fa-solid "+ (showPass ? "fa-eye" : "fa-eye-slash")}></i>
+                        </div>
+                        <input className="custom-submit" type="submit" value="Inloggen"></input>
                     </form>
                 }
             </div>

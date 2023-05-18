@@ -1,12 +1,14 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./Answers.css";
 import React from 'react'
 import MultipleChoiceAnswers from "../components/MultipleChoiceAnswers";
+
 const Answers = () => {
     const [survey, setSurvey] = useState([]);
+    const navigate = useNavigate();
 
-
+    let { id } = useParams();
 
     function getColor() {
         const randomBetween = (min, max) => min + Math.floor(Math.random() * (max - min + 1));
@@ -14,7 +16,7 @@ const Answers = () => {
     }
 
 
-    const id = 1
+    // const id = 1
 
     useEffect(() => {
         async function fetchSurvey() {
@@ -33,6 +35,11 @@ const Answers = () => {
                 const data = await res.json()
                 console.log(data)
                 setSurvey(data)
+                if(!data.length){
+                    console.error("No data")
+                    navigate("/404" , { replace: true })
+                }
+
                 return data
 
             }
@@ -56,7 +63,7 @@ const Answers = () => {
                 <NavLink to="/antwoorden" className={({ isActive, isPending }) => isPending ? "secondary-nav-item" : isActive ? "secondary-nav-item active" : "secondary-nav-item"}
                 >Antwoorden</NavLink>
             </div>
-
+            {/* {this.props.match} */}
             <div className="small-container flex-gap">
                 current survey id: {id}
                 {survey.map((question) => (
@@ -69,12 +76,17 @@ const Answers = () => {
                                 <h3 className="question-box"><span className="question-number">1</span>{question.question_text}</h3>
                                 <p className="label">Open vraag</p>
                                 <div className="bg-white answers">
-                                    {question.answers.map((answer) => (
-                                        <div key={answer.answer_id} className="answer-item">
-                                            <div className="user-part"><i style={{ backgroundColor: getColor() }} className="fa fa-solid fa-user user-icon"></i>{answer.user.first_name} {answer.user.last_name}</div>
-                                            {answer.answer}
-                                        </div>
-                                    ))}
+                                    {question.answers.length ?  
+                                        <>
+                                            {question.answers.map((answer) => (
+                                                <div key={answer.answer_id} className="answer-item">
+                                                    <div className="user-part"><i style={{ backgroundColor: getColor() }} className="fa fa-solid fa-user user-icon"></i>{answer.user.first_name} {answer.user.last_name}</div>
+                                                    {answer.answer}
+                                                </div>
+                                            ))}
+                                        </>
+                                    : "Geen data" }
+                                    
                                 </div>
                             </div>
                         }
