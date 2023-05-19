@@ -167,3 +167,20 @@ def user_lookup_callback(_jwt_header, jwt_data):
 @jwt_required()
 def authenticate():
     return jsonify(current_user)
+
+@app.route('/question/edit/<id>', methods=["POST"])
+def edit_question(id=None):
+    question = request.json["question"]
+    cursor = conn.cursor()
+    cursor.execute(f"UPDATE question_collection SET question_text = '{question}' WHERE question_collection_id = '{id}'")
+    conn.commit()
+    cursor.close()
+    return jsonify("function_ended")
+
+@app.route('/question/delete/<id>', methods=["DELETE"])
+def delete_question(id=None):
+    cursor = conn.cursor()
+    cursor.execute(f"DELETE FROM question_collection WHERE question_collection_id = '{id}'")
+    conn.commit()
+    cursor.close()
+    return jsonify("function_ended")

@@ -18,26 +18,26 @@ import "./main.css";
 export default function App() {
   const [user, setUser] = useState({});
 
-  useEffect( () => {
+  useEffect(() => {
     // console.log(user)
     // update user info by jwt token
-    async function fetchData(){
-      
+    async function fetchData() {
+
       let info = {
         method: "GET",
         mode: 'cors',
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer "+sessionStorage.getItem("token")
+          "Authorization": "Bearer " + sessionStorage.getItem("token")
         }
       }
-  
+
       try {
         const res = await fetch("http://127.0.0.1:5000/who_am_i", info)
         const data = await res.json()
-        if(data?.msg == 'Token has expired'){
+        if (data?.msg == 'Token has expired') {
           sessionStorage.removeItem("token")
-		      setUser({})
+          setUser({})
         }
         setUser({
           "token": sessionStorage.getItem("token"),
@@ -50,11 +50,11 @@ export default function App() {
       catch (error) {
         console.error("INDEX", error)
       }
-      
+
     }
-    if(sessionStorage.getItem("token")!= '' && sessionStorage.getItem("token") != undefined && sessionStorage.getItem("token") != null){
+    if (sessionStorage.getItem("token") != '' && sessionStorage.getItem("token") != undefined && sessionStorage.getItem("token") != null) {
       fetchData()
-    }else{
+    } else {
       console.log("No auth token")
     }
   }, [])
@@ -68,7 +68,7 @@ export default function App() {
             <Route path="antwoorden/:id" element={<ProtectedRoute path="antwoorden"><Answers /></ProtectedRoute>} />
             <Route path="*" element={<ProtectedRoute path="*"><NoPage /></ProtectedRoute>} />
             <Route path="vragenlijsten" element={<ProtectedRoute path="vragenlijsten"><EnqueteOverview /></ProtectedRoute>} />
-            <Route path="vragen" element={<ProtectedRoute path="vragen"><AdjustEnquete /></ProtectedRoute>} />
+            <Route path="vragen/:id" element={<ProtectedRoute path="vragen"><AdjustEnquete /></ProtectedRoute>} />
             <Route path="inloggen" element={<Login />} />
           </Route>
         </Routes>
