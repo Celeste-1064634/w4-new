@@ -67,8 +67,13 @@ const QuestionItem = (data) => {
                 "Authorization": "Bearer " + sessionStorage.getItem("token")
             }
         }
-        fetch("http://127.0.0.1:5000/question/delete/" + id, info)
-        navigate("/vragen/")
+
+        console.log(data.question.question_id)
+        console.log(data.id)
+
+        fetch("http://127.0.0.1:5000/question/delete/" + data.question.question_id, info)
+        window.location.reload(false)
+        // navigate("/vragen/" + data.id, { replace: true })
 
     }
 

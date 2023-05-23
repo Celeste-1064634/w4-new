@@ -99,7 +99,7 @@ function AdjustEnquete() {
                     //         </Card.Body>
                     //     </Card>
                     // </Col>
-                    <QuestionItem question={vragenlijst}> </QuestionItem>
+                    <QuestionItem id={vragenlijst.survey_id} question={vragenlijst}> </QuestionItem>
                 ))}
                 {/* Add the card to create a new vragenlijst */}
             </Row>
