@@ -4,27 +4,26 @@ import { Button } from "react-bootstrap";
 import NewOpenQuestion from "../components/NewOpenQuestion";
 import NewMultipleChoiceQuestion from "../components/NewMultipleChoiceQuestion";
 
-
 function NewSurveyMaker() {
   const [addQuestion, setAddQuestion] = useState(false);
-  const divQuestion = document.getElementById("divQuestion")
+  const [divQuestion, setDivQuestion] = useState([]);
 
   function addNewQuestion() {
     setAddQuestion((addQuestion) => !addQuestion);
   }
 
   function addNewOpenQuestion() {
-    console.log("Open")
-    divQuestion.insertAdjacentHTML('beforeend', <NewOpenQuestion/>)
+    console.log("Open");
+    setDivQuestion([...divQuestion, <NewOpenQuestion />]);
   }
 
   function addNewMultipleChoiceQuestion() {
-    console.log("MP")
-    divQuestion.insertAdjacentHTML('beforeend', <NewMultipleChoiceQuestion/>)
+    console.log("MP");
+    setDivQuestion([...divQuestion, <NewMultipleChoiceQuestion />]);
   }
 
   function addDatabaseQuestion() {
-    console.log("DB")
+    console.log("DB");
   }
 
   console.log(addQuestion);
@@ -33,18 +32,21 @@ function NewSurveyMaker() {
       <div className={styles.divPageTitle}>
         <h1>Nieuwe vragenlijst</h1>
       </div>
-      <div id="divQuestion">
-
-      </div>
-      <div className={styles.divAddNewQuestion}>
-        {addQuestion
-          ? 
-          <>
-          <Button onClick={addNewOpenQuestion}>Nieuwe open vraag</Button>
-          <Button onClick={addNewMultipleChoiceQuestion}>Nieuwe multiple choice vraag</Button>
-          <Button onClick={addDatabaseQuestion}>Vraag uit de database</Button>
-          </>
-          : null}
+      <div id="divQuestion"> {divQuestion} </div>
+      <div className={styles.btnContainer}>
+        <div className={styles.divAddNewQuestion}>
+          {addQuestion ? (
+            <>
+              <Button onClick={addNewOpenQuestion}>Nieuwe open vraag</Button>
+              <Button onClick={addNewMultipleChoiceQuestion}>
+                Nieuwe multiple choice vraag
+              </Button>
+              <Button onClick={addDatabaseQuestion}>
+                Vraag uit de database
+              </Button>
+            </>
+          ) : null}
+        </div>
         <Button onClick={addNewQuestion} className={styles.btnAddNewQuestion}>
           +
         </Button>
