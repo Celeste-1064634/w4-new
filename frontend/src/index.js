@@ -70,6 +70,7 @@ export default function App() {
             <Route path="antwoorden/:id" element={<ProtectedRoute path="antwoorden"><Answers /></ProtectedRoute>} />
             <Route path="*" element={<ProtectedRoute path="*"><NoPage /></ProtectedRoute>} />
             <Route path="vragenlijsten" element={<ProtectedRoute path="vragenlijsten"><EnqueteOverview /></ProtectedRoute>} />
+            <Route path="vragenlijst/nieuw" element={<ProtectedRoute path="vragenlijst/nieuw"><NewSurveyMaker/></ProtectedRoute>} />
             <Route path="vragen/:id" element={<ProtectedRoute path="vragen"><AdjustEnquete /></ProtectedRoute>} />
             <Route path="inloggen" element={<Login />} />
           </Route>
