@@ -13,6 +13,7 @@ import Login from './pages/Login';
 import { UserContext } from './UserContext';
 import { useEffect, useState } from 'react';
 import ProtectedRoute from './components/ProtectedRoute';
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 import "./main.css";
 
