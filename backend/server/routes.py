@@ -44,47 +44,49 @@ def get_questions_for_survey(id=None):
         answers_data = cursor.fetchall()
 
         # Check if the question is multiple choice 
-        if item[3] == 1:
-            choices = []
-            cursor.execute(f"SELECT * FROM multiple_choice WHERE question_collection_id = {question[1]}")
-            choices_data = cursor.fetchall()
-            for choice in choices_data:
-                choices.append({
-                'multiple_choice_id': choice[0],
-                'letter': choice[1],
-                'answer': choice[2],
-                'question_collection_id': choice[3]})
-        else:
-            choices = None
+        print(item[3])
+        if item[3] != None and item[3] != "" :
+            if item[3] == 1:
+                choices = []
+                cursor.execute(f"SELECT * FROM multiple_choice WHERE question_collection_id = {question[1]}")
+                choices_data = cursor.fetchall()
+                for choice in choices_data:
+                    choices.append({
+                    'multiple_choice_id': choice[0],
+                    'letter': choice[1],
+                    'answer': choice[2],
+                    'question_collection_id': choice[3]})
+            else:
+                choices = None
 
-        answers = []
-        for answer in answers_data:
-            cursor.execute(
-            f"SELECT user_id, email, first_name, last_name FROM user WHERE user_id = {answer[3]}")
-            user_item = cursor.fetchone()
-            user = {
-                "user_id": user_item[0],
-                "email": user_item[1],
-                "first_name": user_item[2],
-                "last_name": user_item[3]
-            }
+            answers = []
+            for answer in answers_data:
+                cursor.execute(
+                f"SELECT user_id, email, first_name, last_name FROM user WHERE user_id = {answer[3]}")
+                user_item = cursor.fetchone()
+                user = {
+                    "user_id": user_item[0],
+                    "email": user_item[1],
+                    "first_name": user_item[2],
+                    "last_name": user_item[3]
+                }
 
-            answers.append({
-                'answer_id': answer[0],
-                'answer': answer[1],
-                'question_id': answer[2],
-                'user': user})
+                answers.append({
+                    'answer_id': answer[0],
+                    'answer': answer[1],
+                    'question_id': answer[2],
+                    'user': user})
 
-        questions.append({
-            'question_id': question[0],
-            'question_collection_id': question[1],
-            'sequence': question[2],
-            'survey_id': question[3],
-            'question_text': item[1],
-            'type': item[3],
-            'answers': answers,
-            'choices': choices
-        })
+            questions.append({
+                'question_id': question[0],
+                'question_collection_id': question[1],
+                'sequence': question[2],
+                'survey_id': question[3],
+                'question_text': item[1],
+                'type': item[3],
+                'answers': answers,
+                'choices': choices
+            })
 
     cursor.close()
     return jsonify(questions)
@@ -167,3 +169,20 @@ def user_lookup_callback(_jwt_header, jwt_data):
 @jwt_required()
 def authenticate():
     return jsonify(current_user)
+
+@app.route('/question/edit/<id>', methods=["POST"])
+def edit_question(id=None):
+    question = request.json["question"]
+    cursor = conn.cursor()
+    cursor.execute(f"UPDATE question_collection SET question_text = '{question}' WHERE question_collection_id = '{id}'")
+    conn.commit()
+    cursor.close()
+    return jsonify("function_ended")
+
+@app.route('/question/delete/<id>', methods=["DELETE"])
+def delete_question(id=None):
+    cursor = conn.cursor()
+    cursor.execute(f"DELETE FROM question WHERE question_collection_id = '{id}'")
+    conn.commit()
+    cursor.close()
+    return jsonify("function_ended")
