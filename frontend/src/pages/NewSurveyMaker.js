@@ -32,7 +32,7 @@ function NewSurveyMaker() {
       <div className={styles.divPageTitle}>
         <h1>Nieuwe vragenlijst</h1>
       </div>
-      <div id="divQuestion"> {divQuestion} </div>
+      <div className={styles.divQuestion}> {divQuestion} </div>
       <div className={styles.btnContainer}>
         <div className={styles.divAddNewQuestion}>
           {addQuestion ? (
