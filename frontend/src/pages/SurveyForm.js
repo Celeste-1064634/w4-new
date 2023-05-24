@@ -48,7 +48,19 @@ const SurveyForm = () => {
             <Card key={question.question_id} className="mb-4">
               <Card.Body>
                 <Card.Title>{question.question_text}</Card.Title>
-                <Form.Control type="text" placeholder="Antwoord" onChange={(e) => handleChange(question.question_id, e.target.value)} />
+                {question.type === 1 ? (
+                  question.choices.map(choice => (
+                    <Form.Check
+                      type="radio"
+                      id={`${question.question_id}-${choice.multiple_choice_id}`}
+                      name={`question-${question.question_id}`}
+                      label={`${choice.letter}. ${choice.answer}`}
+                      onChange={() => handleChange(question.question_id, choice.letter)}
+                    />
+                  ))
+                ) : (
+                  <Form.Control type="text" placeholder="Antwoord" onChange={(e) => handleChange(question.question_id, e.target.value)} />
+                )}
               </Card.Body>
             </Card>
           ))
