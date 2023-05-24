@@ -10,6 +10,7 @@ from server import conn, app, bcrypt, jwt
 
 # Route for getting all surveys
 @app.route('/surveys', methods=['GET'])
+@jwt_required
 def get_surveys():
     cursor = conn.cursor()
     cursor.execute('SELECT survey_id, name FROM survey')
@@ -26,7 +27,7 @@ def get_surveys():
 
 # Route for getting questions and title by survey id
 @app.route('/survey/data/<id>', methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def get_questions_for_survey(id=None):
     print(current_user)
     cursor = conn.cursor()
