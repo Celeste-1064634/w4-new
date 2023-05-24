@@ -4,7 +4,7 @@ import styles from "./NewMultipleChoiceQuestion.module.css";
 
 function NewMultipleChoiceQuestion() {
   const [addOption, setAddOption] = useState([
-    <div>
+    <div key={Math.random()*100}>
       <input
         className={styles.inputMultipleChoiceAnswer}
         type="radio"
@@ -14,14 +14,14 @@ function NewMultipleChoiceQuestion() {
         className={styles.inputMultipleChoiceAnswer}
         placeholder="Vul hier het antwoord in"
       />
-      <button><i class="bi bi-trash3"></i></button>
+      <button><i className="bi bi-trash3"></i></button>
     </div>,
   ]);
 
   function addMultipleChoiceOption() {
     setAddOption([
       ...addOption,
-      <div>
+      <div key={Math.random()*100}>
         <input
           className={styles.inputMultipleChoiceAnswer}
           type="radio"
