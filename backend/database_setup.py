@@ -55,6 +55,7 @@ def table_queries():
     sql_create_question_table = """CREATE TABLE IF NOT EXISTS question (
                                                         question_id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
                                                         question_collection_id integer NOT NULL,
+                                                        question_text text NOT NULL,
                                                         sequence integer NOT NULL,
                                                         survey_id integer NOT NULL,
                                                         FOREIGN KEY (question_collection_id) REFERENCES  question_collection (question_collection_id),
