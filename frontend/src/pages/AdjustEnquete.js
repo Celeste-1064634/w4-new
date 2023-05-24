@@ -43,7 +43,7 @@ function AdjustEnquete() {
                 const data = await res.json()
                 console.log(data)
                 setSurvey(data)
-                if (!data.length) {
+                if (!data.questions?.length) {
                     console.error("No data")
                     navigate("/404", { replace: true })
                 }
@@ -88,7 +88,7 @@ function AdjustEnquete() {
             </Row>
             <Row>
                 {/* Render the other cards */}
-                {survey.map((vragenlijst) => (
+                {survey.questions?.map((vragenlijst) => (
                     // <Col xs={12} md={4} key={vragenlijst.id}>
                     //     <Card className="mb-3" style={{ cursor: 'pointer' }}>
                     //         <Button onClick={toggle} variant="outline-secondary" size="sm" style={{ position: 'absolute', top: '0.5rem', right: '0.5rem' }}>Edit</Button>
