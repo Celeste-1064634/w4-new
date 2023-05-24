@@ -1,0 +1,13 @@
+.pass-icon{
+    position: absolute;
+    right: 0;
+    height: 100%;
+    text-align: center;
+    padding: 10px;
+    color: #979797;
+    width: 40px;
+}
+
+.password-container{
+    position: relative;
+}

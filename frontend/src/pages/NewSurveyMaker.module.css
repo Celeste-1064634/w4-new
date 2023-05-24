@@ -1,0 +1,32 @@
+.divPageTitle {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.divQuestion {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.btnContainer {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.divAddNewQuestion {
+    margin-top: 30px;
+    display: flex;
+    gap: 10px;
+}
+
+.btnAddNewQuestion {
+    width: 50px;
+    margin-bottom: 10px;
+}

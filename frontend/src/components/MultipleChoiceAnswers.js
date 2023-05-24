@@ -44,24 +44,30 @@ const MultipleChoiceAnswers = (data) => {
                 <div className="grid-part bg-white justify-center column">
                     <h3>Mogelijke antwoorden</h3>
                     {question.choices.map((choice, i) => (
-                        <p key={choice.multiple_choice_id} className="answer-row" ><span style={{ backgroundColor: chartColors[i] }} className="answer-letter">{ choice.letter.toUpperCase()}</span> {choice.answer}</p>
+                        <p key={choice.multiple_choice_id} className="answer-row" ><span style={{ backgroundColor: chartColors[i] }} className="answer-letter">{choice.letter.toUpperCase()}</span> {choice.answer}</p>
                     ))}
                     <button className="answer-details-btn" onClick={toggleDetails}>
-                        Bekijk details 
-                        <i className={"chevron fa-solid fa-chevron-right "+ (visible ? "rotate" : "")}></i>
+                        Bekijk details
+                        <i className={"chevron fa-solid fa-chevron-right " + (visible ? "rotate" : "")}></i>
                     </button>
-             
+
                     <div className={"answer-details " + (visible ? "show" : "")}>
-                        {question.answers.map((answer) => (
-                            <div key={answer.answer_id} className="answer-item">
-                                <div className="user-part"><i style={{ backgroundColor: getColor() }} className="fa fa-solid fa-user user-icon"></i>{answer.user.first_name} {answer.user.last_name}</div>
-                                {answer.answer}
-                            </div>
-                        ))}
+                        {question.answers.length ?
+                            <>
+                                {question.answers.map((answer) => (
+                                    <div key={answer.answer_id} className="answer-item">
+                                        <div className="user-part"><i style={{ backgroundColor: getColor() }} className="fa fa-solid fa-user user-icon"></i>{answer.user.first_name} {answer.user.last_name}</div>
+                                        {answer.answer}
+                                    </div>
+                                ))}
+                            </>
+                        : "Geen data"}
+
+
                     </div>
-         
+
                 </div>
-                
+
                 <div className="grid-part bg-grey">
                     <div>
                         <AnswerChart question={question} colors={chartColors}></AnswerChart>

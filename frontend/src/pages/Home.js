@@ -1,48 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { UserContext } from "../UserContext";
 
 
 const Home = () => {
-
-  	// const [students, setStudents] = useState([])
-	
-	// const fetchStudentData = () => {
-	// 	fetch("/data")
-	// 		.then(response => {
-	// 			return response.json()
-	// 	  	})
-	// 	  	.then(data => {
-	// 			setStudents(data)
-	// 	  	})
-	// }
-
-	// useEffect(() => {
-	// 	fetchStudentData()
-	// }, [])
+	const { user, setUser } = useContext(UserContext)
 	return (
 		<section>
 			<div className="medium-container">
-				<div className="section bg-grey">
-					<h1>Home</h1>
-					<h2 className="blue">Home</h2>
-					<h3>Home</h3>
-					{/* {students.length > 0 && (
-						<ul>
-						{students.map(user => (
-							<li key={user}>{user}</li>
-						))}
-						</ul>
-					)} */}
-					<Link to="/antwoorden">
+				<div className="section bg-light-grey">
+					<h1>Hallo, <span className="blue">{user.fullName}</span></h1>
+					<Link to="/antwoorden/1">
 						Antwoord pagina
 					</Link>
 				</div>
-
-				<div className="section bg-light-grey">
-					<p>Home</p>
-				</div>
 			</div>
-			<div className="auto-container bg-grey">
+			{/* <div className="auto-container bg-grey">
 				<div className="section">automatische breedte</div>
 			</div>
 			<div className="small-container bg-grey">
@@ -62,7 +35,8 @@ const Home = () => {
 				<div className="section center">
 					<h2 className="blue">Home</h2>
 					<p>text</p>
-				</div></div>
+				</div>
+			</div> */}
 		</section>
 		
 		
