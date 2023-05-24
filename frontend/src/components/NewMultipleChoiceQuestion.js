@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import styles from "./NewMultipleChoiceQuestion.module.css";
-let count = 1;
 
 function NewMultipleChoiceQuestion() {
   const [addOption, setAddOption] = useState([
-    <div key={count}>
+    <div>
       <input
         className={styles.inputMultipleChoiceAnswer}
         type="radio"
@@ -22,7 +21,7 @@ function NewMultipleChoiceQuestion() {
   function addMultipleChoiceOption() {
     setAddOption([
       ...addOption,
-      <div key={count}>
+      <div>
         <input
           className={styles.inputMultipleChoiceAnswer}
           type="radio"
@@ -35,7 +34,6 @@ function NewMultipleChoiceQuestion() {
       <button><i class="bi bi-trash3"></i></button>
       </div>,
     ]);
-    console.log(count);
   }
 
   return (

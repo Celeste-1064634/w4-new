@@ -14,12 +14,12 @@ function NewSurveyMaker() {
 
   function addNewOpenQuestion() {
     console.log("Open");
-    setDivQuestion([...divQuestion, <NewOpenQuestion />]);
+    setDivQuestion([...divQuestion, <NewOpenQuestion key={Math.random()*100}/>]);
   }
 
   function addNewMultipleChoiceQuestion() {
     console.log("MP");
-    setDivQuestion([...divQuestion, <NewMultipleChoiceQuestion />]);
+    setDivQuestion([...divQuestion, <NewMultipleChoiceQuestion key={Math.random()*100}/>]);
   }
 
   function addDatabaseQuestion() {
