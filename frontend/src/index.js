@@ -13,6 +13,7 @@ import Login from './pages/Login';
 import { UserContext } from './UserContext';
 import { useEffect, useState } from 'react';
 import ProtectedRoute from './components/ProtectedRoute';
+import SurveyForm from './pages/SurveyForm';
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 import "./main.css";
@@ -73,6 +74,7 @@ export default function App() {
             <Route path="vragenlijst/nieuw" element={<ProtectedRoute path="vragenlijst/nieuw"><NewSurveyMaker/></ProtectedRoute>} />
             <Route path="vragen/:id" element={<ProtectedRoute path="vragen"><AdjustEnquete /></ProtectedRoute>} />
             <Route path="inloggen" element={<Login />} />
+            <Route path="vragenlijst_invullen/:surveyId" element={<ProtectedRoute path="vragenlijst_invullen/*"><SurveyForm /></ProtectedRoute>} />
           </Route>
         </Routes>
       </UserContext.Provider>

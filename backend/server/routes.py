@@ -8,8 +8,9 @@ from flask_jwt_extended import current_user
 from server import conn, app, bcrypt, jwt
 
 
-# Route for getting surveys
+# Route for getting all surveys
 @app.route('/surveys', methods=['GET'])
+@jwt_required
 def get_surveys():
     cursor = conn.cursor()
     cursor.execute('SELECT survey_id, name FROM survey')
@@ -24,12 +25,17 @@ def get_surveys():
 
 
 
-# Route for getting questions by survey id
+# Route for getting questions and title by survey id
 @app.route('/survey/data/<id>', methods=['GET'])
 @jwt_required()
 def get_questions_for_survey(id=None):
     print(current_user)
     cursor = conn.cursor()
+    
+    # Fetch survey name
+    cursor.execute(f"SELECT name FROM survey WHERE survey_id = {id}")
+    survey_name = cursor.fetchone()[0]
+    
     cursor.execute(f"SELECT * FROM question WHERE survey_id = {id}")
     data = cursor.fetchall()
     questions = []
@@ -89,7 +95,7 @@ def get_questions_for_survey(id=None):
             })
 
     cursor.close()
-    return jsonify(questions)
+    return jsonify(questions, survey_name)
 
 # Route for seeing a data
 

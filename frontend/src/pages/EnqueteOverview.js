@@ -6,14 +6,20 @@ function EnqueteOverview() {
   const [vragenlijsten, setVragenlijsten] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/surveys')
-      .then(response => response.json())
-      .then(data => {
-        setVragenlijsten(data);
-      })
-      .catch(error => {
-        console.error('There was an error!', error);
-      });
+    fetch('http://localhost:5000/surveys', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + sessionStorage.getItem("token")
+      },
+    })
+    .then(response => response.json())
+    .then(data => {
+      setVragenlijsten(data);
+    })
+    .catch(error => {
+      console.error('There was an error!', error);
+    });
   }, []);
 
   return (
