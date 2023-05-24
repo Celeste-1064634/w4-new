@@ -9,9 +9,9 @@ function EnqueteOverview() {
     fetch('http://localhost:5000/surveys', {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + sessionStorage.getItem("token")
-      },
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + sessionStorage.getItem("token")
+      }
     })
     .then(response => response.json())
     .then(data => {

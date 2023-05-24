@@ -12,7 +12,7 @@ query_model = QueryModel('database/database.db')
 
 # Route for getting all surveys
 @app.route('/surveys', methods=['GET'])
-@jwt_required
+@jwt_required()
 def get_surveys():
     cursor = conn.cursor()
     cursor.execute('SELECT survey_id, name FROM survey')
