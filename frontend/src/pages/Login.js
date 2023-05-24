@@ -83,7 +83,7 @@ const Login = () => {
                         <label>Wachtwoord</label>
                         <div className="password-container">
                             <input className="custom-input" type={showPass ? 'text' : 'password'}  required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="wachtwoord"></input>
-                            <i onClick={() => setShowPass(!showPass)} class={"pass-icon fa-solid "+ (showPass ? "fa-eye" : "fa-eye-slash")}></i>
+                            <i onClick={() => setShowPass(!showPass)} className={"pass-icon fa-solid "+ (showPass ? "fa-eye" : "fa-eye-slash")}></i>
                         </div>
                         <input className="custom-submit" type="submit" value="Inloggen"></input>
                     </form>
