@@ -35,7 +35,7 @@ const Answers = () => {
                 const data = await res.json()
                 console.log(data)
                 setSurvey(data)
-                if(!data.length){
+                if(!data.questions.length){
                     console.error("No data")
                     navigate("/404" , { replace: true })
                 }
@@ -66,7 +66,7 @@ const Answers = () => {
             {/* {this.props.match} */}
             <div className="small-container flex-gap">
                 current survey id: {id}
-                {survey.map((question) => (
+                {survey.questions?.map((question) => (
                     <React.Fragment key={question.question_id}>
                         {question.type == 1
                             ?

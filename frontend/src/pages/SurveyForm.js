@@ -22,8 +22,8 @@ const SurveyForm = () => {
     })
     .then(data => {
       setSurveyData({
-        surveyName: data[1],
-        questions: data[0]
+        surveyName: data.name,
+        questions: data.questions
       });
     })
     .catch(error => console.error('Error:', error));

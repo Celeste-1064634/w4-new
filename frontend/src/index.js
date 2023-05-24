@@ -14,7 +14,7 @@ import { UserContext } from './UserContext';
 import { useEffect, useState } from 'react';
 import ProtectedRoute from './components/ProtectedRoute';
 import SurveyForm from './pages/SurveyForm';
-import "bootstrap-icons/font/bootstrap-icons.css";
+// import "bootstrap-icons/font/bootstrap-icons.css";
 
 import "./main.css";
 

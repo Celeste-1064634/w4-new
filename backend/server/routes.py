@@ -95,7 +95,8 @@ def get_questions_for_survey(id=None):
             })
 
     cursor.close()
-    return jsonify(questions, survey_name)
+    return jsonify({ 'questions': questions, 
+                    'name': survey_name})
 
 # Route for seeing a data
 
