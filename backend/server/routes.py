@@ -6,7 +6,9 @@ from flask_jwt_extended import jwt_required
 from flask_jwt_extended import current_user
 
 from server import conn, app, bcrypt, jwt
+from query_model import QueryModel
 
+query_model = QueryModel('database/database.db')
 
 # Route for getting all surveys
 @app.route('/surveys', methods=['GET'])
