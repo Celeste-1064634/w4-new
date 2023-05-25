@@ -3,6 +3,7 @@ import styles from "./NewSurveyMaker.module.css";
 import { Button } from "react-bootstrap";
 import NewOpenQuestion from "../components/NewOpenQuestion";
 import NewMultipleChoiceQuestion from "../components/NewMultipleChoiceQuestion";
+import NewDatabaseQuestion from "../components/NewDatabaseQuestion";
 
 function NewSurveyMaker() {
   const [addQuestion, setAddQuestion] = useState(false);
@@ -15,15 +16,19 @@ function NewSurveyMaker() {
   function addNewOpenQuestion() {
     console.log("Open");
     setDivQuestion([...divQuestion, <NewOpenQuestion key={Math.random()*100}/>]);
+    addNewQuestion()
   }
 
   function addNewMultipleChoiceQuestion() {
     console.log("MP");
     setDivQuestion([...divQuestion, <NewMultipleChoiceQuestion key={Math.random()*100}/>]);
+    addNewQuestion()
   }
 
   function addDatabaseQuestion() {
     console.log("DB");
+    setDivQuestion([...divQuestion, <NewDatabaseQuestion key={Math.random()*100}/>]);
+    addNewQuestion()
   }
 
   console.log(addQuestion);

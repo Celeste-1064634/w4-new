@@ -1,0 +1,24 @@
+.containerTableDatabaseQuestion {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    width: 500px;
+}
+
+.tableDatabaseQuestion {
+    width: 500px;
+    background-color: rgb(232, 232, 232);
+}
+
+.tableHeader {
+    border: black solid 1px;
+    text-align: center;
+}
+
+.tableBody {
+    border: black solid 1px; 
+    padding-left: 5px;
+}
