@@ -29,8 +29,8 @@ function NewSurveyMaker() {
   console.log(addQuestion);
   return (
     <>
-      <div className={styles.divPageTitle}>
-        <h1>Nieuwe vragenlijst</h1>
+      <div className={styles.divSurveyTitle}>
+        <input className={styles.surveyTitleInput} placeholder="Nieuwe vragenlijst"/>
       </div>
       <div className={styles.divQuestion}> {divQuestion} </div>
       <div className={styles.btnContainer}>
@@ -50,6 +50,10 @@ function NewSurveyMaker() {
         <Button onClick={addNewQuestion} className={styles.btnAddNewQuestion}>
           +
         </Button>
+      </div>
+        <div className={styles.btnSaveDeleteNewSurvey}>
+        <Button>Opslaan</Button>
+        <Button>Verwijderen</Button>
       </div>
     </>
   );

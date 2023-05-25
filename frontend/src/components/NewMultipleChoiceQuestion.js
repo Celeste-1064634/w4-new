@@ -46,7 +46,7 @@ function NewMultipleChoiceQuestion() {
       <Button onClick={addMultipleChoiceOption}>+</Button>
       <div className={styles.btnMultipleChoiceQuestion}>
         <Button>Opslaan</Button>
-        <Button>Verwijder</Button>
+        <Button>Verwijderen</Button>
       </div>
     </div>
   );

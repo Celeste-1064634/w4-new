@@ -8,7 +8,7 @@ function NewOpenQuestion() {
         <input className={styles.inputOpenQuestion}  placeholder='Vul hier de vraag in'/>
         <div className={styles.btnOpenQuestion}>
         <Button>Opslaan</Button>
-        <Button>Verwijder</Button>
+        <Button>Verwijderen</Button>
         </div>
     </div>
   )
