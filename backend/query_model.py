@@ -28,3 +28,7 @@ class QueryModel:
         cursor.row_factory = sqlite3.Row
         cursor.execute(sql_query)
         conn.commit()
+
+    def get_all_questions(self):
+        query = "SELECT * FROM question_collection"
+        return self.execute_query(query)
