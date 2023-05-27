@@ -205,8 +205,9 @@ def all_questions():
     for question in questions:
         question_array.append({
             "id": question[0],
-            "question": question[1]
+            "question": question[1],
+            "type": question[3]
         })
-    
+        
     return question_array
     

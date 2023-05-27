@@ -18,7 +18,6 @@ function NewDatabaseQuestion() {
       try {
         const res = await fetch("http://127.0.0.1:5000/question", info);
         const data = await res.json();
-        console.log(data);
         setQuestions(data);
       } catch (error) {
         console.error("QUESTIONS", error);
@@ -27,8 +26,17 @@ function NewDatabaseQuestion() {
     fetchQuestions();
   }, []);
 
-console.log(questions);
-   
+  function clickHandlerDatabaseQuestion(type) {
+    switch (type) {
+      case 0:
+        
+        break;
+      case 1:
+
+        break
+    }
+  }
+
   return (
     <>
       <div className={styles.containerTableDatabaseQuestion}>
@@ -39,11 +47,17 @@ console.log(questions);
             </tr>
           </thead>
           <tbody>
-            <td>
-              {questions.map(question => {
+            <td className={styles.tableBody}>
+              {questions.map((question) => {
                 return (
-                  <tr className={styles.tableBody} key={question.id}>{question.question}</tr>
-                )
+                  <tr
+                    className={styles.rowQuestion}
+                    onClick={() => clickHandlerDatabaseQuestion(question.type)}
+                    key={question.id}
+                  >
+                    {question.question}
+                  </tr>
+                );
               })}
             </td>
           </tbody>
