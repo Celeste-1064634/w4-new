@@ -14,28 +14,36 @@ function NewSurveyMaker() {
   }
 
   function addNewOpenQuestion() {
-    console.log("Open");
-    setDivQuestion([...divQuestion, <NewOpenQuestion key={Math.random()*100}/>]);
-    addNewQuestion()
+    setDivQuestion([
+      ...divQuestion,
+      <NewOpenQuestion key={Math.random() * 100} />,
+    ]);
+    addNewQuestion();
   }
 
   function addNewMultipleChoiceQuestion() {
-    console.log("MP");
-    setDivQuestion([...divQuestion, <NewMultipleChoiceQuestion key={Math.random()*100}/>]);
-    addNewQuestion()
+    setDivQuestion([
+      ...divQuestion,
+      <NewMultipleChoiceQuestion key={Math.random() * 100} />,
+    ]);
+    addNewQuestion();
   }
 
   function addDatabaseQuestion() {
-    console.log("DB");
-    setDivQuestion([...divQuestion, <NewDatabaseQuestion key={Math.random()*100}/>]);
-    addNewQuestion()
+    setDivQuestion([
+      ...divQuestion,
+      <NewDatabaseQuestion key={Math.random() * 100} />,
+    ]);
+    addNewQuestion();
   }
 
-  console.log(addQuestion);
   return (
     <>
       <div className={styles.divSurveyTitle}>
-        <input className={styles.surveyTitleInput} placeholder="Nieuwe vragenlijst"/>
+        <input
+          className={styles.surveyTitleInput}
+          placeholder="Nieuwe vragenlijst"
+        />
       </div>
       <div className={styles.divQuestion}> {divQuestion} </div>
       <div className={styles.btnContainer}>
@@ -56,7 +64,7 @@ function NewSurveyMaker() {
           +
         </Button>
       </div>
-        <div className={styles.btnSaveDeleteNewSurvey}>
+      <div className={styles.btnSaveDeleteNewSurvey}>
         <Button>Opslaan</Button>
         <Button>Verwijderen</Button>
       </div>

@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import styles from "./NewMultipleChoiceQuestion.module.css";
 
-function NewMultipleChoiceQuestion() {
+function NewMultipleChoiceQuestion(props) {
   const [addOption, setAddOption] = useState([
-    <div key={Math.random()*100}>
+    <div key={Math.random() * 100}>
       <input
         className={styles.inputMultipleChoiceAnswer}
         type="radio"
@@ -14,14 +14,16 @@ function NewMultipleChoiceQuestion() {
         className={styles.inputMultipleChoiceAnswer}
         placeholder="Vul hier het antwoord in"
       />
-      <button><i className="bi bi-trash3"></i></button>
+      <button>
+        <i className="bi bi-trash3"></i>
+      </button>
     </div>,
   ]);
 
   function addMultipleChoiceOption() {
     setAddOption([
       ...addOption,
-      <div key={Math.random()*100}>
+      <div key={Math.random() * 100}>
         <input
           className={styles.inputMultipleChoiceAnswer}
           type="radio"
@@ -31,7 +33,9 @@ function NewMultipleChoiceQuestion() {
           className={styles.inputMultipleChoiceAnswer}
           placeholder="Vul hier het antwoord in"
         />
-      <button><i class="bi bi-trash3"></i></button>
+        <button>
+          <i className="bi bi-trash3"></i>
+        </button>
       </div>,
     ]);
   }
@@ -41,6 +45,7 @@ function NewMultipleChoiceQuestion() {
       <input
         className={styles.inputMultipleChoiceQuestion}
         placeholder="Vul hier de vraag in"
+        value={props.value}
       />
       <div className={styles.divMultipleChoiceOption}>{addOption}</div>
       <Button onClick={addMultipleChoiceOption}>+</Button>
