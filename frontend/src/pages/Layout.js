@@ -6,12 +6,10 @@ const Layout = () => {
 	const { user, setUser } = useContext(UserContext)
 
 	function logout() {
-
 		sessionStorage.removeItem("token")
 		setUser({})
 	}
-
-
+	
 	// const [token, setToken] = useState('')
 
 	// useEffect(() =>{
@@ -37,7 +35,7 @@ const Layout = () => {
 
 
 
-							{user?.token && user?.token != "" && user?.token != undefined
+							{sessionStorage.getItem("token") && sessionStorage.getItem("token") != "" && sessionStorage.getItem("token") != undefined
 								?
 								<>
 									<li>
@@ -50,6 +48,7 @@ const Layout = () => {
 
 								</>
 								:
+								
 								<>
 									<li>
 										<NavLink className="button-1" to="/inloggen">Inloggen</NavLink>

@@ -14,11 +14,7 @@ query_model = QueryModel('database/database.db')
 @app.route('/surveys', methods=['GET'])
 @jwt_required()
 def get_surveys():
-    cursor = conn.cursor()
-    cursor.execute('SELECT survey_id, name FROM survey')
-    surveys = cursor.fetchall()
-    cursor.close()
-
+    surveys = query_model.execute_query('SELECT survey_id, name FROM survey')
     # Convert the surveys into a list of dictionaries to be converted into JSON
     surveys_list = [{'survey_id': survey[0], 'name': survey[1]}
                     for survey in surveys]
@@ -32,106 +28,68 @@ def get_surveys():
 @jwt_required()
 def get_questions_for_survey(id=None):
     print(current_user)
-    cursor = conn.cursor()
-    
     # Fetch survey name
-    cursor.execute(f"SELECT name FROM survey WHERE survey_id = {id}")
-    survey_name = cursor.fetchone()[0]
+    survey_name = query_model.execute_query_by_id(f"SELECT name FROM survey WHERE survey_id = {id}")['name']
+    # Fetch all questions with survey_id
+    data = query_model.execute_query(f"SELECT * FROM question WHERE survey_id = {id}")
     
-    cursor.execute(f"SELECT * FROM question WHERE survey_id = {id}")
-    data = cursor.fetchall()
     questions = []
     for question in data:
-
-        cursor.execute(
-            f"SELECT * FROM question_collection WHERE question_collection_id = {question[1]}")
-        item = cursor.fetchone()
-
-        cursor.execute(
-            f"SELECT * FROM answer WHERE question_id = {question[0]}")
-        answers_data = cursor.fetchall()
-
+        item = query_model.execute_query_by_id(f"SELECT * FROM question_collection WHERE question_collection_id = {question['question_collection_id']}")
+        answers_data = query_model.execute_query(f"SELECT * FROM answer WHERE question_id = {question['question_id']}")
         # Check if the question is multiple choice 
-        print(item[3])
-        if item[3] != None and item[3] != "" :
-            if item[3] == 1:
+        if item['type'] != None and item['type'] != "" :
+            if item['type'] == 1:
                 choices = []
-                cursor.execute(f"SELECT * FROM multiple_choice WHERE question_collection_id = {question[1]}")
-                choices_data = cursor.fetchall()
+                choices_data = query_model.execute_query(f"SELECT * FROM multiple_choice WHERE question_collection_id = {question['question_collection_id']}")
                 for choice in choices_data:
                     choices.append({
-                    'multiple_choice_id': choice[0],
-                    'letter': choice[1],
-                    'answer': choice[2],
-                    'question_collection_id': choice[3]})
+                    'multiple_choice_id': choice['multiple_choice_id'],
+                    'letter': choice['letter'],
+                    'answer': choice['answer'],
+                    'question_collection_id': choice['question_collection_id']})
             else:
                 choices = None
 
             answers = []
             for answer in answers_data:
-                cursor.execute(
-                f"SELECT user_id, email, first_name, last_name FROM user WHERE user_id = {answer[3]}")
-                user_item = cursor.fetchone()
+                user_item = query_model.execute_query_by_id(f"SELECT user_id, email, first_name, last_name FROM user WHERE user_id = {answer['user_id']}")
                 user = {
-                    "user_id": user_item[0],
-                    "email": user_item[1],
-                    "first_name": user_item[2],
-                    "last_name": user_item[3]
+                    "user_id": user_item['user_id'],
+                    "email": user_item['email'],
+                    "first_name": user_item['first_name'],
+                    "last_name": user_item['last_name']
                 }
 
                 answers.append({
-                    'answer_id': answer[0],
-                    'answer': answer[1],
-                    'question_id': answer[2],
+                    'answer_id': answer['answer_id'],
+                    'answer': answer['answer'],
+                    'question_id': answer['question_id'],
                     'user': user})
 
             questions.append({
-                'question_id': question[0],
-                'question_collection_id': question[1],
-                'sequence': question[2],
-                'survey_id': question[3],
-                'question_text': item[1],
-                'type': item[3],
+                'question_id': question['question_id'],
+                'question_collection_id': question['question_collection_id'],
+                'sequence': question['sequence'],
+                'survey_id': question['survey_id'],
+                'question_text': question['question_text'],
+                'type': item['type'],
                 'answers': answers,
                 'choices': choices
             })
 
-    cursor.close()
     return jsonify({ 'questions': questions, 
                     'name': survey_name})
 
-# Route for seeing a data
-
-
-@app.route('/data')
-def get_students():
-    cursor = conn.cursor()
-
-    cursor.execute('''SELECT * FROM STUDENT''')
-    students = cursor.fetchall()
-    cursor.close()
-    print(students)
-    # Returning an api for showing in  reactjs
-    return jsonify(students)
 
 # for creating token for user
-
-
 @app.route('/token', methods=["POST"])
 def create_token():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
 
-    # get users by email
-    cursor = conn.cursor()
-    cursor.execute(f"SELECT * FROM user WHERE email = '{email}'")
-    result = cursor.fetchone()
-    cursor.close()
-
-    # bla = bcrypt.generate_password_hash("werkplaats4").decode("utf-8")
-    # cursor = conn.cursor()
-    # cursor.execute(f'''UPDATE user SET password = "{bla}" WHERE id = 1;''')
-    # conn.commit()
+    # get user by email
+    result = query_model.execute_query_by_id(f"SELECT * FROM user WHERE email = '{email}'")
 
     if result:
         # creates a token binded to the email
@@ -143,13 +101,11 @@ def create_token():
         if is_correct:
             print("juiste wachtwoord")
             return jsonify(access_token=access_token,
-                           full_name=f'{result[4]} {result[5]}',
-                           first_name=result[4],
-                           last_name=result[5],
-                           email=result[2],
+                           full_name=f'{result["first_name"]} {result["last_name"]}',
+                           first_name=result['first_name'],
+                           last_name=result['last_name'],
+                           email=result['email'],
                            )
-        # else:
-        #     return jsonify({"msg": "E-mail of wachtwoord niet correct"}), 400
 
     print("geen gebruiker / ongeldige wachtwoord, email")
     print(email, password)
@@ -160,40 +116,32 @@ def create_token():
 @jwt.user_lookup_loader
 def user_lookup_callback(_jwt_header, jwt_data):
     identity = jwt_data["sub"]
-    cursor = conn.cursor()
-    cursor.execute(f"SELECT * FROM user WHERE email = '{identity}'")
-    result = cursor.fetchone()
-    cursor.close()
+    result = query_model.execute_query_by_id(f"SELECT * FROM user WHERE email = '{identity}'")
+    
     return {
-        "firstName": result[4],
-        "lastName": result[5],
-        "fullName": f'{result[4]} {result[5]}',
-        "email": result[2]
+        "firstName": result['first_name'],
+        "lastName": result['last_name'],
+        "fullName": f'{result["first_name"]} {result["last_name"]}',
+        "email": result['email']
     }
 
 # used for sending user data by jwt token to frontend
-
-
 @app.route('/who_am_i', methods=["GET"])
 @jwt_required()
 def authenticate():
     return jsonify(current_user)
 
 @app.route('/question/edit/<id>', methods=["POST"])
+@jwt_required()
 def edit_question(id=None):
     question = request.json["question"]
-    cursor = conn.cursor()
-    cursor.execute(f"UPDATE question_collection SET question_text = '{question}' WHERE question_collection_id = '{id}'")
-    conn.commit()
-    cursor.close()
+    query_model.commit_query(f"UPDATE question SET question_text = '{question}' WHERE question_id = '{id}'")
     return jsonify("function_ended")
 
 @app.route('/question/delete/<id>', methods=["DELETE"])
+@jwt_required()
 def delete_question(id=None):
-    cursor = conn.cursor()
-    cursor.execute(f"DELETE FROM question WHERE question_collection_id = '{id}'")
-    conn.commit()
-    cursor.close()
+    query_model.commit_query(f"DELETE FROM question WHERE question_id = '{id}'")
     return jsonify("function_ended")
 
 

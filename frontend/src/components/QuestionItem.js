@@ -18,8 +18,7 @@ const QuestionItem = (data) => {
 
     const navigate = useNavigate();
 
-    const handleClick = () => {
-        console.log(question)
+    const handleClick = async () => {
         async function updateQuestion() {
 
             let info = {
@@ -35,14 +34,8 @@ const QuestionItem = (data) => {
             }
 
             try {
-                const res = await fetch("http://127.0.0.1:5000/question/edit/" + id, info)
-                const data = await res.json()
-                console.log(data)
-                if (!data.length) {
-                    console.error("No data")
-                }
-
-                return data
+                const res = await fetch("http://127.0.0.1:5000/question/edit/" + data.question.question_id, info)
+                console.log(await res.json())
 
             }
             catch (error) {
@@ -79,7 +72,7 @@ const QuestionItem = (data) => {
 
 
 
-    console.log(data.vragenlijst)
+    // console.log(data.vragenlijst)
 
     return (
         <Col xs={12} md={4} key={data.question.question_id}>
