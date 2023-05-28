@@ -187,10 +187,16 @@ def db_fill_survey():
             query_model.execute_update(sql_fill_question_collection_query)
             # id_query = query_model.execute_query('''SELECT max (survey) FROM survey''')
 
-            ids = [1, 2, 3, 4, 5]
+            ids = [
+                [1, 'Hoe is je dag?'], 
+                [2, 'Wat vind je van deze vraag?'], 
+                [3, 'Regent het vandaag?'], 
+                [4, 'Heb je lekker geslapen?'], 
+                [5, 'Heb je een goed weekend gehad?']
+            ]
             for id in ids:
-                sql_fill_multiple_choice_query = f'''INSERT INTO question(question_collection_id, sequence, survey_id)
-                                                                        VALUES ({id}, {id}, {item[1]})'''
+                sql_fill_multiple_choice_query = f'''INSERT INTO question(question_collection_id, sequence, question_text, survey_id)
+                                                                        VALUES ({id[0]}, {id[0]}, "{id[1]}", {item[1]})'''
                 query_model.execute_update(sql_fill_multiple_choice_query)
     except Error as e:
         print(e)

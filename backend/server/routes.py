@@ -72,7 +72,7 @@ def get_questions_for_survey(id=None):
                 'question_collection_id': question['question_collection_id'],
                 'sequence': question['sequence'],
                 'survey_id': question['survey_id'],
-                'question_text': item['question_text'],
+                'question_text': question['question_text'],
                 'type': item['type'],
                 'answers': answers,
                 'choices': choices
@@ -135,13 +135,13 @@ def authenticate():
 @jwt_required()
 def edit_question(id=None):
     question = request.json["question"]
-    query_model.commit_query(f"UPDATE question_collection SET question_text = '{question}' WHERE question_collection_id = '{id}'")
+    query_model.commit_query(f"UPDATE question SET question_text = '{question}' WHERE question_id = '{id}'")
     return jsonify("function_ended")
 
 @app.route('/question/delete/<id>', methods=["DELETE"])
 @jwt_required()
 def delete_question(id=None):
-    query_model.commit_query(f"DELETE FROM question WHERE question_collection_id = '{id}'")
+    query_model.commit_query(f"DELETE FROM question WHERE question_id = '{id}'")
     return jsonify("function_ended")
 
 
