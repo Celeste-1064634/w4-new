@@ -208,6 +208,5 @@ def all_questions():
             "question": question[1],
             "type": question[3]
         })
-        
     return question_array
     
