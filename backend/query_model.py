@@ -32,3 +32,8 @@ class QueryModel:
     def get_all_questions(self):
         query = "SELECT * FROM question_collection"
         return self.execute_query(query)
+    
+    def save_new_open_question_to_db(self, question):
+        query = f'''INSERT INTO question_collection(question_text, archive, type)
+                            VALUES("{question}", False, False)'''
+        return self.execute_update(query)
