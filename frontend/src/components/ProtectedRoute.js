@@ -1,9 +1,14 @@
-import { Navigate } from 'react-router-dom';
-
+import { Navigate, useParams } from 'react-router-dom';
 
 const ProtectedRoute = (props) => {
+    let { id } = useParams();
     if(sessionStorage.getItem("token")== '' || sessionStorage.getItem("token") == undefined || sessionStorage.getItem("token") == null){
-        return <Navigate to={"/inloggen"} replace state={{"next": props.path}} />;
+        if(id){
+            return <Navigate to={"/inloggen"} replace state={{"next": props.path+"/"+id}} />;
+
+        }else{
+            return <Navigate to={"/inloggen"} replace state={{"next": props.path}} />;
+        }
     }
 
     return props.children;

@@ -68,13 +68,13 @@ export default function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<ProtectedRoute path=""><Home /></ProtectedRoute>} />
             <Route path="profiel" element={<ProtectedRoute path="profiel"><Profile /></ProtectedRoute>} />
-            <Route path="antwoorden/:id" element={<ProtectedRoute path="antwoorden"><Answers /></ProtectedRoute>} />
+            <Route path="antwoorden/:id" element={<ProtectedRoute path="antwoorden" id={this}><Answers /></ProtectedRoute>} />
             <Route path="*" element={<ProtectedRoute path="*"><NoPage /></ProtectedRoute>} />
             <Route path="vragenlijsten" element={<ProtectedRoute path="vragenlijsten"><EnqueteOverview /></ProtectedRoute>} />
             <Route path="vragenlijst/nieuw" element={<ProtectedRoute path="vragenlijst/nieuw"><NewSurveyMaker/></ProtectedRoute>} />
             <Route path="vragen/:id" element={<ProtectedRoute path="vragen"><AdjustEnquete /></ProtectedRoute>} />
             <Route path="inloggen" element={<Login />} />
-            <Route path="vragenlijst_invullen/:surveyId" element={<ProtectedRoute path="vragenlijst_invullen/*"><SurveyForm /></ProtectedRoute>} />
+            <Route path="vragenlijst_invullen/:surveyId" element={<ProtectedRoute path="vragenlijst_invullen"><SurveyForm /></ProtectedRoute>} />
           </Route>
         </Routes>
       </UserContext.Provider>
