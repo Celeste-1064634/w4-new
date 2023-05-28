@@ -12,6 +12,15 @@ class QueryModel:
         result = cursor.fetchall()
         conn.close()
         return result
+    
+    def execute_query_by_id(self, sql_query):
+        conn = sqlite3.connect(self.database_file)
+        cursor = conn.cursor()
+        cursor.row_factory = sqlite3.Row
+        cursor.execute(sql_query)
+        result = cursor.fetchone()
+        conn.close()
+        return result
 
     def column_query(self, sql_query, is_select=True):
         conn = sqlite3.connect(self.database_file)
@@ -32,3 +41,13 @@ class QueryModel:
     def get_all_questions(self):
         query = "SELECT * FROM question_collection"
         return self.execute_query(query)
+    
+    def commit_query(self, sql_query):
+        conn = sqlite3.connect(self.database_file)
+        cursor = conn.cursor()
+        cursor.execute(sql_query)
+        conn.commit()
+        cursor.close()
+
+
+
