@@ -169,3 +169,14 @@ def save_open_question_to_db():
     return {
         "status": "ok"
     }
+
+@app.route('/save_mc_question_to_db', methods=["POST"])
+@jwt_required()
+def save_mc_question_to_db():
+    data = request.get_json()
+    question = data["question"]
+    print(question)
+    # query_model.save_new_mc_question_to_db(question)
+    return {
+        "status": "ok"
+    }

@@ -2,6 +2,25 @@ import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import styles from "./NewMultipleChoiceQuestion.module.css";
 
+function saveQuestionToDb(e) {
+  const target = e.target
+  const value = target.parentElement.parentElement.firstChild.value
+  const data = {
+    "question": value
+  }
+  fetch('http://127.0.0.1:5000/save_mc_question_to_db', {
+    method: "POST",
+    mode: "cors",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token")
+    },
+    body: JSON.stringify(data)
+  })
+  .then(response => response.json())
+  .then(data => console.log(data))
+}
+
 function NewMultipleChoiceQuestion(props) {
   const [addOption, setAddOption] = useState([
     <div key={Math.random() * 100}>
@@ -50,7 +69,7 @@ function NewMultipleChoiceQuestion(props) {
       <div className={styles.divMultipleChoiceOption}>{addOption}</div>
       <Button onClick={addMultipleChoiceOption}>+</Button>
       <div className={styles.btnMultipleChoiceQuestion}>
-        <Button>Opslaan</Button>
+        <Button onClick={saveQuestionToDb}>Opslaan</Button>
         <Button>Verwijderen</Button>
       </div>
     </div>

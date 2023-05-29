@@ -54,5 +54,7 @@ class QueryModel:
         conn.commit()
         cursor.close()
 
-
-
+    def save_new_open_question_to_db(self, question):
+        query = f'''INSERT INTO question_collection(question_text, archive, type)
+                            VALUES("{question}", False, True)'''
+        return self.execute_update(query)
