@@ -21,6 +21,12 @@ function saveQuestionToDb(e) {
   .then(data => console.log(data))
 }
 
+function deleteFromSurvey(e) {
+  const target = e.target
+  const outerDiv = target.parentElement.parentElement
+  return outerDiv.outerHTML = ""
+}
+
 function NewOpenQuestion(props) {
   return (
     <div className={styles.containerOpenQuestion}>
@@ -31,7 +37,7 @@ function NewOpenQuestion(props) {
       />
       <div className={styles.btnOpenQuestion}>
         <Button onClick={saveQuestionToDb}>Opslaan</Button>
-        <Button>Verwijderen</Button>
+        <Button onClick={deleteFromSurvey}>Verwijderen</Button>
       </div>
     </div>
   );

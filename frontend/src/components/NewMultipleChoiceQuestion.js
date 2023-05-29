@@ -66,6 +66,12 @@ function NewMultipleChoiceQuestion(props) {
     ]);
   }
 
+  function deleteFromSurvey(e) {
+    const target = e.target
+    const outerDiv = target.parentElement.parentElement
+    return outerDiv.outerHTML = ""
+  }
+
   return (
     <div className={styles.containerMultipleChoiceQuestion}>
       <input
@@ -97,7 +103,7 @@ function NewMultipleChoiceQuestion(props) {
       <Button onClick={addMultipleChoiceOption}>+</Button>
       <div className={styles.btnMultipleChoiceQuestion}>
         <Button onClick={saveQuestionToDb}>Opslaan</Button>
-        <Button>Verwijderen</Button>
+        <Button onClick={deleteFromSurvey}>Verwijderen</Button>
       </div>
     </div>
   );
