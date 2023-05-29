@@ -39,12 +39,19 @@ function NewMultipleChoiceQuestion(props) {
         className={styles.inputMultipleChoiceAnswer}
         placeholder="Vul hier het antwoord in"
       />
-      <button>
+      <button onClick={deleteOption}>
         <i className="bi bi-trash3"></i>
       </button>
     </div>,
   ]);
   const [options, setOptions] = useState(props.options);
+
+  function deleteOption(e) {
+    console.log("Hoi");
+    const target = e.target
+    const optionDiv = target.parentElement.parentElement
+    return optionDiv.outerHTML = ""
+  }
 
   function addMultipleChoiceOption() {
     setAddOption([
@@ -59,7 +66,7 @@ function NewMultipleChoiceQuestion(props) {
           className={styles.inputMultipleChoiceAnswer}
           placeholder="Vul hier het antwoord in"
         />
-        <button>
+        <button onClick={deleteOption}>
           <i className="bi bi-trash3"></i>
         </button>
       </div>,
