@@ -54,7 +54,18 @@ class QueryModel:
         conn.commit()
         cursor.close()
 
-    def save_new_open_question_to_db(self, question):
+    def save_new_mc_question_to_db(self, question, options):
         query = f'''INSERT INTO question_collection(question_text, archive, type)
                             VALUES("{question}", False, True)'''
-        return self.execute_update(query)
+        self.execute_update(query)
+        id_query = self.execute_query(
+                '''SELECT max (question_collection_id) FROM question_collection''')
+        counter = 1
+        for option in options:
+            fill_multiple_choice_options = f'''INSERT INTO multiple_choice(number, answer, question_collection_id)
+                                                                        VALUES ({counter}, "{option}", "{id_query[0][0]}")'''
+            counter +=1
+            self.execute_update(fill_multiple_choice_options)
+        
+        return "Question is saved"
+    

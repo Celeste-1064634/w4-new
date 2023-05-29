@@ -5,8 +5,15 @@ import styles from "./NewMultipleChoiceQuestion.module.css";
 function saveQuestionToDb(e) {
   const target = e.target
   const value = target.parentElement.parentElement.firstChild.value
+  const options = target.parentElement.parentElement.children[1].children
+  const optionArray = []
+  for (let option of options) {
+    optionArray.push(option.children[1].value)
+  }
+  console.log(optionArray)
   const data = {
-    "question": value
+    "question": value,
+    "options": optionArray
   }
   fetch('http://127.0.0.1:5000/save_mc_question_to_db', {
     method: "POST",
