@@ -157,4 +157,15 @@ def all_questions():
             "type": question[3]
         })
     return question_array
-    
+
+
+@app.route('/save_open_question_to_db', methods=["POST"])
+@jwt_required()
+def save_open_question_to_db():
+    data = request.get_json()
+    question = data["question"]
+    print(question)
+    query_model.save_new_open_question_to_db(question)
+    return {
+        "status": "ok"
+    }
