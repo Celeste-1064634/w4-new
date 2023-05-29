@@ -3,29 +3,28 @@ import { Button } from "react-bootstrap";
 import styles from "./NewMultipleChoiceQuestion.module.css";
 
 function saveQuestionToDb(e) {
-  const target = e.target
-  const value = target.parentElement.parentElement.firstChild.value
-  const options = target.parentElement.parentElement.children[1].children
-  const optionArray = []
+  const target = e.target;
+  const value = target.parentElement.parentElement.firstChild.value;
+  const options = target.parentElement.parentElement.children[1].children;
+  const optionArray = [];
   for (let option of options) {
-    optionArray.push(option.children[1].value)
+    optionArray.push(option.children[1].value);
   }
-  console.log(optionArray)
   const data = {
-    "question": value,
-    "options": optionArray
-  }
-  fetch('http://127.0.0.1:5000/save_mc_question_to_db', {
+    question: value,
+    options: optionArray,
+  };
+  fetch("http://127.0.0.1:5000/save_mc_question_to_db", {
     method: "POST",
     mode: "cors",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + sessionStorage.getItem("token")
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
     },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
   })
-  .then(response => response.json())
-  .then(data => console.log(data))
+    .then((response) => response.json())
+    .then((data) => console.log(data));
 }
 
 function NewMultipleChoiceQuestion(props) {
@@ -45,6 +44,7 @@ function NewMultipleChoiceQuestion(props) {
       </button>
     </div>,
   ]);
+  const [options, setOptions] = useState(props.options);
 
   function addMultipleChoiceOption() {
     setAddOption([
@@ -73,7 +73,27 @@ function NewMultipleChoiceQuestion(props) {
         placeholder="Vul hier de vraag in"
         value={props.value}
       />
-      <div className={styles.divMultipleChoiceOption}>{addOption}</div>
+      <div className={styles.divMultipleChoiceOption}>
+        {options ? (
+          options.map((option) => {
+            return (
+              <div key={Math.random() * 100}>
+                <input
+                  className={styles.inputMultipleChoiceAnswer}
+                  type="radio"
+                  disabled
+                />
+                <input
+                  className={styles.inputMultipleChoiceAnswer}
+                  value={option}
+                />
+              </div>
+            );
+          })
+        ) : (
+          <div className={styles.divMultipleChoiceOption}>{addOption}</div>
+        )}
+      </div>
       <Button onClick={addMultipleChoiceOption}>+</Button>
       <div className={styles.btnMultipleChoiceQuestion}>
         <Button onClick={saveQuestionToDb}>Opslaan</Button>

@@ -7,6 +7,7 @@ function NewDatabaseQuestion() {
   const [questions, setQuestions] = useState([]);
   const [output, setOutput] = useState(0);
   const [newQuestion, setnewQuestion] = useState("");
+  const [options, setOptions] = useState([]);
 
   useEffect(() => {
     async function fetchQuestions() {
@@ -30,9 +31,12 @@ function NewDatabaseQuestion() {
     fetchQuestions();
   }, []);
 
-  function clickHandlerDatabaseQuestion(type, question) {
-    setnewQuestion(question);
-    switch (type) {
+  function clickHandlerDatabaseQuestion(question) {
+    setnewQuestion(question.question);
+    if (question.options) {
+      setOptions(question.options)
+    }
+    switch (question.type) {
       case 0:
         setOutput(1);
         break;
@@ -65,8 +69,7 @@ function NewDatabaseQuestion() {
                       className={styles.rowQuestion}
                       onClick={() =>
                         clickHandlerDatabaseQuestion(
-                          question.type,
-                          question.question
+                          question
                         )
                       }
                       key={question.id}
@@ -81,7 +84,7 @@ function NewDatabaseQuestion() {
         </div>
       )}
       {output === 1 && <NewOpenQuestion value={newQuestion} />}
-      {output === 2 && <NewMultipleChoiceQuestion value={newQuestion} />}
+      {output === 2 && <NewMultipleChoiceQuestion value={newQuestion} options={options} />}
     </div>
   );
 }

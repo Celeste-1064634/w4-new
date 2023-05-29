@@ -66,6 +66,9 @@ class QueryModel:
                                                                         VALUES ({counter}, "{option}", "{id_query[0][0]}")'''
             counter +=1
             self.execute_update(fill_multiple_choice_options)
-        
         return "Question is saved"
     
+    def get_mc_options_by_id(self, question_id):
+        query = f'''SELECT answer FROM multiple_choice
+                            WHERE question_collection_id IS {question_id}'''
+        return self.execute_query(query)

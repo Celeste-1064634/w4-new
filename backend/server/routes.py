@@ -151,11 +151,23 @@ def all_questions():
     questions = query_model.get_all_questions()
     question_array = []
     for question in questions:
-        question_array.append({
-            "id": question[0],
-            "question": question[1],
-            "type": question[3]
-        })
+        if question[3] == False:
+            question_array.append({
+                "id": question[0],
+                "question": question[1],
+                "type": question[3]
+                })
+        if question[3] == True:
+            options = query_model.get_mc_options_by_id(question[0])
+            option_array = []
+            for option in options:
+                option_array.append(option[0])
+            question_array.append({
+                "id": question[0],
+                "question": question[1],
+                "type": question[3],
+                "options": option_array
+                })
     return question_array
 
 
