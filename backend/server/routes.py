@@ -55,7 +55,7 @@ def get_questions_for_survey(id=None):
                 for choice in choices_data:
                     choices.append({
                     'multiple_choice_id': choice['multiple_choice_id'],
-                    'letter': choice['letter'],
+                    'number': choice['number'],
                     'answer': choice['answer'],
                     'question_collection_id': choice['question_collection_id']})
             else:
