@@ -21,6 +21,16 @@ def get_surveys():
 
     return jsonify(surveys_list)
 
+@app.route('/save_new_survey', methods=['POST'])
+@jwt_required()
+def save_new_survey():
+    data = request.get_json()
+    title = data["title"]
+    query_model.save_new_survey(title)
+    return {
+        "status": "ok"
+    }
+
 
 
 # Route for getting questions and title by survey id
@@ -176,7 +186,6 @@ def all_questions():
 def save_open_question_to_db():
     data = request.get_json()
     question = data["question"]
-    print(question)
     query_model.save_new_open_question_to_db(question)
     return {
         "status": "ok"
@@ -188,8 +197,6 @@ def save_mc_question_to_db():
     data = request.get_json()
     question = data["question"]
     options = data["options"]
-    print(options)
-    print(question)
     query_model.save_new_mc_question_to_db(question, options)
     return {
         "status": "ok"

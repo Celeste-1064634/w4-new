@@ -72,3 +72,8 @@ class QueryModel:
         query = f'''SELECT answer FROM multiple_choice
                             WHERE question_collection_id IS {question_id}'''
         return self.execute_query(query)
+    
+    def save_new_survey(self,title):
+        query = f'''INSERT INTO survey(name, archive, anonymous, user_id)
+                            VALUES ("{title}", False, False, 1)'''
+        return self.execute_update(query)

@@ -37,10 +37,29 @@ function NewSurveyMaker() {
     addNewQuestion();
   }
 
+  const saveNewSurvey =(e) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      "title": formData.get("titleInput")
+    }
+    fetch('http://127.0.0.1:5000/save_new_survey', {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + sessionStorage.getItem("token")
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+  }
+
   return (
-    <>
+    <form onSubmit={saveNewSurvey}>
       <div className={styles.divSurveyTitle}>
-        <input
+        <input name="titleInput"
           className={styles.surveyTitleInput}
           placeholder="Nieuwe vragenlijst"
         />
@@ -65,10 +84,10 @@ function NewSurveyMaker() {
         </Button>
       </div>
       <div className={styles.btnSaveDeleteNewSurvey}>
-        <Button>Opslaan</Button>
+        <Button  type="submit">Opslaan</Button>
         <Button>Verwijderen</Button>
       </div>
-    </>
+    </form>
   );
 }
 
