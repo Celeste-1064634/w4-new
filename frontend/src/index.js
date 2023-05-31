@@ -75,7 +75,7 @@ export default function App() {
             <Route path="vragenlijst/nieuw" element={<ProtectedRoute path="vragenlijst/nieuw"><NewSurveyMaker/></ProtectedRoute>} />
             <Route path="vragen/:id" element={<ProtectedRoute path="vragen"><AdjustEnquete /></ProtectedRoute>} />
             <Route path="inloggen" element={<Login />} />
-            <Route path="vragenlijst_invullen/:surveyId" element={<ProtectedRoute path="vragenlijst_invullen"><SurveyForm /></ProtectedRoute>} />
+            <Route path="vragenlijst/invullen/:surveyId" element={<ProtectedRoute path="vragenlijst_invullen"><SurveyForm /></ProtectedRoute>} />
           </Route>
         </Routes>
       </UserContext.Provider>

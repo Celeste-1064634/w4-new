@@ -31,7 +31,15 @@ const SurveyForm = () => {
 
   const handleChange = (id, answer) => {
     let item = { question_id: id, answer: answer, user_id: user.user_id };
-    setAnswers(prev => ({ answers: [...prev.answers, item] }));
+    let cache = answers
+    let index = cache.map(e=>e.question_id).indexOf(id)
+    console.log(index)
+    if(index != -1){
+      cache[index].answer = answer
+      setAnswers(cache)
+    }else{
+      setAnswers(prev => [...prev, item]);
+    }
   };
 
   const handleSubmit = (event) => {
