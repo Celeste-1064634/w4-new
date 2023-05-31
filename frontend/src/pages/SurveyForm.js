@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Card, Form, Button } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
+import { UserContext } from '../UserContext';
 
 const SurveyForm = () => {
   const { surveyId } = useParams();
   const [answers, setAnswers] = useState({});
   const [surveyData, setSurveyData] = useState({ surveyName: '', questions: [] });
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     const token = sessionStorage.getItem('token');
     fetch(`http://localhost:5000/survey/data/${surveyId}`, {
-        headers: {
-          'Authorization': "Bearer " + token
-        }
+      headers: {
+        'Authorization': "Bearer " + token
+      }
     })
     .then(response => {
       if (!response.ok) {
@@ -28,15 +30,44 @@ const SurveyForm = () => {
     })
     .catch(error => console.error('Error:', error));
   }, [surveyId]);
-  
 
   const handleChange = (id, answer) => {
-    setAnswers(prev => ({ ...prev, [id]: answer }));
+    setAnswers(prev => ({ ...prev, [id]: { question_id: id, answer: answer, user_id: user.user_id } }));
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(answers);
+
+    const surveySubmission = {
+      survey_id: surveyId,
+      user_id: user.user_id,
+      answers,
+    };
+
+    console.log("Submitting survey submission:", surveySubmission);
+
+    const token = sessionStorage.getItem('token');
+    fetch('http://localhost:5000/survey/submit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+      },
+      body: JSON.stringify(surveySubmission),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to submit survey');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log(data);
+      // Handle the response after successful submission.
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
   };
 
   return (
@@ -51,11 +82,12 @@ const SurveyForm = () => {
                 {question.type === 1 ? (
                   question.choices.map(choice => (
                     <Form.Check
+                      key={`${question.question_id}-${choice.multiple_choice_id}`}
                       type="radio"
                       id={`${question.question_id}-${choice.multiple_choice_id}`}
                       name={`question-${question.question_id}`}
-                      label={`${choice.letter}. ${choice.answer}`}
-                      onChange={() => handleChange(question.question_id, choice.letter)}
+                      label={`${choice.number}. ${choice.answer}`}
+                      onChange={() => handleChange(question.question_id, choice.number)}
                     />
                   ))
                 ) : (

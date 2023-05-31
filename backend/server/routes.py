@@ -201,3 +201,24 @@ def save_mc_question_to_db():
     return {
         "status": "ok"
     }
+
+
+@app.route('/survey/submit', methods=['POST'])
+@jwt_required()
+def submit_survey():
+    data = request.get_json()
+
+    survey_id = data['survey_id']
+    print(data)
+    user_id = data['user_id']
+    answers = data['answers']
+
+    try:
+        for question_id, answer in answers.items():
+            query_model.commit_query(f"""INSERT INTO answers (survey_id, question_id, user_id, answer)
+                                    VALUES ('{survey_id}', '{question_id}', '{user_id}', '{answer}')""")
+
+    except Exception as e:
+        return jsonify({"message": str(e)}), 500
+
+    return jsonify({"message": "Successfully submitted survey"}), 200
