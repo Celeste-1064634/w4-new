@@ -44,7 +44,7 @@ const MultipleChoiceAnswers = (data) => {
                 <div className="grid-part bg-white justify-center column">
                     <h3>Mogelijke antwoorden</h3>
                     {question.choices.map((choice, i) => (
-                        <p key={choice.multiple_choice_id} className="answer-row" ><span style={{ backgroundColor: chartColors[i] }} className="answer-letter">{choice.letter.toUpperCase()}</span> {choice.answer}</p>
+                        <p key={choice.multiple_choice_id} className="answer-row" ><span style={{ backgroundColor: chartColors[i] }} className="answer-letter">{choice.number.toUpperCase()}</span> {choice.answer}</p>
                     ))}
                     <button className="answer-details-btn" onClick={toggleDetails}>
                         Bekijk details
