@@ -5,9 +5,9 @@ import { UserContext } from '../UserContext';
 
 const SurveyForm = () => {
   const { surveyId } = useParams();
-  const [answers, setAnswers] = useState({});
+  const [answers, setAnswers] = useState([]);
   const [surveyData, setSurveyData] = useState({ surveyName: '', questions: [] });
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
   useEffect(() => {
     const token = sessionStorage.getItem('token');
@@ -17,9 +17,7 @@ const SurveyForm = () => {
       }
     })
     .then(response => {
-      if (!response.ok) {
-        throw new Error('No survey found with this ID');
-      }
+      console.log(response)
       return response.json();
     })
     .then(data => {
@@ -32,12 +30,13 @@ const SurveyForm = () => {
   }, [surveyId]);
 
   const handleChange = (id, answer) => {
-    setAnswers(prev => ({ ...prev, [id]: { question_id: id, answer: answer, user_id: user.user_id } }));
+    let item = { question_id: id, answer: answer, user_id: user.user_id };
+    setAnswers(prev => ({ answers: [...prev.answers, item] }));
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+    console.log(user)
     const surveySubmission = {
       survey_id: surveyId,
       user_id: user.user_id,
@@ -56,9 +55,7 @@ const SurveyForm = () => {
       body: JSON.stringify(surveySubmission),
     })
     .then(response => {
-      if (!response.ok) {
-        throw new Error('Failed to submit survey');
-      }
+      console.log(response)
       return response.json();
     })
     .then(data => {

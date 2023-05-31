@@ -132,7 +132,8 @@ def user_lookup_callback(_jwt_header, jwt_data):
         "firstName": result['first_name'],
         "lastName": result['last_name'],
         "fullName": f'{result["first_name"]} {result["last_name"]}',
-        "email": result['email']
+        "email": result['email'],
+        "user_id": result['user_id']
     }
 
 # used for sending user data by jwt token to frontend
@@ -207,16 +208,15 @@ def save_mc_question_to_db():
 @jwt_required()
 def submit_survey():
     data = request.get_json()
-
-    survey_id = data['survey_id']
     print(data)
+    survey_id = data['survey_id']
+    
     user_id = data['user_id']
     answers = data['answers']
 
     try:
-        for question_id, answer in answers.items():
-            query_model.commit_query(f"""INSERT INTO answers (survey_id, question_id, user_id, answer)
-                                    VALUES ('{survey_id}', '{question_id}', '{user_id}', '{answer}')""")
+        for  answer in answers:
+            query_model.commit_query(f"INSERT INTO answers (survey_id, question_id, user_id, answer) VALUES ('{survey_id}', '{answer.question_id}', '{user_id}', '{answer.answer}')")
 
     except Exception as e:
         return jsonify({"message": str(e)}), 500

@@ -48,6 +48,7 @@ export default function App() {
           "lastName": data.lastName,
           "fullName": data.fullName,
           "email": data.email,
+          "user_id": data.user_id,
         })
       }
       catch (error) {
