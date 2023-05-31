@@ -1,0 +1,117 @@
+.surveyBox{
+    border-radius: 5px;
+    border: 1px solid transparent;
+    background-color: #e8edef;
+    margin-bottom: 20px;
+    box-shadow: 0px 0px 4px 4px rgba(92, 92, 92, 0.034);
+    overflow: hidden;
+}
+
+.surveyContent{
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.editIcon{
+    font-size: 20px;
+    color: rgb(145, 208, 229);
+    padding: 5px;
+    transition: 0.1s;
+    /* opacity: 0.7; */
+}
+
+.deleteIcon{
+    font-size: 20px;
+    color: grey;
+    padding: 5px;
+    transition: 0.1s;
+    /* opacity: 0.7; */
+
+}
+
+.deleteIcon:hover{
+    color: rgb(202, 16, 53);
+    scale: 1.2;
+    opacity: 1;
+}
+
+.editIcon:hover{
+    color: #0872ac;
+    scale: 1.2;
+    opacity: 1;
+}
+
+.infoText{
+    font-size: 12px;
+    color: grey;
+    padding: 0px;
+    margin: 0px;
+}
+.infoContainer{
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    background-color: #f9f9f9;
+}
+
+.border{
+    height: 10px;
+    background: linear-gradient(135deg,#3aa700 0%,#008a89 50%,#1157c4 80%);
+}
+
+.title{
+    font-weight: 300;
+}
+
+.newButton{
+    padding: 10px 25px;
+    border: 1px solid transparent;
+    color: white;
+    background-color: #008fde;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    transition: 0.2s;
+}
+
+.newButton:hover{
+    box-shadow: inset 0 0 0 100px rgba(0, 0, 0, 0.075);
+    scale: 1.1;
+    background: #3aa700;
+    opacity: 1;
+
+}
+.newButton:hover > .plusIcon{
+    rotate: 90deg;
+}
+
+.plusIcon{
+    font-size: 20px;
+    width: 20px;
+    display: flex;
+    justify-content: center;
+    transition: 0.3s;
+    
+}
+
+.headerContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+    justify-content: center;
+    background: #e8edef88;
+    /* border-radius: 20px 20px 0 0; */
+    padding: 10px;
+    padding-bottom: 20px;
+    margin-top: 30px;
+    box-shadow: 0px 0px 8px 4px rgba(92, 92, 92, 0.034);
+    border: 1px solid rgb(245, 245, 245);
+
+}
+
+.headerContainer>h1{
+    margin: 0;
+}
