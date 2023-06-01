@@ -14,6 +14,7 @@ const Home = () => {
 				<div className="section bg-light-grey">
 					<h3>Handige links</h3>
 					<ul>
+						<li><Link to="/vragenlijst_invullen/1">Invullen lijst 1 (voor testen)</Link></li>
 						<li><Link to="/vragenlijsten">Vragenlijsten</Link></li>
 						<li><Link to="/profiel">Profiel</Link></li>
 					</ul>

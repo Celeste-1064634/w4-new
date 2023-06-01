@@ -4,9 +4,10 @@ import { Card, Button, Container, Row, Col } from "react-bootstrap";
 import QuestionItem from "../components/QuestionItem";
 import NewQuestionItem from "../components/NewQuestionItem";
 import styles from "./AdjustEnquete.module.css";
+import Loader from "../components/Loader";
 
 function AdjustEnquete() {
-
+    const [loading, setLoading] = useState(true)
     const [isAdd, setIsAdd] = useState(false);
 
     function toggle() {
@@ -90,7 +91,7 @@ function AdjustEnquete() {
     }
 
     async function fetchSurvey() {
-
+        setLoading(true)
         let info = {
             method: "GET",
             mode: 'cors',
@@ -105,6 +106,7 @@ function AdjustEnquete() {
             const data = await res.json()
             console.log(data)
             setSurvey(data)
+            setLoading(false)
             if (!data.questions?.length) {
                 console.error("No data")
                 navigate("/404", { replace: true })
@@ -133,7 +135,10 @@ function AdjustEnquete() {
                 <NavLink to={"/antwoorden/" + id} className={({ isActive, isPending }) => isPending ? "secondary-nav-item" : isActive ? "secondary-nav-item active" : "secondary-nav-item"}
                 >Antwoorden</NavLink>
             </div>
+            {loading &&
+            <Loader></Loader>
 
+            }
             <div className="small-container">
                 <div className="header-container pb-3">
                     <h2 className="mb-0">{survey.name}</h2>

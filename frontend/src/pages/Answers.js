@@ -3,8 +3,10 @@ import { useEffect, useState } from "react";
 import "./Answers.css";
 import React from 'react'
 import MultipleChoiceAnswers from "../components/MultipleChoiceAnswers";
+import Loader from "../components/Loader";
 
 const Answers = () => {
+    const [loading, setLoading] = useState(true)
     const [survey, setSurvey] = useState([]);
     const navigate = useNavigate();
 
@@ -20,6 +22,7 @@ const Answers = () => {
 
     useEffect(() => {
         async function fetchSurvey() {
+            setLoading(true)
 
             let info = {
                 method: "GET",
@@ -35,6 +38,7 @@ const Answers = () => {
                 const data = await res.json()
                 console.log(data)
                 setSurvey(data)
+                setLoading(false)
                 if(!data.questions.length){
                     console.error("No data")
                     navigate("/404" , { replace: true })
@@ -56,14 +60,16 @@ const Answers = () => {
 
     return (
         <section>
-
             <div className="secondary-nav">
                 <NavLink to={"/vragen/"+id} className={({ isActive, isPending }) => isPending ? "secondary-nav-item" : isActive ? "secondary-nav-item active" : "secondary-nav-item"}
                 >Vragen</NavLink>
                 <NavLink to={"/antwoorden/"+id} className={({ isActive, isPending }) => isPending ? "secondary-nav-item" : isActive ? "secondary-nav-item active" : "secondary-nav-item"}
                 >Antwoorden</NavLink>
             </div>
-            {/* {this.props.match} */}
+            {loading &&
+            <Loader></Loader>
+
+            }
             <div className="small-container flex-gap">
                 <div className="header-container">
                     <h1 className="title">{survey.name}</h1>
