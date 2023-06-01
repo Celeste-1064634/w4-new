@@ -1,6 +1,6 @@
 import { React, useState } from "react";
 import { Card, Button } from "react-bootstrap";
-
+import styles from "./NewQuestionItem.module.css";
 
 
 const NewQuestionItem = (data) => {
@@ -36,10 +36,10 @@ const NewQuestionItem = (data) => {
         console.log(description)
     }
 
-    const [isNewQuestion, setIsNewQuestion] = useState(false);
+    const [isNewQuestion, setIsNewQuestion] = useState(true);
 
     function toggle(type) {
-        setIsNewQuestion((isNewQuestion) => !isNewQuestion);
+        setIsNewQuestion(true)
         if (type == "open") {
             setIsAbcd(false);
         }
@@ -51,44 +51,42 @@ const NewQuestionItem = (data) => {
     console.log(data.vragenlijst)
 
     return (
-        <div>
-            <Button onClick={() => toggle("open")} variant="primary" size="sm" >Openvraag</Button>
-            <Button onClick={() => toggle("abcd")} variant="primary" size="sm">abcd</Button>
+        <>
+            <div className={styles.choiceContainer}>
+                <button className={styles.choiceBtn + " " + (!isAbcd ? styles.active : "")} onClick={() => toggle("open")} >Openvraag</button>
+                <button className={styles.choiceBtn + " " + (isAbcd ? styles.active : "")} onClick={() => toggle("abcd")} >Multiple choice</button>
+            </div>
             {isNewQuestion &&
-                <div>
+                <>
                     {isAbcd ?
-                        <Card style={{ width: '18rem' }}>
-                            <Card.Body>
-                                <Card.Title>
-                                    <input placeholder="Titel" onChange={handleChange} value={title} >
-                                    </input>
-                                </Card.Title>
-                                <div>
-                                    <input placeholder="a" onChange={changeOption1} value={option1}></input>
-                                    <input placeholder="b" onChange={changeOption2} value={option2}></input>
-                                    <input placeholder="c" onChange={changeOption3} value={option3}></input>
-                                    <Button onClick={handleClick} variant="primary" size="sm" style={{ position: 'absolute', bottom: '0.5rem', right: '0.5rem' }}>Opslaan</Button>
-                                </div>
-                            </Card.Body>
-                        </Card>
+                        <div className={styles.newQuestionCard}>
+
+                            <input className={styles.mainInput} placeholder="Vraag" onChange={handleChange} value={title} >
+                            </input>
+                            <div className={styles.subInputs}>
+                                <input placeholder="a" onChange={changeOption1} value={option1}></input>
+                                <input placeholder="b" onChange={changeOption2} value={option2}></input>
+                                <input placeholder="c" onChange={changeOption3} value={option3}></input>
+                            </div>
+                                <button className={styles.saveBtn} onClick={handleClick}>Opslaan</button> 
+
+                        </div>
                         :
-                        <Card style={{ width: '18rem' }}>
-                            <Card.Body>
-                                <Card.Title>
-                                    <input placeholder="Titel" onChange={handleChange} value={title} >
-                                    </input>
-                                </Card.Title>
-                                <div>
-                                    <textarea onChange={changeDescription} value={description}></textarea>
-                                    <Button onClick={handleClick} variant="primary" size="sm" style={{ position: 'absolute', bottom: '0.5rem', right: '0.5rem' }}>Opslaan</Button>
-                                </div>
-                            </Card.Body>
-                        </Card>
+                        <div className={styles.newQuestionCard}>
+
+                            <input className={styles.mainInput} placeholder="Vraag" onChange={handleChange} value={title} >
+                            </input>
+
+                            <div>
+                                <button className={styles.saveBtn} onClick={handleClick}>Opslaan</button>
+                            </div>
+
+                        </div>
                     }
-                </div>
+                </>
             }
 
-        </div>
+        </>
 
     )
 

@@ -3,7 +3,7 @@ import { Link, NavLink, useNavigate, useParams } from "react-router-dom";
 import { Card, Button, Container, Row, Col } from "react-bootstrap";
 import QuestionItem from "../components/QuestionItem";
 import NewQuestionItem from "../components/NewQuestionItem";
-
+import styles from "./AdjustEnquete.module.css";
 
 function AdjustEnquete() {
 
@@ -63,54 +63,44 @@ function AdjustEnquete() {
 
 
     return (
-        
-        <Container className="mt-3">
+        <>
             <div className="secondary-nav">
-                <NavLink to={"/vragen/"+id} className={({ isActive, isPending }) => isPending ? "secondary-nav-item" : isActive ? "secondary-nav-item active" : "secondary-nav-item"}
+                <NavLink to={"/vragen/" + id} className={({ isActive, isPending }) => isPending ? "secondary-nav-item" : isActive ? "secondary-nav-item active" : "secondary-nav-item"}
                 >Vragen</NavLink>
-                <NavLink to={"/antwoorden/"+id} className={({ isActive, isPending }) => isPending ? "secondary-nav-item" : isActive ? "secondary-nav-item active" : "secondary-nav-item"}
+                <NavLink to={"/antwoorden/" + id} className={({ isActive, isPending }) => isPending ? "secondary-nav-item" : isActive ? "secondary-nav-item active" : "secondary-nav-item"}
                 >Antwoorden</NavLink>
             </div>
-            <h1>Vragenlijst aanpassen</h1>
-            <Row>
-                {/* Add the card to create a new vragenlijst */}
-                <Col xs={12} md={4}>
-                    <Card className="mb-3" style={{ cursor: 'pointer' }}>
-                        <Card.Body>
-                            <Card.Title>Nieuwe Vraag</Card.Title>
-                            <Card.Text>Maak een nieuwe vraag aan</Card.Text>
-                            {!isAdd &&
-                                <Button onClick={toggle} variant="primary" size="sm" style={{ position: 'absolute', bottom: '0.5rem', right: '0.5rem' }}>+</Button>
-                            }
 
+            <div className="small-container">
+                <div className="header-container">
+                    <h1>Vragenlijst aanpassen</h1>
+                    {/* Add the card to create a new vragenlijst */}
+                    <section className={styles.newQuestionContainer}>
+                        <div className={styles.newQuestionContent}>
+                            <h3>Nieuwe Vraag</h3>
+                            <p>Kies uit een open of multiple choice vraag</p>
 
-                        </Card.Body>
-                    </Card>
-                </Col>
-                {isAdd &&
-                    <Col>
+                        </div>
+
+                        <button className={styles.addButton + " " + (isAdd ? styles.cancelButton : '')} onClick={toggle}><i className={"fa-solid fa-plus " + styles.plusIcon} ></i></button>
+
+                    </section>
+
+                    {isAdd &&
                         <NewQuestionItem></NewQuestionItem>
-                    </Col>
-                }
-            </Row>
-            <Row>
-                {/* Render the other cards */}
-                {survey.questions?.map((vragenlijst) => (
-                    // <Col xs={12} md={4} key={vragenlijst.id}>
-                    //     <Card className="mb-3" style={{ cursor: 'pointer' }}>
-                    //         <Button onClick={toggle} variant="outline-secondary" size="sm" style={{ position: 'absolute', top: '0.5rem', right: '0.5rem' }}>Edit</Button>
-                    //         <Card.Body>
-                    //             {isEdit && <p>Hallo</p>}
-                    //             <Card.Title>{vragenlijst.title}</Card.Title>
-                    //             <Card.Text>{vragenlijst.description}</Card.Text>
-                    //         </Card.Body>
-                    //     </Card>
-                    // </Col>
-                    <QuestionItem key={vragenlijst.question_id} id={vragenlijst.survey_id} question={vragenlijst}> </QuestionItem>
-                ))}
-                {/* Add the card to create a new vragenlijst */}
-            </Row>
-        </Container >
+                    }
+                </div>
+
+                <div className="flex-gap">
+                    {/* Render the other cards */}
+                    {survey.questions?.map((vragenlijst) => (
+                        <QuestionItem key={vragenlijst.question_id} id={vragenlijst.survey_id} question={vragenlijst}> </QuestionItem>
+                    ))}
+                    {/* Add the card to create a new vragenlijst */}
+                </div>
+
+            </div>
+        </>
     );
 }
 

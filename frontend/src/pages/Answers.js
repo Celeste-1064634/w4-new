@@ -65,12 +65,12 @@ const Answers = () => {
             </div>
             {/* {this.props.match} */}
             <div className="small-container flex-gap">
-                <div className="heade-container">
-                    <h2>{survey.name}</h2>
-
+                <div className="header-container">
+                    <h1 className="title">{survey.name}</h1>
+                    <div className="gradient-border"></div>
                 </div>
                 {/* current survey id: {id} */}
-                {survey.questions?.map((question, index) => (
+                {survey.questions?.map((question) => (
                     <React.Fragment key={question.question_id}>
                         {question.type == 1
                             ?

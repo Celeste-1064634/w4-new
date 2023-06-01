@@ -1,7 +1,7 @@
 import { React, useState } from "react";
 import { Card, Button, Col } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
-
+import styles from "./QuestionItem.module.css";
 
 // export default function QuestionItem(vragenlijst) {
 
@@ -70,25 +70,62 @@ const QuestionItem = (data) => {
 
     }
 
-
-
     // console.log(data.vragenlijst)
 
     return (
-        <Col xs={12} md={4} key={data.question.question_id}>
-            <Card className="mb-3" style={{ cursor: 'pointer' }}>
-                <Button onClick={toggle} variant="outline-secondary" size="sm" style={{ position: 'absolute', top: '0.5rem', right: '0.5rem' }}>Edit</Button>
-                <Button onClick={deleteQuestion} variant="outline-secondary" size="sm" style={{ position: 'absolute', top: '3rem', right: '0.5rem' }}>Delete</Button>
-                <Card.Body>
+        <div className={styles.questionContainer}>
+            <div className={styles.questionTop}>
+                <div className={styles.actionIcons}>
+                    <p className={styles.sequence}>{data.question.sequence}</p>
+
                     {isEdit
-                        ? <div> <textarea onChange={handleChange} value={question}></textarea> <Button onClick={handleClick} variant="primary" size="sm" style={{ position: 'absolute', bottom: '0.5rem', right: '0.5rem' }}>Opslaan</Button>  </div>
-                        : <Card.Title>{question}</Card.Title>
-
-
+                        ?
+                        <>
+                            <textarea className={styles.textarea} onChange={handleChange} value={question} rows="1"></textarea>
+                            <button className={styles.save} onClick={handleClick}>
+                                <i className={"fa-solid fa-check"}></i>
+                            </button>
+                            <button className={styles.cancel} onClick={toggle}>
+                                <i className={"fa-solid fa-xmark"}></i>
+                            </button>
+                        </>
+                        : <h3>{question}</h3>
                     }
-                </Card.Body>
-            </Card>
-        </Col>
+                </div>
+                <div className={styles.actionIcons}>
+                    <i onClick={toggle} className={"fa-sharp fa-solid fa-pen-to-square " + styles.editIcon}></i>
+                    <i onClick={deleteQuestion} className={"fa-sharp fa-solid fa-trash " + styles.deleteIcon}></i>
+                </div>
+
+            </div>
+            <div className={styles.questionContent}>
+                <p className={styles.label}>{data.question.type ? "Multiple choice" : "Open vraag"}</p>
+                {data.question.type ?
+                    <div className={styles.questionChoices}>
+                        { !isEdit
+                        ?
+                        data.question.choices.map((choice) => (
+                            <p className={styles.questionChoice}>{choice.number}. {choice.answer}</p>
+                        ))
+                        :
+                        data.question.choices.map((choice) => (
+                            <input className={styles.textarea} value={choice.answer}></input>
+                        ))
+                        }
+                       
+
+                    </div>
+                    : ""
+                }
+            </div>
+            <div className={styles.moveContainer}>
+                <i className={"fa-solid fa-chevron-up " + styles.moveItem}></i>
+                <i className={"fa-solid fa-chevron-down " + styles.moveItem}></i>
+            </div>
+        </div>
+
+
+
     )
 }
 

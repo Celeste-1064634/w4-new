@@ -68,6 +68,7 @@ label{
 	position: fixed;
 	top: 0;
 	height: 100px;
+	z-index: 1000;
 }
 
 .main-footer {
@@ -185,6 +186,7 @@ label{
 	text-decoration: none;
 	color: black;
 	transition: 0.2s;
+	background-color: transparent;
 }
 
 .secondary-nav-item.active{
@@ -192,7 +194,10 @@ label{
 	color: white;
 	border-radius: 30px;
 	box-shadow: 0 0 6px rgba(0, 0, 0, .35);
+}
 
+.secondary-nav-item.pending{
+	scale: 1.4;
 }
 /* Use these containers as parent container */
 .auto-container{
@@ -295,4 +300,10 @@ label{
 	display: flex;
     flex-direction: column;
     gap: 20px;
+}
+
+input:focus, textarea:focus{
+	border-color: rgb(62, 161, 226);
+	border-style: solid;
+	outline: transparent;
 }
