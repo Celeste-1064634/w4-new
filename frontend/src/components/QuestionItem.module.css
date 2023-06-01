@@ -123,6 +123,10 @@
     align-items: center;
 }
 
+.actionIcons>h3{
+    margin: 0;
+}
+
 .save{
 	background-color: #46ad10;
     border: 1px solid transparent;

@@ -13,9 +13,7 @@ const QuestionItem = (data) => {
     const handleChange = (event) => {
         setQuestion(event.target.value);
     }
-
     const { id } = useParams();
-
     const navigate = useNavigate();
 
     const handleClick = async () => {
@@ -49,6 +47,10 @@ const QuestionItem = (data) => {
 
     function toggle() {
         setIsEdit((isEdit) => !isEdit);
+    }
+
+    function moveQuestion(movement){
+        data.moveQuestion(movement, data.question.sequence, data.question.question_id)
     }
 
     function deleteQuestion() {
@@ -105,11 +107,11 @@ const QuestionItem = (data) => {
                         { !isEdit
                         ?
                         data.question.choices.map((choice) => (
-                            <p className={styles.questionChoice}>{choice.number}. {choice.answer}</p>
+                            <p key={choice.multiple_choice_id} className={styles.questionChoice}>{choice.number}. {choice.answer}</p>
                         ))
                         :
                         data.question.choices.map((choice) => (
-                            <input className={styles.textarea} value={choice.answer}></input>
+                            <input key={choice.multiple_choice_id} className={styles.textarea} value={choice.answer}></input>
                         ))
                         }
                        
@@ -119,8 +121,18 @@ const QuestionItem = (data) => {
                 }
             </div>
             <div className={styles.moveContainer}>
-                <i className={"fa-solid fa-chevron-up " + styles.moveItem}></i>
-                <i className={"fa-solid fa-chevron-down " + styles.moveItem}></i>
+                {data.question.sequence == 1
+                ?
+                    <i onClick={() => moveQuestion(1)} className={"fa-solid fa-chevron-down " + styles.moveItem}></i>
+                : data.question.sequence == data.survey.questions.length ?
+                    <i onClick={() => moveQuestion(-1)} className={"fa-solid fa-chevron-up " + styles.moveItem}></i>
+                :
+                <>
+                    <i onClick={() => moveQuestion(-1)} className={"fa-solid fa-chevron-up " + styles.moveItem}></i>
+                    <i onClick={() => moveQuestion(1)} className={"fa-solid fa-chevron-down " + styles.moveItem}></i>
+                </>
+                }
+
             </div>
         </div>
 

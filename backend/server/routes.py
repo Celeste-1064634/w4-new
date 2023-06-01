@@ -41,7 +41,7 @@ def get_questions_for_survey(id=None):
     # Fetch survey name
     survey_name = query_model.execute_query_by_id(f"SELECT name FROM survey WHERE survey_id = {id}")['name']
     # Fetch all questions with survey_id
-    data = query_model.execute_query(f"SELECT * FROM question WHERE survey_id = {id}")
+    data = query_model.execute_query(f"SELECT * FROM question WHERE survey_id = {id} ORDER BY sequence")
     
     questions = []
     for question in data:
@@ -214,4 +214,16 @@ def survey_stats(id=None):
     return {
         "answerCount": amountAnswer,
         "questionCount": amountQuestion
+    }
+
+@app.route('/survey/changeSequence/<id>', methods=["POST"])
+@jwt_required()
+def change_sequence(id=None):
+    data = request.get_json()
+    print(data)
+    for item in data:
+        query_model.commit_query(f"UPDATE question SET sequence = '{item['new_sequence']}' WHERE question_id = '{item['question_id']}'")
+   
+    return {
+        "status": "ok"
     }

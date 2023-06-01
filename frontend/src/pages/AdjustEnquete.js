@@ -15,47 +15,110 @@ function AdjustEnquete() {
 
     const [survey, setSurvey] = useState([]);
 
-    const vragenlijsten = [
-        { id: 1, title: "Vraag 1", description: "Dit is vraag 1" },
-        { id: 2, title: "Vraag 2", description: "Dit is vraag 2" },
-        { id: 3, title: "Vraag 3", description: "Dit is vraag 3" }
-    ];
-
     const { id } = useParams();
     const navigate = useNavigate();
 
+    function moveQuestion(movement, sequence, id) {
+        let changes = []
+        if (movement == -1) {
+            // moving up
 
-
-    useEffect(() => {
-        async function fetchSurvey() {
-
-            let info = {
-                method: "GET",
-                mode: 'cors',
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer " + sessionStorage.getItem("token")
+            // get index of item above
+            var index = survey.questions.findIndex(p => p.sequence == (sequence - 1));
+            let selfSequence = sequence
+            let otherSequence = survey.questions[index].sequence
+            let otherId = survey.questions[index].question_id
+            let newSelfSequence = selfSequence - 1
+            let newOtherSequence = otherSequence + 1
+            changes = [
+                {
+                    question_id: id,
+                    new_sequence: newSelfSequence
+                },
+                {
+                    question_id: otherId,
+                    new_sequence: newOtherSequence
                 }
-            }
+            ]
+            
 
-            try {
-                const res = await fetch("http://127.0.0.1:5000/survey/data/" + id, info)
-                const data = await res.json()
-                console.log(data)
-                setSurvey(data)
-                if (!data.questions?.length) {
-                    console.error("No data")
-                    navigate("/404", { replace: true })
+
+        } else {
+            // moving down
+            // get index of item under
+            var index = survey.questions.findIndex(p => p.sequence == (sequence + 1));
+            let selfSequence = sequence
+            let otherSequence = survey.questions[index].sequence
+            let otherId = survey.questions[index].question_id
+            let newSelfSequence = selfSequence + 1
+            let newOtherSequence = otherSequence - 1
+            changes = [
+                {
+                    question_id: id,
+                    new_sequence: newSelfSequence
+                },
+                {
+                    question_id: otherId,
+                    new_sequence: newOtherSequence
                 }
+            ]
+        }
 
-                return data
+        let info = {
+            method: "POST",
+            mode: 'cors',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + sessionStorage.getItem("token")
+            },
+            body: JSON.stringify(changes)
+        }
 
-            }
-            catch (error) {
-                console.error("QUESTIONS", error)
-            }
+        try {
+            fetch("http://127.0.0.1:5000/survey/changeSequence/" + id, info).then((res)=>{
+                console.log(res.json())
+                fetchSurvey()
+            })
+
 
         }
+        catch (error) {
+            console.error("QUESTIONS", error)
+        }
+
+
+    }
+
+    async function fetchSurvey() {
+
+        let info = {
+            method: "GET",
+            mode: 'cors',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + sessionStorage.getItem("token")
+            }
+        }
+
+        try {
+            const res = await fetch("http://127.0.0.1:5000/survey/data/" + id, info)
+            const data = await res.json()
+            console.log(data)
+            setSurvey(data)
+            if (!data.questions?.length) {
+                console.error("No data")
+                navigate("/404", { replace: true })
+            }
+
+            return data
+
+        }
+        catch (error) {
+            console.error("QUESTIONS", error)
+        }
+
+    }
+    useEffect(() => {
         fetchSurvey()
 
     }, [])
@@ -72,8 +135,9 @@ function AdjustEnquete() {
             </div>
 
             <div className="small-container">
-                <div className="header-container">
-                    <h1>Vragenlijst aanpassen</h1>
+                <div className="header-container pb-3">
+                    <h2 className="mb-0">{survey.name}</h2>
+                    <hr/>
                     {/* Add the card to create a new vragenlijst */}
                     <section className={styles.newQuestionContainer}>
                         <div className={styles.newQuestionContent}>
@@ -94,9 +158,9 @@ function AdjustEnquete() {
                 <div className="flex-gap">
                     {/* Render the other cards */}
                     {survey.questions?.map((vragenlijst) => (
-                        <QuestionItem key={vragenlijst.question_id} id={vragenlijst.survey_id} question={vragenlijst}> </QuestionItem>
+                        <QuestionItem key={vragenlijst.question_id} id={vragenlijst.survey_id} question={vragenlijst} survey={survey} moveQuestion={moveQuestion}> </QuestionItem>
                     ))}
-                    {/* Add the card to create a new vragenlijst */}
+                    
                 </div>
 
             </div>

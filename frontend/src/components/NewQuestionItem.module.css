@@ -22,7 +22,7 @@
 .newQuestionCard{
     width: 400px;
     background-color: white;
-    padding: 10px;
+    padding: 15px 25px;
 }
 
 .mainInput{
@@ -35,6 +35,7 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
+    margin-left: 10px;
 }
 
 .subInputs>input{
@@ -52,4 +53,17 @@
 
 .saveBtn:hover, .choiceBtn:hover{
     box-shadow: inset 0 0 0 100px rgba(0, 0, 0, 0.075);
+}
+
+.inputLabel{
+    font-size: 15px;
+    margin: 0;
+    color: rgb(97, 97, 97);
+}
+
+.addBtn{
+    padding: 4px 8px;
+    background-color: #008fde;
+    border: 1px solid transparent;
+    color: white;
 }

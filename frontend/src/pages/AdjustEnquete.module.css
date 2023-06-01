@@ -6,8 +6,8 @@
 }
 
 .addButton{
-    padding: 10px;
-    width: 70px;
+    padding: 9px;
+    width: 80px;
     border: 1px solid transparent;
     background-color: #46ad10;
     color: white;
@@ -34,5 +34,9 @@
 }
 
 .newQuestionContent{
-    padding: 10px 20px;
+    padding: 9px 20px;
+}
+
+.newQuestionContent>p{
+    margin: 0;
 }

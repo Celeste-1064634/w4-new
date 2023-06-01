@@ -10,33 +10,16 @@ const Home = () => {
 			<div className="medium-container">
 				<div className="section bg-light-grey">
 					<h1>Hallo, <span className="blue">{user.fullName}</span></h1>
-					<Link to="/antwoorden/1">
-						Antwoord pagina
-					</Link>
+				</div>
+				<div className="section bg-light-grey">
+					<h3>Handige links</h3>
+					<ul>
+						<li><Link to="/vragenlijsten">Vragenlijsten</Link></li>
+						<li><Link to="/profiel">Profiel</Link></li>
+					</ul>
 				</div>
 			</div>
-			{/* <div className="auto-container bg-grey">
-				<div className="section">automatische breedte</div>
-			</div>
-			<div className="small-container bg-grey">
-				<div className="section">small</div>
-			</div>
-			<div className="medium-container bg-grey">
-				<div className="section">medium</div>
-			</div>
-
-			<div className="large-container  bg-light-grey">
-				<div className="section center">
-					<h2 className="blue">Home</h2>
-					<p>text</p>
-				</div>
-			</div>
-			<div className="full-container bg-grey">
-				<div className="section center">
-					<h2 className="blue">Home</h2>
-					<p>text</p>
-				</div>
-			</div> */}
+			
 		</section>
 		
 		

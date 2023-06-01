@@ -37,6 +37,10 @@ p{
 	color: #2d2d2d
 }
 
+hr{
+	width: 80%;
+}
+
 .blue{
 	color: #1c5eac;
 }
@@ -159,7 +163,7 @@ label{
 	background-color: #e8eaea;
 }
 .bg-light-grey{
-	background-color: #eff4f6;
+	background-color: #e9f0f3;
 }
 
 .bg-white{
