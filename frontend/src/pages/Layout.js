@@ -9,12 +9,7 @@ const Layout = () => {
 		sessionStorage.removeItem("token")
 		setUser({})
 	}
-	
-	// const [token, setToken] = useState('')
 
-	// useEffect(() =>{
-	// 	setToken(sessionStorage.getItem("token"))
-	// })
 	return (
 		<>
 			<nav className="main-header">

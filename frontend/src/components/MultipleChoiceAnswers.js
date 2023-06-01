@@ -35,7 +35,7 @@ const MultipleChoiceAnswers = (data) => {
 
     return (
         <div className="bg-light-grey light-shadow">
-            <h3 className="question-box"><span className="question-number">2</span>{question.question_text}</h3>
+            <h3 className="question-box"><span className="question-number">{question.sequence}</span>{question.question_text}</h3>
             <p className="label">Multiple choice</p>
             {/* {chartColors.map((color) => (
                 <span key={color} style={{ backgroundColor: color }} className="answer-letter">abc</span>

@@ -70,14 +70,14 @@ const Answers = () => {
 
                 </div>
                 {/* current survey id: {id} */}
-                {survey.questions?.map((question) => (
+                {survey.questions?.map((question, index) => (
                     <React.Fragment key={question.question_id}>
                         {question.type == 1
                             ?
                             <MultipleChoiceAnswers question={question}></MultipleChoiceAnswers>
                             :
                             <div className="bg-light-grey light-shadow">
-                                <h3 className="question-box"><span className="question-number">1</span>{question.question_text}</h3>
+                                <h3 className="question-box"><span className="question-number">{question.sequence}</span>{question.question_text}</h3>
                                 <p className="label">Open vraag</p>
                                 <div className="bg-white answers">
                                     {question.answers.length ?  
