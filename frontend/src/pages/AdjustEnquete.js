@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, NavLink, useNavigate, useParams } from "react-router-dom";
 import { Card, Button, Container, Row, Col } from "react-bootstrap";
 import QuestionItem from "../components/QuestionItem";
 import NewQuestionItem from "../components/NewQuestionItem";
@@ -63,7 +63,14 @@ function AdjustEnquete() {
 
 
     return (
+        
         <Container className="mt-3">
+            <div className="secondary-nav">
+                <NavLink to={"/vragen/"+id} className={({ isActive, isPending }) => isPending ? "secondary-nav-item" : isActive ? "secondary-nav-item active" : "secondary-nav-item"}
+                >Vragen</NavLink>
+                <NavLink to={"/antwoorden/"+id} className={({ isActive, isPending }) => isPending ? "secondary-nav-item" : isActive ? "secondary-nav-item active" : "secondary-nav-item"}
+                >Antwoorden</NavLink>
+            </div>
             <h1>Vragenlijst aanpassen</h1>
             <Row>
                 {/* Add the card to create a new vragenlijst */}

@@ -58,14 +58,18 @@ const Answers = () => {
         <section>
 
             <div className="secondary-nav">
-                <NavLink to="/vragen" className={({ isActive, isPending }) => isPending ? "secondary-nav-item" : isActive ? "secondary-nav-item active" : "secondary-nav-item"}
+                <NavLink to={"/vragen/"+id} className={({ isActive, isPending }) => isPending ? "secondary-nav-item" : isActive ? "secondary-nav-item active" : "secondary-nav-item"}
                 >Vragen</NavLink>
-                <NavLink to="/antwoorden" className={({ isActive, isPending }) => isPending ? "secondary-nav-item" : isActive ? "secondary-nav-item active" : "secondary-nav-item"}
+                <NavLink to={"/antwoorden/"+id} className={({ isActive, isPending }) => isPending ? "secondary-nav-item" : isActive ? "secondary-nav-item active" : "secondary-nav-item"}
                 >Antwoorden</NavLink>
             </div>
             {/* {this.props.match} */}
             <div className="small-container flex-gap">
-                current survey id: {id}
+                <div className="heade-container">
+                    <h2>{survey.name}</h2>
+
+                </div>
+                {/* current survey id: {id} */}
                 {survey.questions?.map((question) => (
                     <React.Fragment key={question.question_id}>
                         {question.type == 1

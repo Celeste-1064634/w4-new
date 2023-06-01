@@ -9,7 +9,7 @@ const AnswerChart = (data) => {
             let scoreList = []
             for (let key of item.choices) {
                 labelList.push(key.number.toUpperCase())
-                console.log(key)
+                // console.log(key)
                 let score = 0
                 for (let answer of item.answers) {
                     if(answer.answer.toUpperCase() == key.number.toUpperCase()){

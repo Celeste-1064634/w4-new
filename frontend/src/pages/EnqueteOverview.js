@@ -29,8 +29,8 @@ function EnqueteOverview() {
       });
   }, []);
 
-  function deleteSurvey(id){
-    console.log("Delete : "+ id)
+  function deleteSurvey(id) {
+    console.log("Delete : " + id)
   }
 
   return (
@@ -38,26 +38,29 @@ function EnqueteOverview() {
       <div className={styles.headerContainer}>
         <h1>Vragenlijst overzicht</h1>
         <Link to="/vragenlijst/nieuw" style={{ textDecoration: 'none' }}>
-          <button className={styles.newButton}><i className={"fa-solid fa-plus "+styles.plusIcon} ></i></button>
+          <button className={styles.newButton}><i className={"fa-solid fa-plus " + styles.plusIcon} ></i></button>
         </Link>
       </div>
       <Row>
         {loading &&
           <Loader></Loader>
-        
+
         }
         {/* Render the other cards */}
         {vragenlijsten.map((vragenlijst) => (
           <Col xs={12} md={4} key={vragenlijst.survey_id} >
             <div className={styles.surveyBox}>
               <div className={styles.surveyContent}>
-                <h2 className={styles.title}>{vragenlijst.name}</h2>
+                <Link to={`/antwoorden/${vragenlijst.survey_id}`} style={{ textDecoration: 'none' }}>
+                  <h2 className={styles.title}>{vragenlijst.name}</h2>
+                </Link>
+
                 <div>
                   <Link to={`/vragen/${vragenlijst.survey_id}`} style={{ textDecoration: 'none' }}>
                     <i className={"fa-sharp fa-solid fa-pen-to-square " + styles.editIcon}></i>
                   </Link>
                   <i onClick={() => deleteSurvey(vragenlijst.survey_id)} className={"fa-sharp fa-solid fa-trash " + styles.deleteIcon}></i>
-              
+
                 </div>
               </div>
               <SurveyInfoContainer id={vragenlijst.survey_id}></SurveyInfoContainer>

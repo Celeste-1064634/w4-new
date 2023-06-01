@@ -62,6 +62,15 @@
 
 .title{
     font-weight: 300;
+    transition: 0.1s;
+    border-bottom: 1px solid transparent;
+    color: black;
+}
+
+.title:hover{
+    color: #1157c4;
+    /* scale: 1.1; */
+    border-bottom: 1px solid #1157c4;
 }
 
 .newButton{
@@ -109,7 +118,6 @@
     margin-top: 30px;
     box-shadow: 0px 0px 8px 4px rgba(92, 92, 92, 0.034);
     border: 1px solid rgb(245, 245, 245);
-
 }
 
 .headerContainer>h1{

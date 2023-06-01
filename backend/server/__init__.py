@@ -3,7 +3,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import datetime
 from flask_jwt_extended import JWTManager
-
+from datetime import timedelta
 from flask_bcrypt import Bcrypt
 
 from flask_cors import CORS
@@ -18,7 +18,8 @@ CORS(app)
 
 bcrypt = Bcrypt(app)
 
-app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
+app.config["JWT_SECRET_KEY"] = "fasbdlkfjs9e0riu09dlkfj4098wosudfoilkjdsoiru09edsuflkdjksoidf"
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=72)
 jwt = JWTManager(app)
 
 # Import module

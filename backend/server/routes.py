@@ -202,19 +202,16 @@ def save_mc_question_to_db():
         "status": "ok"
     }
 
-@app.route('/survey/questionCount/<id>', methods=["GET"])
+@app.route('/survey/surveyStats/<id>', methods=["GET"])
 @jwt_required()
-def countQuestions(id=None):
-    amount = len(query_model.execute_query(f"SELECT question_id FROM question WHERE survey_id = '{id}'"))
-    return {
-        "count": amount
-    }
+def survey_stats(id=None):
 
-@app.route('/survey/surveyAnswered/<id>', methods=["GET"])
-@jwt_required()
-def countAnswers(id=None):
+    amountQuestion = len(query_model.execute_query(f"SELECT question_id FROM question WHERE survey_id = '{id}'"))
+    
+
     # check diffent users for answers of each survey
-    amount = len(query_model.execute_query(f"SELECT DISTINCT answer.user_id, question.survey_id  FROM question NATURAL JOIN answer WHERE survey_id = '{id}'"))
+    amountAnswer = len(query_model.execute_query(f"SELECT DISTINCT answer.user_id, question.survey_id  FROM question NATURAL JOIN answer WHERE survey_id = '{id}'"))
     return {
-        "count": amount
+        "answerCount": amountAnswer,
+        "questionCount": amountQuestion
     }
