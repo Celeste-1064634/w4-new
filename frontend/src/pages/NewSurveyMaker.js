@@ -40,7 +40,7 @@ function NewSurveyMaker() {
   function addDatabaseQuestion() {
     setDivQuestion([
       ...divQuestion,
-      <NewDatabaseQuestion key={Math.random() * 100} />,
+      <NewDatabaseQuestion key={Math.random() * 100} callbackFunction={callbackFunction}/>,
     ]);
     addNewQuestion();
   }

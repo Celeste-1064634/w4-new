@@ -3,7 +3,7 @@ import styles from "./NewDatabaseQuestion.module.css";
 import NewOpenQuestion from "./NewOpenQuestion";
 import NewMultipleChoiceQuestion from "./NewMultipleChoiceQuestion";
 
-function NewDatabaseQuestion() {
+function NewDatabaseQuestion(props) {
   const [questions, setQuestions] = useState([]);
   const [output, setOutput] = useState(0);
   const [newQuestion, setnewQuestion] = useState("");
@@ -83,7 +83,7 @@ function NewDatabaseQuestion() {
           </table>
         </div>
       )}
-      {output === 1 && <NewOpenQuestion value={newQuestion} />}
+      {output === 1 && <NewOpenQuestion value={newQuestion} callbackFunction={props.callbackFunction}/>}
       {output === 2 && <NewMultipleChoiceQuestion value={newQuestion} options={options} />}
     </div>
   );

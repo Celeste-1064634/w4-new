@@ -28,9 +28,15 @@ function deleteFromSurvey(e) {
 }
 
 function NewOpenQuestion(props) {
+  let question = { type: "open" }
   function saveQuestion(e) {
     const value = e.target.value
-    props.callbackFunction(value)
+    question.question = value
+    props.callbackFunction(question)
+  }
+  if (props.value) {
+    question.question = props.value
+    props.callbackFunction(question)
   }
   return (
     <div className={styles.containerOpenQuestion}>
