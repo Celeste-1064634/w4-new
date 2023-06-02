@@ -28,9 +28,14 @@ function deleteFromSurvey(e) {
 }
 
 function NewOpenQuestion(props) {
+  function saveQuestion(e) {
+    const value = e.target.value
+    props.callbackFunction(value)
+  }
   return (
     <div className={styles.containerOpenQuestion}>
       <input
+        onBlur={saveQuestion}
         className={styles.inputOpenQuestion}
         placeholder="Vul hier de vraag in"
         value={props.value}

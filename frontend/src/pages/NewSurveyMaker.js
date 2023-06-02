@@ -8,6 +8,14 @@ import NewDatabaseQuestion from "../components/NewDatabaseQuestion";
 function NewSurveyMaker() {
   const [addQuestion, setAddQuestion] = useState(false);
   const [divQuestion, setDivQuestion] = useState([]);
+  const [questionListArray, setQuestionListArray] = useState([])
+  
+  function callbackFunction(info) {
+    setQuestionListArray([
+      ...questionListArray,
+      info
+    ])
+  }
 
   function addNewQuestion() {
     setAddQuestion((addQuestion) => !addQuestion);
@@ -16,7 +24,7 @@ function NewSurveyMaker() {
   function addNewOpenQuestion() {
     setDivQuestion([
       ...divQuestion,
-      <NewOpenQuestion key={Math.random() * 100} />,
+      <NewOpenQuestion key={Math.random() * 100} callbackFunction={callbackFunction}/>,
     ]);
     addNewQuestion();
   }
@@ -43,17 +51,18 @@ function NewSurveyMaker() {
     const data = {
       "title": formData.get("titleInput")
     }
-    fetch('http://127.0.0.1:5000/save_new_survey', {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + sessionStorage.getItem("token")
-      },
-      body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data => console.log(data))
+    console.log(questionListArray);
+    // fetch('http://127.0.0.1:5000/save_new_survey', {
+    //   method: "POST",
+    //   mode: "cors",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: "Bearer " + sessionStorage.getItem("token")
+    //   },
+    //   body: JSON.stringify(data)
+    // })
+    // .then(response => response.json())
+    // .then(data => console.log(data))
   }
 
   return (
