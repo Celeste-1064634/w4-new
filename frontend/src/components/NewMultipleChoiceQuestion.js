@@ -48,13 +48,23 @@ function NewMultipleChoiceQuestion(props) {
   let question = { type: "multiple choice" }
 
   function saveQuestion(e) {
-    const value = e.target.value
+    const target = e.target;
+    const value = target.firstChild.value
     question.question = value
+    const options = target.children[1].children;
+    const optionArray = [];
+    for (let option of options) {
+      for (let child of option.children) {
+        optionArray.push(child.children[1].value);
+      }
+    }
+    question.options = optionArray
     props.callbackFunction(question)
   }
 
   if (props.value) {
     question.question = props.value
+    question.options = props.options
     props.callbackFunction(question)
   }
   
@@ -92,9 +102,8 @@ function NewMultipleChoiceQuestion(props) {
   }
 
   return (
-    <div className={styles.containerMultipleChoiceQuestion}>
+    <div onMouseLeave={saveQuestion} className={styles.containerMultipleChoiceQuestion}>
       <input
-        onBlur={saveQuestion}
         className={styles.inputMultipleChoiceQuestion}
         placeholder="Vul hier de vraag in"
         value={props.value}
