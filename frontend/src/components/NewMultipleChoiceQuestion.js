@@ -102,7 +102,7 @@ function NewMultipleChoiceQuestion(props) {
   }
 
   return (
-    <div onMouseLeave={saveQuestion} className={styles.containerMultipleChoiceQuestion}>
+    <div onMouseLeave={props.value ? null : saveQuestion} className={styles.containerMultipleChoiceQuestion}>
       <input
         className={styles.inputMultipleChoiceQuestion}
         placeholder="Vul hier de vraag in"
