@@ -84,7 +84,7 @@ function NewDatabaseQuestion(props) {
         </div>
       )}
       {output === 1 && <NewOpenQuestion value={newQuestion} callbackFunction={props.callbackFunction}/>}
-      {output === 2 && <NewMultipleChoiceQuestion value={newQuestion} options={options} />}
+      {output === 2 && <NewMultipleChoiceQuestion value={newQuestion} options={options} callbackFunction={props.callbackFunction}/>}
     </div>
   );
 }

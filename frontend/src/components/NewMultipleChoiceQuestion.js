@@ -45,9 +45,21 @@ function NewMultipleChoiceQuestion(props) {
     </div>,
   ]);
   const [options, setOptions] = useState(props.options);
+  let question = { type: "multiple choice" }
+
+  function saveQuestion(e) {
+    const value = e.target.value
+    question.question = value
+    props.callbackFunction(question)
+  }
+
+  if (props.value) {
+    question.question = props.value
+    props.callbackFunction(question)
+  }
+  
 
   function deleteOption(e) {
-    console.log("Hoi");
     const target = e.target
     const optionDiv = target.parentElement.parentElement
     return optionDiv.outerHTML = ""
@@ -82,6 +94,7 @@ function NewMultipleChoiceQuestion(props) {
   return (
     <div className={styles.containerMultipleChoiceQuestion}>
       <input
+        onBlur={saveQuestion}
         className={styles.inputMultipleChoiceQuestion}
         placeholder="Vul hier de vraag in"
         value={props.value}

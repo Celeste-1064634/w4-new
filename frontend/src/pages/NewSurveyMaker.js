@@ -32,7 +32,7 @@ function NewSurveyMaker() {
   function addNewMultipleChoiceQuestion() {
     setDivQuestion([
       ...divQuestion,
-      <NewMultipleChoiceQuestion key={Math.random() * 100} />,
+      <NewMultipleChoiceQuestion key={Math.random() * 100} callbackFunction={callbackFunction}/>,
     ]);
     addNewQuestion();
   }
