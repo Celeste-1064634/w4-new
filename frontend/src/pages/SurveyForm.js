@@ -1,13 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Card, Form, Button } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { UserContext } from '../UserContext';
+
 
 const SurveyForm = () => {
   const { surveyId } = useParams();
   const [answers, setAnswers] = useState([]);
   const [surveyData, setSurveyData] = useState({ surveyName: '', questions: [] });
   const { user, setUser } = useContext(UserContext);
+  const [message, setMessage] = useState("");
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const token = sessionStorage.getItem('token');
@@ -68,7 +72,10 @@ const SurveyForm = () => {
     })
     .then(data => {
       console.log(data);
-      // Handle the response after successful submission.
+      setMessage("Bedankt voor het invullen van de vragenlijst, u wordt nu doorgestuurd naar de homepage.");
+      setTimeout(() => {
+        navigate('/');
+      }, 4000);
     })
     .catch(error => {
       console.error('Error:', error);
@@ -106,6 +113,11 @@ const SurveyForm = () => {
         )}
         <Button variant="primary" type="submit">Submit</Button>
       </Form>
+      {message && (
+        <div className="alert alert-success mt-3" role="alert">
+          {message}
+        </div>
+      )}
     </div>
   );
 };

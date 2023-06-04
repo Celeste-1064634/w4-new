@@ -22,6 +22,12 @@ function EnqueteOverview() {
     });
   }, []);
 
+  const handleLinkClick = (id) => {
+    const url = `${window.location.origin}/vragenlijst/invullen/${id}`;
+    navigator.clipboard.writeText(url);
+    alert(`URL copied to clipboard: ${url}`);
+  };
+
   return (
     <Container className="mt-3">
       <Row className="mb-3">
@@ -35,23 +41,22 @@ function EnqueteOverview() {
         </Col>
       </Row>
       <Row>
-        {/* Render the other cards */}
         {vragenlijsten.map((vragenlijst) => (
           <Col xs={12} md={4} key={vragenlijst.survey_id}>
-            <Link to={`/vragen/${vragenlijst.survey_id}`} style={{ textDecoration: 'none' }}>
-              <Card className="mb-3" style={{ cursor: 'pointer' }}>
-                <Button variant="outline-secondary" size="sm" style={{ position: 'absolute', top: '0.5rem', right: '0.5rem' }}>Edit</Button>
-                <Card.Body>
-                  <Card.Title>{vragenlijst.name}</Card.Title>
-                </Card.Body>
-              </Card>
-            </Link>
+            <Card className="mb-3" style={{ cursor: 'pointer' }}>
+              <Link to={`/vragen/${vragenlijst.survey_id}`} style={{ textDecoration: 'none', position: 'absolute', top: '0.5rem', right: '0.5rem' }}>
+                <Button variant="outline-secondary" size="sm">Edit</Button>
+              </Link>
+              <Button variant="outline-secondary" size="sm" style={{ position: 'absolute', top: '0.5rem', right: '3.5rem' }} onClick={() => handleLinkClick(vragenlijst.survey_id)}>Link</Button>
+              <Card.Body>
+                <Card.Title>{vragenlijst.name}</Card.Title>
+              </Card.Body>
+            </Card>
           </Col>
         ))}
       </Row>
     </Container>
   );
-  
 }
 
 export default EnqueteOverview;
