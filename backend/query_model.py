@@ -79,7 +79,7 @@ class QueryModel:
         self.execute_update(query)
         survey_id = self.execute_query('''SELECT max (survey_id) FROM survey''')
         count = 1
-        print(questions)
+
         for question in questions:
             q = question["question"]
             query = f'''SELECT EXISTS
@@ -92,18 +92,27 @@ class QueryModel:
                 query = f'''INSERT INTO question_collection(question_text, archive, type) VALUES("{q}", False, False)'''
                 self.execute_update(query)
                 question_id = self.execute_query('''SELECT max (question_collection_id) FROM question_collection''')
-                print(question_id[0][0])
+
                 query = f'''INSERT INTO question(question_collection_id, question_text, sequence, survey_id)
                                     VALUES ({question_id[0][0]}, "{q}", {count}, {survey_id[0][0]})'''
                 count+=1
                 self.execute_update(query)
             elif question ["type"] ==  "multiple choice" and check == 0:
                 query = f'''INSERT INTO question_collection(question_text, archive, type) VALUES("{q}", False, True)'''
+                print(query)
                 self.execute_update(query)
                 question_id = self.execute_query('''SELECT max (question_collection_id) FROM question_collection''')
                 query = f'''INSERT INTO question(question_collection_id, question_text, sequence, survey_id)
                                     VALUES ({question_id[0][0]}, "{q}", {count}, {survey_id[0][0]})'''
+                print(query)
                 count +=1
+                option_counter = 1
+                for option in question["options"]:
+                    query = f'''INSERT INTO multiple_choice(number, answer, question_collection_id)
+                                                                                VALUES ({option_counter}, "{option}", "{question_id[0][0]}")'''
+                    option_counter +=1
+                    print(query)
+                    self.execute_update(query)
                 self.execute_update(query)
             else:
                 query = f'''SELECT question_collection_id FROM question_collection

@@ -28,6 +28,9 @@ function saveQuestionToDb(e) {
 }
 
 function NewMultipleChoiceQuestion(props) {
+  const [question, setQuestion] = useState('')
+  const [options, setOptions] = useState([])
+  const [dbOptions, setDbOptions] = useState(props.options);
   const [addOption, setAddOption] = useState([
     <div key={Math.random() * 100}>
       <input
@@ -38,34 +41,26 @@ function NewMultipleChoiceQuestion(props) {
       <input
         className={styles.inputMultipleChoiceAnswer}
         placeholder="Vul hier het antwoord in"
+        onBlur={(e) => {setOptions([...options, e.target.value])}}
       />
       <button onClick={deleteOption}>
         <i className="bi bi-trash3"></i>
       </button>
     </div>,
   ]);
-  const [options, setOptions] = useState(props.options);
-  let question = { type: "multiple choice" }
 
-  function saveQuestion(e) {
-    const target = e.target;
-    const value = target.firstChild.value
-    question.question = value
-    const options = target.children[1].children;
-    const optionArray = [];
-    for (let option of options) {
-      for (let child of option.children) {
-        optionArray.push(child.children[1].value);
-      }
-    }
-    question.options = optionArray
-    props.callbackFunction(question)
+  let questionInfo = { type: "multiple choice" }
+
+  function saveQuestion() {
+    questionInfo.question = question
+    questionInfo.options = options
+    props.callbackFunction(questionInfo)
   }
 
   if (props.value) {
-    question.question = props.value
-    question.options = props.options
-    props.callbackFunction(question)
+    questionInfo.question = props.value
+    questionInfo.options = props.options
+    props.callbackFunction(questionInfo)
   }
   
 
@@ -87,6 +82,7 @@ function NewMultipleChoiceQuestion(props) {
         <input
           className={styles.inputMultipleChoiceAnswer}
           placeholder="Vul hier het antwoord in"
+          onBlur={(e) => {setOptions([...options, e.target.value])}}
         />
         <button onClick={deleteOption}>
           <i className="bi bi-trash3"></i>
@@ -107,10 +103,11 @@ function NewMultipleChoiceQuestion(props) {
         className={styles.inputMultipleChoiceQuestion}
         placeholder="Vul hier de vraag in"
         value={props.value}
+        onBlur={(e) => setQuestion(e.target.value)}
       />
       <div className={styles.divMultipleChoiceOption}>
-        {options ? (
-          options.map((option) => {
+        {dbOptions ? (
+          dbOptions.map((option) => {
             return (
               <div key={Math.random() * 100}>
                 <input

@@ -8,13 +8,11 @@ import NewDatabaseQuestion from "../components/NewDatabaseQuestion";
 function NewSurveyMaker() {
   const [addQuestion, setAddQuestion] = useState(false);
   const [divQuestion, setDivQuestion] = useState([]);
-  const [questionListArray, setQuestionListArray] = useState([])
-  
+  const [questionListArray, setQuestionListArray] = useState([]);
+
   function callbackFunction(info) {
-    setQuestionListArray([
-      ...questionListArray,
-      info
-    ])
+    console.log(info);
+    setQuestionListArray([...questionListArray, info]);
   }
 
   function addNewQuestion() {
@@ -24,7 +22,10 @@ function NewSurveyMaker() {
   function addNewOpenQuestion() {
     setDivQuestion([
       ...divQuestion,
-      <NewOpenQuestion key={Math.random() * 100} callbackFunction={callbackFunction}/>,
+      <NewOpenQuestion
+        key={Math.random() * 100}
+        callbackFunction={callbackFunction}
+      />,
     ]);
     addNewQuestion();
   }
@@ -32,7 +33,10 @@ function NewSurveyMaker() {
   function addNewMultipleChoiceQuestion() {
     setDivQuestion([
       ...divQuestion,
-      <NewMultipleChoiceQuestion key={Math.random() * 100} callbackFunction={callbackFunction}/>,
+      <NewMultipleChoiceQuestion
+        key={Math.random() * 100}
+        callbackFunction={callbackFunction}
+      />,
     ]);
     addNewQuestion();
   }
@@ -40,12 +44,15 @@ function NewSurveyMaker() {
   function addDatabaseQuestion() {
     setDivQuestion([
       ...divQuestion,
-      <NewDatabaseQuestion key={Math.random() * 100} callbackFunction={callbackFunction}/>,
+      <NewDatabaseQuestion
+        key={Math.random() * 100}
+        callbackFunction={callbackFunction}
+      />,
     ]);
     addNewQuestion();
   }
 
-  const saveNewSurvey =(e) => {
+  const saveNewSurvey = (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = {
@@ -65,12 +72,13 @@ function NewSurveyMaker() {
     })
     .then(response => response.json())
     .then(data => console.log(data))
-  }
+  };
 
   return (
     <form onSubmit={saveNewSurvey}>
       <div className={styles.divSurveyTitle}>
-        <input name="titleInput"
+        <input
+          name="titleInput"
           className={styles.surveyTitleInput}
           placeholder="Nieuwe vragenlijst"
         />
@@ -95,7 +103,7 @@ function NewSurveyMaker() {
         </Button>
       </div>
       <div className={styles.btnSaveDeleteNewSurvey}>
-        <Button  type="submit">Opslaan</Button>
+        <Button type="submit">Opslaan</Button>
         <Button>Verwijderen</Button>
       </div>
     </form>
