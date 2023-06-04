@@ -1,0 +1,48 @@
+.divSurveyTitle {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.surveyTitleInput {
+    width: 700px;
+    height: 50px;
+    font-size: xx-large;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.divQuestion {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.btnContainer {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.btnSaveDeleteNewSurvey {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 50px;
+}
+
+.divAddNewQuestion {
+    margin-top: 30px;
+    display: flex;
+    gap: 10px;
+}
+
+.btnAddNewQuestion {
+    width: 50px;
+    margin-bottom: 10px;
+}

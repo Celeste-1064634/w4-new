@@ -1,68 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { UserContext } from "../UserContext";
 
 
 const Home = () => {
-  	// const [students, setStudents] = useState([])
-	
-	// const fetchStudentData = () => {
-	// 	fetch("/data")
-	// 		.then(response => {
-	// 			return response.json()
-	// 	  	})
-	// 	  	.then(data => {
-	// 			setStudents(data)
-	// 	  	})
-	// }
-
-	// useEffect(() => {
-	// 	fetchStudentData()
-	// }, [])
-
+	const { user, setUser } = useContext(UserContext)
 	return (
 		<section>
 			<div className="medium-container">
-				<div className="section bg-grey">
-					<h1>Home</h1>
-					<h2 className="blue">Home</h2>
-					<h3>Home</h3>
-					{/* {students.length > 0 && (
-						<ul>
-						{students.map(user => (
-							<li key={user}>{user}</li>
-						))}
-						</ul>
-					)} */}
-					<Link to="/antwoorden">
-						Antwoord pagina
-					</Link>
-				</div>
-
 				<div className="section bg-light-grey">
-					<p>Home</p>
+					<h1>Hallo, <span className="blue">{user.fullName}</span></h1>
+				</div>
+				<div className="section bg-light-grey">
+					<h3>Handige links</h3>
+					<ul>
+						<li><Link to="/vragenlijst_invullen/1">Invullen lijst 1 (voor testen)</Link></li>
+						<li><Link to="/vragenlijsten">Vragenlijsten</Link></li>
+						<li><Link to="/profiel">Profiel</Link></li>
+					</ul>
 				</div>
 			</div>
-			<div className="auto-container bg-grey">
-				<div className="section">automatische breedte</div>
-			</div>
-			<div className="small-container bg-grey">
-				<div className="section">small</div>
-			</div>
-			<div className="medium-container bg-grey">
-				<div className="section">medium</div>
-			</div>
-
-			<div className="large-container  bg-light-grey">
-				<div className="section center">
-					<h2 className="blue">Home</h2>
-					<p>text</p>
-				</div>
-			</div>
-			<div className="full-container bg-grey">
-				<div className="section center">
-					<h2 className="blue">Home</h2>
-					<p>text</p>
-				</div></div>
+			
 		</section>
 		
 		

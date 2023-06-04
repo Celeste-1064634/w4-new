@@ -3,6 +3,7 @@
 
 * {
 	margin: 0;
+	box-sizing: border-box;
 }
 
 body {
@@ -11,10 +12,10 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	background-color: #fbfdff;
-	padding-top: 105px;
-	min-height: calc(100vh - 205px);
+	padding-top: 100px;
 	padding-bottom: 100px;
 	position: relative;
+	min-height: 100vh;
 }
 
 h1{
@@ -36,12 +37,30 @@ p{
 	color: #2d2d2d
 }
 
+hr{
+	width: 80%;
+}
+
 .blue{
 	color: #1c5eac;
 }
 
+ul{
+	margin-bottom: 0;
+}
+
+label{
+	font-weight: 300;
+	font-size: 14px;
+	margin-top: 5px;
+}
+
 .light-shadow{
 	box-shadow: 0px 0px 6px 4px rgb(92 92 92 / 9%);
+}
+
+#root{
+	display: block;
 }
 
 .main-header {
@@ -52,6 +71,8 @@ p{
 	margin: 0;
 	position: fixed;
 	top: 0;
+	height: 100px;
+	z-index: 1000;
 }
 
 .main-footer {
@@ -73,6 +94,8 @@ p{
 	display: flex;
 	padding: 20px 0;
 	justify-content: space-between;
+	box-sizing: border-box;
+
 }
 
 .header-items {
@@ -127,17 +150,20 @@ p{
 	border-radius: 5px;
 	background-color: #008fde;
 	transition: .2s;
+	outline: none;
+	border: none;
 }
 
 .button-1:hover, .button-2:hover{
 	box-shadow: inset 0 0 0 100px rgba(0, 0, 0, 0.123);
+	color: white;
 }
 
 .bg-grey{
 	background-color: #e8eaea;
 }
 .bg-light-grey{
-	background-color: #eff4f6;
+	background-color: #e9f0f3;
 }
 
 .bg-white{
@@ -164,6 +190,7 @@ p{
 	text-decoration: none;
 	color: black;
 	transition: 0.2s;
+	background-color: transparent;
 }
 
 .secondary-nav-item.active{
@@ -171,13 +198,18 @@ p{
 	color: white;
 	border-radius: 30px;
 	box-shadow: 0 0 6px rgba(0, 0, 0, .35);
+}
 
+.secondary-nav-item.pending{
+	scale: 1.4;
 }
 /* Use these containers as parent container */
 .auto-container{
 	min-width: 300px;
 	width: max-content;
 	margin: 0px auto;
+	max-width: 100%;
+	word-break: break-all;
 }
 
 .small-container{
@@ -233,4 +265,49 @@ p{
 	font-size: 13px;
 	margin: 8px;
 	font-weight: 300;
+}
+
+.form-container{
+	display: flex;
+	flex-direction: column;
+}
+
+
+.custom-input{
+	padding: 5px 8px;
+	outline: none;
+	border: 1px solid lightgrey;
+	min-width: 250px;
+}
+
+.custom-submit{
+	margin-top: 12px;
+	background-color: #008fde;
+	color: white;
+	outline: none;
+	border: 1px solid transparent;
+	padding: 5px 20px;
+	width: max-content;
+	display: flex;
+}
+
+.form-error{
+	padding: 5px 10px;
+    border: 1px solid rgb(240, 173, 173);
+    border-radius: 3px;
+    background-color: rgb(235, 213, 213);
+    color: #a74343;
+	margin-bottom: 0;
+}
+
+.flex-gap{
+	display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+input:focus, textarea:focus{
+	border-color: rgb(62, 161, 226);
+	border-style: solid;
+	outline: transparent;
 }
