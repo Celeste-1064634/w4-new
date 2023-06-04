@@ -65,6 +65,45 @@ const NewQuestionItem = (data) => {
         setIsNewQuestion(false)
     }
 
+    const handleClickMc = () => {
+        console.log(description)
+        const optionArray = [];
+        // for (let option of options) {
+        //     const value = target.parentElement.parentElement.firstChild.value;
+        //     const options = target.parentElement.parentElement.children[1].children;
+        //     optionArray.push(option.children[1].value);
+        // }
+        console.log(options)
+        async function saveQuestion() {
+
+            let info = {
+                method: "POST",
+                mode: 'cors',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + sessionStorage.getItem("token")
+                },
+                body: JSON.stringify({
+                    question: title,
+                    sequence: data.sequence,
+                    answers: optionArray
+                })
+            }
+
+            try {
+                const res = await fetch("http://127.0.0.1:5000/add_mc_question_to_survey/" + data.survey_id, info)
+                console.log(await res.json())
+
+            }
+            catch (error) {
+                console.error("QUESTIONS", error)
+            }
+
+        }
+        saveQuestion()
+        data.fetchSurvey()
+        setIsNewQuestion(false)
+    }
 
     function toggle(type) {
         setIsNewQuestion(true)
@@ -93,7 +132,7 @@ const NewQuestionItem = (data) => {
                                 {options}
                                 <button className={styles.addBtn} onClick={addMultipleChoiceOption}>+</button>
                             </div>
-                            <button className={styles.saveBtn} onClick={handleClick}>Opslaan</button>
+                            <button className={styles.saveBtn} onClick={handleClickMc}>Opslaan</button>
 
                         </div>
                         :

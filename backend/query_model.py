@@ -97,3 +97,29 @@ class QueryModel:
         cursor.execute(query)
         conn.commit()
         return item
+    
+    def add_mc_question_to_survey(self, id, question, sequence, answers):
+        query = f'''INSERT INTO question_collection(question_text, archive, type)
+                            VALUES("{question}", False, True)'''
+        conn = sqlite3.connect(self.database_file)
+        cursor = conn.cursor()
+        cursor.row_factory = sqlite3.Row
+        cursor.execute(query)
+        item = cursor.lastrowid
+        query = f'''SELECT * FROM question_collection WHERE question_collection_id = {item}'''
+        cursor.execute(query)
+        question_collection =  cursor.fetchone()
+        print(item)
+        conn.commit()
+        query = f'''INSERT INTO question(question_text, survey_id, question_collection_id, sequence)
+                            VALUES("{question}", {id}, {question_collection['question_collection_id']}, {sequence})'''
+        cursor.execute(query)
+        conn.commit()
+        print(answers)
+        for answer in answers:
+            print(answer)
+            query = f'''INSERT INTO multiple choice(number, answer, question_collection_id)
+                            VALUES("{question}", False, True)'''
+            cursor.execute(query)
+            conn.commit()
+        return item
