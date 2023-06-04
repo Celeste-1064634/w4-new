@@ -73,7 +73,43 @@ class QueryModel:
                             WHERE question_collection_id IS {question_id}'''
         return self.execute_query(query)
     
-    def save_new_survey(self,title):
+    def save_new_survey(self,title, questions):
         query = f'''INSERT INTO survey(name, archive, anonymous, user_id)
                             VALUES ("{title}", False, False, 1)'''
-        return self.execute_update(query)
+        self.execute_update(query)
+        survey_id = self.execute_query('''SELECT max (survey_id) FROM survey''')
+        count = 1
+        print(questions)
+        for question in questions:
+            q = question["question"]
+            query = f'''SELECT EXISTS
+                                (SELECT 1. question_collection_id
+                                FROM question_collection
+                                WHERE question_text IS "{question["question"]}")'''
+            check = self.execute_query(query)[0][0]
+
+            if question ["type"] ==  "open" and check == 0:
+                query = f'''INSERT INTO question_collection(question_text, archive, type) VALUES("{q}", False, False)'''
+                self.execute_update(query)
+                question_id = self.execute_query('''SELECT max (question_collection_id) FROM question_collection''')
+                print(question_id[0][0])
+                query = f'''INSERT INTO question(question_collection_id, question_text, sequence, survey_id)
+                                    VALUES ({question_id[0][0]}, "{q}", {count}, {survey_id[0][0]})'''
+                count+=1
+                self.execute_update(query)
+            elif question ["type"] ==  "multiple choice" and check == 0:
+                query = f'''INSERT INTO question_collection(question_text, archive, type) VALUES("{q}", False, True)'''
+                self.execute_update(query)
+                question_id = self.execute_query('''SELECT max (question_collection_id) FROM question_collection''')
+                query = f'''INSERT INTO question(question_collection_id, question_text, sequence, survey_id)
+                                    VALUES ({question_id[0][0]}, "{q}", {count}, {survey_id[0][0]})'''
+                count +=1
+                self.execute_update(query)
+            else:
+                query = f'''SELECT question_collection_id FROM question_collection
+                                WHERE question_text = "{q}"'''
+                question_id = self.execute_query(query)
+                query = f'''INSERT INTO question(question_collection_id, question_text, sequence, survey_id)
+                                    VALUES ({question_id[0][0]}, "{q}", {count}, {survey_id[0][0]})'''
+                count +=1
+                self.execute_update(query)

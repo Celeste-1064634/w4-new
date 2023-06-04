@@ -26,7 +26,9 @@ def get_surveys():
 def save_new_survey():
     data = request.get_json()
     title = data["title"]
-    query_model.save_new_survey(title)
+    questions = data["questions"]
+    print(questions)
+    query_model.save_new_survey(title, questions)
     return {
         "status": "ok"
     }

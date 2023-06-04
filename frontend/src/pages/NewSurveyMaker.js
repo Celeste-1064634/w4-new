@@ -49,20 +49,22 @@ function NewSurveyMaker() {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = {
-      "title": formData.get("titleInput")
+      "title": formData.get("titleInput"),
+      "questions": questionListArray
     }
-    console.log(questionListArray);
-    // fetch('http://127.0.0.1:5000/save_new_survey', {
-    //   method: "POST",
-    //   mode: "cors",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Authorization: "Bearer " + sessionStorage.getItem("token")
-    //   },
-    //   body: JSON.stringify(data)
-    // })
-    // .then(response => response.json())
-    // .then(data => console.log(data))
+    console.log(data);
+
+    fetch('http://127.0.0.1:5000/save_new_survey', {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + sessionStorage.getItem("token")
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
   }
 
   return (
