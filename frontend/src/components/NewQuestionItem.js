@@ -11,21 +11,22 @@ const NewQuestionItem = (data) => {
 
     const handleChange = (event) => {
         setTitle(event.target.value);
-        
+
     }
+    const [isNewQuestion, setIsNewQuestion] = useState(true);
 
     const [options, setOptions] = useState([<input key={Math.random() * 100}
         placeholder="Vul hier een antwoord in"
-      />])
+    />])
 
     function addMultipleChoiceOption() {
         setOptions([
-          ...options,
+            ...options,
             <input key={Math.random() * 100}
-              placeholder="Vul hier een antwoord in"
+                placeholder="Vul hier een antwoord in"
             />,
         ]);
-      }
+    }
 
     const changeDescription = (event) => {
         setDescription(event.target.value);
@@ -33,9 +34,37 @@ const NewQuestionItem = (data) => {
 
     const handleClick = () => {
         console.log(description)
+
+        async function saveQuestion() {
+
+            let info = {
+                method: "POST",
+                mode: 'cors',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + sessionStorage.getItem("token")
+                },
+                body: JSON.stringify({
+                    question: title,
+                    sequence: data.sequence
+                })
+            }
+
+            try {
+                const res = await fetch("http://127.0.0.1:5000/add_open_question_to_survey/" + data.survey_id, info)
+                console.log(await res.json())
+
+            }
+            catch (error) {
+                console.error("QUESTIONS", error)
+            }
+
+        }
+        saveQuestion()
+        data.fetchSurvey()
+        setIsNewQuestion(false)
     }
 
-    const [isNewQuestion, setIsNewQuestion] = useState(true);
 
     function toggle(type) {
         setIsNewQuestion(true)
@@ -64,7 +93,7 @@ const NewQuestionItem = (data) => {
                                 {options}
                                 <button className={styles.addBtn} onClick={addMultipleChoiceOption}>+</button>
                             </div>
-                                <button className={styles.saveBtn} onClick={handleClick}>Opslaan</button> 
+                            <button className={styles.saveBtn} onClick={handleClick}>Opslaan</button>
 
                         </div>
                         :

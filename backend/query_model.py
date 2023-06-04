@@ -77,3 +77,23 @@ class QueryModel:
         query = f'''INSERT INTO survey(name, archive, anonymous, user_id)
                             VALUES ("{title}", False, False, 1)'''
         return self.execute_update(query)
+
+
+    def add_open_question_to_survey(self, id, question, sequence):
+        query = f'''INSERT INTO question_collection(question_text, archive, type)
+                            VALUES("{question}", False, False)'''
+        conn = sqlite3.connect(self.database_file)
+        cursor = conn.cursor()
+        cursor.row_factory = sqlite3.Row
+        cursor.execute(query)
+        item = cursor.lastrowid
+        query = f'''SELECT * FROM question_collection WHERE question_collection_id = {item}'''
+        cursor.execute(query)
+        question_collection =  cursor.fetchone()
+        print(item)
+        conn.commit()
+        query = f'''INSERT INTO question(question_text, survey_id, question_collection_id, sequence)
+                            VALUES("{question}", {id}, {question_collection['question_collection_id']}, {sequence})'''
+        cursor.execute(query)
+        conn.commit()
+        return item
