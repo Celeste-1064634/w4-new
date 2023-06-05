@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"
 import styles from "./NewSurveyMaker.module.css";
 import { Button } from "react-bootstrap";
 import NewOpenQuestion from "../components/NewOpenQuestion";
@@ -10,6 +11,8 @@ function NewSurveyMaker() {
   const [divQuestion, setDivQuestion] = useState([]);
   const [questionListArray, setQuestionListArray] = useState([]);
   const [toggleAnonymous, setToggleAnonymous] = useState(false);
+
+  const navigate = useNavigate() 
 
   function callbackFunction(info) {
     console.log(info);
@@ -77,7 +80,10 @@ function NewSurveyMaker() {
       body: JSON.stringify(data),
     })
       .then((response) => response.json())
-      .then((data) => console.log(data));
+      .then((data) => {
+        console.log(data)
+        navigate("/vragenlijsten")
+      });
   };
 
   return (
