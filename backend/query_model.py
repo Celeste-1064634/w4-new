@@ -123,3 +123,15 @@ class QueryModel:
             cursor.execute(query)
             conn.commit()
         return item
+
+
+    def edit_mc_choices(self, choices):
+        conn = sqlite3.connect(self.database_file)
+        cursor = conn.cursor() 
+        print(choices)
+        for choice in choices:
+            print(choice)
+            query = f'''UPDATE multiple_choice SET answer = "{choice['choice']}" WHERE multiple_choice_id = {choice['id']}'''
+            cursor.execute(query)
+            conn.commit()
+        return "success"

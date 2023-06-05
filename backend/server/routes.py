@@ -250,3 +250,13 @@ def add_mc_question_to_survey(id=None):
     return {
         "status": "ok"
     }
+
+@app.route('/question/multiplechoice/edit', methods=["POST"])
+@jwt_required()
+def update_mc():
+    data = request.get_json()
+    choices = data["choices"]
+    query_model.edit_mc_choices(choices)
+    return {
+        "status": "ok"
+    }

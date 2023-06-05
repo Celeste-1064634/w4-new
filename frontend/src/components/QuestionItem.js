@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import { Card, Button, Col } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
 import styles from "./QuestionItem.module.css";
@@ -15,7 +15,16 @@ const QuestionItem = (data) => {
     }
     const { id } = useParams();
     const navigate = useNavigate();
+    const [choices, setChoices] = useState([]);
+    
 
+
+    const choiceChange = (e, index) =>{
+        let cache = choices
+        cache[index].choice = e.target.value
+        setChoices(cache)
+    }
+    
     const handleClick = async () => {
         async function updateQuestion() {
 
@@ -40,13 +49,55 @@ const QuestionItem = (data) => {
                 console.error("QUESTIONS", error)
             }
 
+            
+            
+        }
+        
+        if(data.question.type==1){
+
+            let info = {
+                method: "POST",
+                mode: 'cors',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + sessionStorage.getItem("token")
+                },
+                body: JSON.stringify({
+                    choices: choices
+                })
+            }
+
+            try {
+                const res = await fetch("http://127.0.0.1:5000/question/multiplechoice/edit", info)
+                console.log(await res.json())
+
+            }
+            catch (error) {
+                console.error("QUESTIONITEM", error)
+            }
         }
         updateQuestion()
         toggle()
+        data.fetchSurvey()
     }
 
     function toggle() {
         setIsEdit((isEdit) => !isEdit);
+        console.log(data.question)
+        if(data.question.type == 1){
+            let i = 0
+            let choiceArray = []
+            for(let choice of data.question.choices){
+                choiceArray.push({
+                    index: i,
+                    choice: choice.answer,
+                    id: choice.multiple_choice_id
+                })
+                i++
+            }
+            console.log(choiceArray)
+            setChoices(choiceArray)
+        }
     }
 
     function moveQuestion(movement){
@@ -106,8 +157,8 @@ const QuestionItem = (data) => {
                             <p key={choice.multiple_choice_id} className={styles.questionChoice}>{choice.number}. {choice.answer}</p>
                         ))
                         :
-                        data.question.choices.map((choice) => (
-                            <input key={choice.multiple_choice_id} className={styles.textarea} value={choice.answer}></input>
+                        data.question.choices.map((choice, index) => (
+                            <input key={choice.multiple_choice_id} className={styles.textarea} defaultValue={choice.answer} onChange={(e) => choiceChange(e, index)}></input>
                         ))
                         }
                        
