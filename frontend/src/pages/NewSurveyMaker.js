@@ -12,7 +12,7 @@ function NewSurveyMaker() {
   const [questionListArray, setQuestionListArray] = useState([]);
   const [toggleAnonymous, setToggleAnonymous] = useState(false);
 
-  const navigate = useNavigate() 
+  const navigate = useNavigate()
 
   function callbackFunction(info) {
     console.log(info);
@@ -87,54 +87,73 @@ function NewSurveyMaker() {
   };
 
   return (
-    <form onSubmit={saveNewSurvey}>
-      <div className={styles.divSurveyTitle}>
-        <input
-          name="titleInput"
-          className={styles.surveyTitleInput}
-          placeholder="Nieuwe vragenlijst"
-        />
-      </div>
-      <div className={styles.divQuestion}> {divQuestion} </div>
-      <div className={styles.btnContainer}>
-        <div className={styles.divAddNewQuestion}>
-          {addQuestion ? (
-            <>
-              <Button onClick={addNewOpenQuestion}>Nieuwe open vraag</Button>
-              <Button onClick={addNewMultipleChoiceQuestion}>
-                Nieuwe multiple choice vraag
-              </Button>
-              <Button onClick={addDatabaseQuestion}>
-                Vraag uit de database
-              </Button>
-            </>
-          ) : null}
+    <div className="small-container">
+      <form onSubmit={saveNewSurvey}>
+        <div className="header-container pb-3">
+          <input
+            name="titleInput"
+            className={styles.surveyTitleInput}
+            placeholder="Nieuwe vragenlijst"
+          />
+          <hr />
         </div>
-        <Button onClick={addNewQuestion} className={styles.btnAddNewQuestion}>
-          +
-        </Button>
-      </div>
-      <div className={styles.btnSaveNewSurvey}>
-        <Button type="submit">Opslaan</Button>
-        {toggleAnonymous ? (
-          <>
-            <i
-              onClick={toggleOnOff}
-              className={`bi bi-toggle-on ${styles.toggleAnonymous}`}
-              ></i>
-              <p>Anoniem: aan</p>
-          </>
-        ) : (
-          <>
-            <i
-              onClick={toggleOnOff}
-              className={`bi bi-toggle-off ${styles.toggleAnonymous}`}
-              ></i>
-              <p>Anoniem: uit</p>
-          </>
-        )}
-      </div>
-    </form>
+
+        <div className={styles.divQuestion}> {divQuestion} </div>
+
+        <div className="header-container pb-3">
+          <section className={styles.newQuestionContainer}>
+            <div className={styles.newQuestionContent}>
+              <h3>Nieuwe Vraag</h3>
+              <p>Kies uit een open, multiple choice of vraag uit de database</p>
+
+            </div>
+
+            <span className={styles.addButton + " " + (addQuestion ? styles.cancelButton : '')} onClick={addNewQuestion}><i className={"fa-solid fa-plus " + styles.plusIcon} ></i></span>
+
+          </section>
+          <div className={styles.btnRow}>
+            {addQuestion ? (
+              <>
+                <p className={styles.choiceBtn} onClick={addNewOpenQuestion}>Nieuwe open vraag</p>
+                <p className={styles.choiceBtn} onClick={addNewMultipleChoiceQuestion}>
+                  Nieuwe multiple choice vraag
+                </p>
+                <p className={styles.choiceBtn} onClick={addDatabaseQuestion}>
+                  Vraag uit de database
+                </p>
+              </>
+            ) : null}
+          </div>
+          <hr />
+          {toggleAnonymous ? (
+              <>
+                <i
+                  style={{color: "green"}}
+                  onClick={toggleOnOff}
+                  className={`bi bi-toggle-on ${styles.toggleAnonymous}`}
+                ></i>
+                <p>Anoniem: aan</p>
+              </>
+            ) : (
+              <>
+                <i
+                  onClick={toggleOnOff}
+                  className={`bi bi-toggle-off ${styles.toggleAnonymous}`}
+                ></i>
+                <p>Anoniem: uit</p>
+              </>
+            )}
+          <div className={styles.btnSaveNewSurvey}>
+            <button className={styles.submitBtn} type="submit">
+              <span>Opslaan</span>
+              <i style={{opacity: 0}} className="fa-sharp fa-regular fa-floppy-disk"></i>
+              </button>
+            
+          </div>
+        </div>
+
+      </form>
+    </div>
   );
 }
 

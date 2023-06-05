@@ -21,9 +21,13 @@ function NewOpenQuestion(props) {
     question.question = props.value
     props.callbackFunction(question)
   }
-  
+
   return (
     <div className={styles.containerOpenQuestion}>
+      <div className={styles.header}>
+        <h3>Open vraag</h3>
+        <hr className={styles.sectionLine} />
+      </div>
       <input
         onBlur={saveQuestion}
         className={styles.inputOpenQuestion}
@@ -31,7 +35,7 @@ function NewOpenQuestion(props) {
         value={props.value}
       />
       <div className={styles.btnOpenQuestion}>
-        <Button onClick={deleteFromSurvey}>Verwijderen</Button>
+        <p className={styles.deleteQuestion} onClick={deleteFromSurvey}>Verwijderen</p>
       </div>
     </div>
   );

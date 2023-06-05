@@ -16,10 +16,10 @@ function NewMultipleChoiceQuestion(props) {
       <input
         className={styles.inputMultipleChoiceAnswer}
         placeholder="Vul hier het antwoord in"
-        onBlur={(e) => {setOptions([...options, e.target.value])}}
+        onBlur={(e) => { setOptions([...options, e.target.value]) }}
       />
-      <button onClick={deleteOption}>
-        <i className="bi bi-trash3"></i>
+      <button className={styles.deleteBtn} onClick={deleteOption}>
+        <i className="fa-regular fa-trash-can"></i>
       </button>
     </div>,
   ]);
@@ -37,7 +37,7 @@ function NewMultipleChoiceQuestion(props) {
     questionInfo.options = props.options
     props.callbackFunction(questionInfo)
   }
-  
+
 
   function deleteOption(e) {
     const target = e.target
@@ -57,10 +57,10 @@ function NewMultipleChoiceQuestion(props) {
         <input
           className={styles.inputMultipleChoiceAnswer}
           placeholder="Vul hier het antwoord in"
-          onBlur={(e) => {setOptions([...options, e.target.value])}}
+          onBlur={(e) => { setOptions([...options, e.target.value]) }}
         />
-        <button onClick={deleteOption}>
-          <i className="bi bi-trash3"></i>
+        <button className={styles.deleteBtn} onClick={deleteOption}>
+          <i className="fa-regular fa-trash-can"></i>
         </button>
       </div>,
     ]);
@@ -74,6 +74,10 @@ function NewMultipleChoiceQuestion(props) {
 
   return (
     <div onMouseLeave={props.value ? null : saveQuestion} className={styles.containerMultipleChoiceQuestion}>
+      <div className={styles.header}>
+        <h3>Multiple choice vraag</h3>
+        <hr className={styles.sectionLine} />
+      </div>
       <input
         className={styles.inputMultipleChoiceQuestion}
         placeholder="Vul hier de vraag in"
@@ -98,12 +102,12 @@ function NewMultipleChoiceQuestion(props) {
             );
           })
         ) : (
-          <div className={styles.divMultipleChoiceOption}>{addOption}</div>
+          <>{addOption}</>
         )}
+        <p className={styles.addBtn} onClick={addMultipleChoiceOption}>+</p>
       </div>
-      <Button onClick={addMultipleChoiceOption}>+</Button>
       <div className={styles.btnMultipleChoiceQuestion}>
-        <Button onClick={deleteFromSurvey}>Verwijderen</Button>
+        <p className={styles.deleteQuestion} onClick={deleteFromSurvey}>Verwijderen</p>
       </div>
     </div>
   );
