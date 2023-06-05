@@ -122,3 +122,62 @@ class QueryModel:
                                     VALUES ({question_id[0][0]}, "{q}", {count}, {survey_id[0][0]})'''
                 count +=1
                 self.execute_update(query)
+            
+
+
+    def add_open_question_to_survey(self, id, question, sequence):
+        query = f'''INSERT INTO question_collection(question_text, archive, type)
+                            VALUES("{question}", False, False)'''
+        conn = sqlite3.connect(self.database_file)
+        cursor = conn.cursor()
+        cursor.row_factory = sqlite3.Row
+        cursor.execute(query)
+        item = cursor.lastrowid
+        query = f'''SELECT * FROM question_collection WHERE question_collection_id = {item}'''
+        cursor.execute(query)
+        question_collection =  cursor.fetchone()
+        print(item)
+        conn.commit()
+        query = f'''INSERT INTO question(question_text, survey_id, question_collection_id, sequence)
+                            VALUES("{question}", {id}, {question_collection['question_collection_id']}, {sequence})'''
+        cursor.execute(query)
+        conn.commit()
+        return item
+    
+    def add_mc_question_to_survey(self, id, question, sequence, answers):
+        query = f'''INSERT INTO question_collection(question_text, archive, type)
+                            VALUES("{question}", False, True)'''
+        conn = sqlite3.connect(self.database_file)
+        cursor = conn.cursor()
+        cursor.row_factory = sqlite3.Row
+        cursor.execute(query)
+
+        item = cursor.lastrowid
+        query = f'''SELECT * FROM question_collection WHERE question_collection_id = {item}'''
+        cursor.execute(query)
+        question_collection =  cursor.fetchone()
+        conn.commit()
+
+        query = f'''INSERT INTO question(question_text, survey_id, question_collection_id, sequence)
+                            VALUES("{question}", {id}, {question_collection['question_collection_id']}, {sequence})'''
+        cursor.execute(query)
+        conn.commit()
+        
+        for answer in answers:
+            query = f'''INSERT INTO multiple_choice(number, answer, question_collection_id)
+                            VALUES("{answer['index']+1}", "{answer['choice']}", {item})'''
+            cursor.execute(query)
+            conn.commit()
+        return item
+
+
+    def edit_mc_choices(self, choices):
+        conn = sqlite3.connect(self.database_file)
+        cursor = conn.cursor() 
+        print(choices)
+        for choice in choices:
+            print(choice)
+            query = f'''UPDATE multiple_choice SET answer = "{choice['choice']}" WHERE multiple_choice_id = {choice['id']}'''
+            cursor.execute(query)
+            conn.commit()
+        return "success"

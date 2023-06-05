@@ -41,7 +41,7 @@ function AdjustEnquete() {
                     new_sequence: newOtherSequence
                 }
             ]
-            
+
 
 
         } else {
@@ -76,7 +76,7 @@ function AdjustEnquete() {
         }
 
         try {
-            fetch("http://127.0.0.1:5000/survey/changeSequence/" + id, info).then((res)=>{
+            fetch("http://127.0.0.1:5000/survey/changeSequence/" + id, info).then((res) => {
                 console.log(res.json())
                 fetchSurvey()
             })
@@ -106,6 +106,7 @@ function AdjustEnquete() {
             const data = await res.json()
             console.log(data)
             setSurvey(data)
+            setIsAdd(false)
             setLoading(false)
             if (!data.questions?.length) {
                 console.error("No data")
@@ -121,6 +122,7 @@ function AdjustEnquete() {
 
     }
     useEffect(() => {
+
         fetchSurvey()
 
     }, [])
@@ -136,13 +138,13 @@ function AdjustEnquete() {
                 >Antwoorden</NavLink>
             </div>
             {loading &&
-            <Loader></Loader>
+                <Loader></Loader>
 
             }
             <div className="small-container">
                 <div className="header-container pb-3">
                     <h2 className="mb-0">{survey.name}</h2>
-                    <hr/>
+                    <hr />
                     {/* Add the card to create a new vragenlijst */}
                     <section className={styles.newQuestionContainer}>
                         <div className={styles.newQuestionContent}>
@@ -156,16 +158,16 @@ function AdjustEnquete() {
                     </section>
 
                     {isAdd &&
-                        <NewQuestionItem></NewQuestionItem>
+                        <NewQuestionItem survey_id={id} fetchSurvey={fetchSurvey} sequence={survey.questions.length + 1}></NewQuestionItem>
                     }
                 </div>
 
                 <div className="flex-gap">
                     {/* Render the other cards */}
                     {survey.questions?.map((vragenlijst) => (
-                        <QuestionItem key={vragenlijst.question_id} id={vragenlijst.survey_id} question={vragenlijst} survey={survey} moveQuestion={moveQuestion}> </QuestionItem>
+                        <QuestionItem key={vragenlijst.question_id} id={vragenlijst.survey_id} question={vragenlijst} survey={survey} moveQuestion={moveQuestion} fetchSurvey={fetchSurvey}> </QuestionItem>
                     ))}
-                    
+
                 </div>
 
             </div>

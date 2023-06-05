@@ -229,3 +229,36 @@ def change_sequence(id=None):
     return {
         "status": "ok"
     }
+
+@app.route('/add_open_question_to_survey/<id>', methods=["POST"])
+@jwt_required()
+def add_open_question_to_survey(id=None):
+    data = request.get_json()
+    question = data["question"]
+    sequence = data["sequence"]
+    query_model.add_open_question_to_survey(id, question, sequence)
+    return {
+        "status": "ok"
+    }
+
+@app.route('/add_mc_question_to_survey/<id>', methods=["POST"])
+@jwt_required()
+def add_mc_question_to_survey(id=None):
+    data = request.get_json()
+    question = data["question"]
+    sequence = data["sequence"]
+    answers = data["answers"]
+    query_model.add_mc_question_to_survey(id, question, sequence, answers)
+    return {
+        "status": "ok"
+    }
+
+@app.route('/question/multiplechoice/edit', methods=["POST"])
+@jwt_required()
+def update_mc():
+    data = request.get_json()
+    choices = data["choices"]
+    query_model.edit_mc_choices(choices)
+    return {
+        "status": "ok"
+    }
