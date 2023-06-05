@@ -104,7 +104,7 @@ class QueryModel:
                 question_id = self.execute_query('''SELECT max (question_collection_id) FROM question_collection''')
                 query = f'''INSERT INTO question(question_collection_id, question_text, sequence, survey_id)
                                     VALUES ({question_id[0][0]}, "{q}", {count}, {survey_id[0][0]})'''
-                print(query)
+                self.execute_update(query)
                 count +=1
                 option_counter = 1
                 for option in question["options"]:
