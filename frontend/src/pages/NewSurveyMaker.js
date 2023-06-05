@@ -9,10 +9,15 @@ function NewSurveyMaker() {
   const [addQuestion, setAddQuestion] = useState(false);
   const [divQuestion, setDivQuestion] = useState([]);
   const [questionListArray, setQuestionListArray] = useState([]);
+  const [toggleAnonymous, setToggleAnonymous] = useState(false);
 
   function callbackFunction(info) {
     console.log(info);
     setQuestionListArray([...questionListArray, info]);
+  }
+
+  function toggleOnOff() {
+    setToggleAnonymous((toggleAnonymous) => !toggleAnonymous);
   }
 
   function addNewQuestion() {
@@ -56,22 +61,23 @@ function NewSurveyMaker() {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = {
-      "title": formData.get("titleInput"),
-      "questions": questionListArray
-    }
+      title: formData.get("titleInput"),
+      questions: questionListArray,
+      anonymous: toggleAnonymous
+    };
     console.log(data);
 
-    fetch('http://127.0.0.1:5000/save_new_survey', {
+    fetch("http://127.0.0.1:5000/save_new_survey", {
       method: "POST",
       mode: "cors",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + sessionStorage.getItem("token")
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     })
-    .then(response => response.json())
-    .then(data => console.log(data))
+      .then((response) => response.json())
+      .then((data) => console.log(data));
   };
 
   return (
@@ -102,9 +108,25 @@ function NewSurveyMaker() {
           +
         </Button>
       </div>
-      <div className={styles.btnSaveDeleteNewSurvey}>
+      <div className={styles.btnSaveNewSurvey}>
         <Button type="submit">Opslaan</Button>
-        <Button>Verwijderen</Button>
+        {toggleAnonymous ? (
+          <>
+            <i
+              onClick={toggleOnOff}
+              className={`bi bi-toggle-on ${styles.toggleAnonymous}`}
+              ></i>
+              <p>Anoniem: aan</p>
+          </>
+        ) : (
+          <>
+            <i
+              onClick={toggleOnOff}
+              className={`bi bi-toggle-off ${styles.toggleAnonymous}`}
+              ></i>
+              <p>Anoniem: uit</p>
+          </>
+        )}
       </div>
     </form>
   );

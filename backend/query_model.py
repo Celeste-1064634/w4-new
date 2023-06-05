@@ -73,9 +73,9 @@ class QueryModel:
                             WHERE question_collection_id IS {question_id}'''
         return self.execute_query(query)
     
-    def save_new_survey(self,title, questions):
+    def save_new_survey(self,title, questions, anonymous):
         query = f'''INSERT INTO survey(name, archive, anonymous, user_id)
-                            VALUES ("{title}", False, False, 1)'''
+                            VALUES ("{title}", False, {anonymous}, 1)'''
         self.execute_update(query)
         survey_id = self.execute_query('''SELECT max (survey_id) FROM survey''')
         count = 1
