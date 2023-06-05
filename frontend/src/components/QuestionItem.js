@@ -67,12 +67,8 @@ const QuestionItem = (data) => {
         console.log(data.id)
 
         fetch("http://127.0.0.1:5000/question/delete/" + data.question.question_id, info)
-        window.location.reload(false)
-        // navigate("/vragen/" + data.id, { replace: true })
-
+        data.fetchSurvey()
     }
-
-    // console.log(data.vragenlijst)
 
     return (
         <div className={styles.questionContainer}>

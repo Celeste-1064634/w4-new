@@ -5,36 +5,29 @@ import styles from "./NewQuestionItem.module.css";
 const NewQuestionItem = (data) => {
     const [isEdit, setIsEdit] = useState(false);
     const [isAbcd, setIsAbcd] = useState(false);
-    const [description, setDescription] = useState("");
     const [title, setTitle] = useState("");
-
+    const [index, setIndex] = useState(0);
+    const [choices, setChoices] = useState([{index: 0, choice: ""}]);
+    const [isNewQuestion, setIsNewQuestion] = useState(true);
 
     const handleChange = (event) => {
         setTitle(event.target.value);
-
     }
-    const [isNewQuestion, setIsNewQuestion] = useState(true);
 
-    const [options, setOptions] = useState([<input key={Math.random() * 100}
-        placeholder="Vul hier een antwoord in"
-    />])
+    const choiceChange = (e, index) =>{
+        let cache = choices
+        cache[index].choice = e.target.value
+        setChoices(cache)
+    }
 
     function addMultipleChoiceOption() {
-        setOptions([
-            ...options,
-            <input key={Math.random() * 100}
-                placeholder="Vul hier een antwoord in"
-            />,
-        ]);
-    }
-
-    const changeDescription = (event) => {
-        setDescription(event.target.value);
+        // First adjust index
+        let i = index+1
+        setChoices([...choices, {index: i, choice: ""}])
+        setIndex(i)
     }
 
     const handleClick = () => {
-        console.log(description)
-
         async function saveQuestion() {
 
             let info = {
@@ -65,15 +58,8 @@ const NewQuestionItem = (data) => {
         setIsNewQuestion(false)
     }
 
-    const handleClickMc = () => {
-        console.log(description)
-        const optionArray = [];
-        // for (let option of options) {
-        //     const value = target.parentElement.parentElement.firstChild.value;
-        //     const options = target.parentElement.parentElement.children[1].children;
-        //     optionArray.push(option.children[1].value);
-        // }
-        console.log(options)
+    const handleClickMc = (e) => {
+        console.log("LAST",  choices)
         async function saveQuestion() {
 
             let info = {
@@ -86,7 +72,7 @@ const NewQuestionItem = (data) => {
                 body: JSON.stringify({
                     question: title,
                     sequence: data.sequence,
-                    answers: optionArray
+                    answers: choices
                 })
             }
 
@@ -129,7 +115,9 @@ const NewQuestionItem = (data) => {
                             <input className={styles.mainInput} placeholder="Vraag" onChange={handleChange} value={title} >
                             </input>
                             <div className={styles.subInputs}>
-                                {options}
+                                {choices.map((choice) => (
+                                    <input key={choice.index} placeholder="Vul hier een antwoord in" onChange={(e) => choiceChange(e, choice.index)}></input>
+                                ))}
                                 <button className={styles.addBtn} onClick={addMultipleChoiceOption}>+</button>
                             </div>
                             <button className={styles.saveBtn} onClick={handleClickMc}>Opslaan</button>

@@ -165,7 +165,7 @@ function AdjustEnquete() {
                 <div className="flex-gap">
                     {/* Render the other cards */}
                     {survey.questions?.map((vragenlijst) => (
-                        <QuestionItem key={vragenlijst.question_id} id={vragenlijst.survey_id} question={vragenlijst} survey={survey} moveQuestion={moveQuestion}> </QuestionItem>
+                        <QuestionItem key={vragenlijst.question_id} id={vragenlijst.survey_id} question={vragenlijst} survey={survey} moveQuestion={moveQuestion} fetchSurvey={fetchSurvey}> </QuestionItem>
                     ))}
 
                 </div>
