@@ -5,7 +5,7 @@ import { UserContext } from '../UserContext';
 
 
 const SurveyForm = () => {
-  const { surveyId } = useParams();
+  const { id } = useParams();
   const [answers, setAnswers] = useState([]);
   const [surveyData, setSurveyData] = useState({ surveyName: '', questions: [] });
   const { user, setUser } = useContext(UserContext);
@@ -15,7 +15,7 @@ const SurveyForm = () => {
 
   useEffect(() => {
     const token = sessionStorage.getItem('token');
-    fetch(`http://localhost:5000/survey/data/${surveyId}`, {
+    fetch(`http://localhost:5000/survey/data/${id}`, {
       headers: {
         'Authorization': "Bearer " + token
       }
@@ -31,7 +31,7 @@ const SurveyForm = () => {
       });
     })
     .catch(error => console.error('Error:', error));
-  }, [surveyId]);
+  }, [id]);
 
   const handleChange = (id, answer) => {
     let item = { question_id: id, answer: answer, user_id: user.user_id };
@@ -50,7 +50,7 @@ const SurveyForm = () => {
     event.preventDefault();
     console.log(user)
     const surveySubmission = {
-      survey_id: surveyId,
+      survey_id: id,
       user_id: user.user_id,
       answers,
     };
