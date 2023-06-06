@@ -32,6 +32,11 @@ function EnqueteOverview() {
   function deleteSurvey(id) {
     console.log("Delete : " + id)
   }
+  const handleLinkClick = (id) => {
+    const url = `${window.location.origin}/vragenlijst/invullen/${id}`;
+    navigator.clipboard.writeText(url);
+    alert(`URL copied to clipboard: ${url}`);
+  };
 
   return (
     <Container className="mt-3">
@@ -60,6 +65,7 @@ function EnqueteOverview() {
                     <i className={"fa-sharp fa-solid fa-pen-to-square " + styles.editIcon}></i>
                   </Link>
                   <i onClick={() => deleteSurvey(vragenlijst.survey_id)} className={"fa-sharp fa-solid fa-trash " + styles.deleteIcon}></i>
+                  <Button variant="outline-secondary" size="sm" style={{ position: 'absolute', top: '0.5rem', right: '3.5rem' }} onClick={() => handleLinkClick(vragenlijst.survey_id)}>Link</Button>
 
                 </div>
               </div>
@@ -71,7 +77,6 @@ function EnqueteOverview() {
       </Row>
     </Container>
   );
-
 }
 
 export default EnqueteOverview;

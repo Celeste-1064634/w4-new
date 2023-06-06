@@ -134,7 +134,8 @@ def user_lookup_callback(_jwt_header, jwt_data):
         "firstName": result['first_name'],
         "lastName": result['last_name'],
         "fullName": f'{result["first_name"]} {result["last_name"]}',
-        "email": result['email']
+        "email": result['email'],
+        "user_id": result['user_id']
     }
 
 # used for sending user data by jwt token to frontend
@@ -262,3 +263,21 @@ def update_mc():
     return {
         "status": "ok"
     }
+
+@app.route('/survey/submit', methods=['POST'])
+@jwt_required()
+def submit_survey():
+    data = request.get_json()
+    print("DATA", data)
+    # survey_id = data['survey_id']
+    user_id = data['user_id']
+    answers = data['answers']
+
+    try:
+        for answer in answers:
+            query_model.commit_query(f"INSERT INTO answer (question_id, user_id, answer) VALUES ('{answer['question_id']}', '{user_id}', '{answer['answer']}')")
+
+    except Exception as e:
+        return jsonify({"message": str(e)}), 500
+
+    return jsonify({"message": "Successfully submitted survey"}), 200

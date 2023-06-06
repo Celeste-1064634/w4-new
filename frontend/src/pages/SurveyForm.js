@@ -1,23 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Card, Form, Button } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import { UserContext } from '../UserContext';
+
 
 const SurveyForm = () => {
   const { surveyId } = useParams();
-  const [answers, setAnswers] = useState({});
+  const [answers, setAnswers] = useState([]);
   const [surveyData, setSurveyData] = useState({ surveyName: '', questions: [] });
+  const { user, setUser } = useContext(UserContext);
+  const [message, setMessage] = useState("");
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const token = sessionStorage.getItem('token');
     fetch(`http://localhost:5000/survey/data/${surveyId}`, {
-        headers: {
-          'Authorization': "Bearer " + token
-        }
+      headers: {
+        'Authorization': "Bearer " + token
+      }
     })
     .then(response => {
-      if (!response.ok) {
-        throw new Error('No survey found with this ID');
-      }
+      console.log(response)
       return response.json();
     })
     .then(data => {
@@ -28,15 +32,54 @@ const SurveyForm = () => {
     })
     .catch(error => console.error('Error:', error));
   }, [surveyId]);
-  
 
   const handleChange = (id, answer) => {
-    setAnswers(prev => ({ ...prev, [id]: answer }));
+    let item = { question_id: id, answer: answer, user_id: user.user_id };
+    let cache = answers
+    let index = cache.map(e=>e.question_id).indexOf(id)
+    console.log(index)
+    if(index != -1){
+      cache[index].answer = answer
+      setAnswers(cache)
+    }else{
+      setAnswers(prev => [...prev, item]);
+    }
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(answers);
+    console.log(user)
+    const surveySubmission = {
+      survey_id: surveyId,
+      user_id: user.user_id,
+      answers,
+    };
+
+    console.log("Submitting survey submission:", surveySubmission);
+
+    const token = sessionStorage.getItem('token');
+    fetch('http://localhost:5000/survey/submit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+      },
+      body: JSON.stringify(surveySubmission),
+    })
+    .then(response => {
+      console.log(response)
+      return response.json();
+    })
+    .then(data => {
+      console.log(data);
+      setMessage("Bedankt voor het invullen van de vragenlijst, u wordt nu doorgestuurd naar de homepage.");
+      setTimeout(() => {
+        navigate('/');
+      }, 4000);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
   };
 
   return (
@@ -51,11 +94,12 @@ const SurveyForm = () => {
                 {question.type === 1 ? (
                   question.choices.map(choice => (
                     <Form.Check
+                      key={`${question.question_id}-${choice.multiple_choice_id}`}
                       type="radio"
                       id={`${question.question_id}-${choice.multiple_choice_id}`}
                       name={`question-${question.question_id}`}
-                      label={`${choice.letter}. ${choice.answer}`}
-                      onChange={() => handleChange(question.question_id, choice.letter)}
+                      label={`${choice.number}. ${choice.answer}`}
+                      onChange={() => handleChange(question.question_id, choice.number)}
                     />
                   ))
                 ) : (
@@ -69,6 +113,11 @@ const SurveyForm = () => {
         )}
         <Button variant="primary" type="submit">Submit</Button>
       </Form>
+      {message && (
+        <div className="alert alert-success mt-3" role="alert">
+          {message}
+        </div>
+      )}
     </div>
   );
 };
