@@ -117,6 +117,7 @@ def create_token():
                            first_name=result['first_name'],
                            last_name=result['last_name'],
                            email=result['email'],
+                           admin=result['admin']
                            )
 
     print("geen gebruiker / ongeldige wachtwoord, email")
@@ -134,7 +135,8 @@ def user_lookup_callback(_jwt_header, jwt_data):
         "firstName": result['first_name'],
         "lastName": result['last_name'],
         "fullName": f'{result["first_name"]} {result["last_name"]}',
-        "email": result['email']
+        "email": result['email'],
+        "admin": result['admin']
     }
 
 # used for sending user data by jwt token to frontend
@@ -262,3 +264,18 @@ def update_mc():
     return {
         "status": "ok"
     }
+
+
+@app.route('/check_admin', methods=["GET"])
+@jwt_required()
+def check_admin():
+    print(current_user)
+    if current_user['admin']== True:
+        return {
+            "admin": True
+        }
+    else:
+        return {
+            "admin": False
+        }
+

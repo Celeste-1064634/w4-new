@@ -47,7 +47,7 @@ function EnqueteOverview() {
 
         }
         {/* Render the other cards */}
-        {vragenlijsten.map((vragenlijst) => (
+        {vragenlijsten.map((vragenlijst, index) => (
           <Col xs={12} md={4} key={vragenlijst.survey_id} >
             <div className={styles.surveyBox}>
               <div className={styles.surveyContent}>
@@ -55,7 +55,7 @@ function EnqueteOverview() {
                   <h2 className={styles.title}>{vragenlijst.name}</h2>
                 </Link>
 
-                <div>
+                <div className={styles.iconContainer}>
                   <Link to={`/vragen/${vragenlijst.survey_id}`} style={{ textDecoration: 'none' }}>
                     <i className={"fa-sharp fa-solid fa-pen-to-square " + styles.editIcon}></i>
                   </Link>

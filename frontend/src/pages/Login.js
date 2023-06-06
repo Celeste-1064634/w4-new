@@ -57,6 +57,7 @@ const Login = () => {
                 "lastName": data.last_name,
                 "fullName": data.full_name,
                 "email": data.email,
+                "admin": data.admin
             })
             // return redirect('/vragen')
             navigate("/"+state.state.next, { replace: true })
