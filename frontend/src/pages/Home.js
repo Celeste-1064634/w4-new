@@ -1,12 +1,23 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { UserContext } from "../UserContext";
 
 
 const Home = () => {
 	const { user, setUser } = useContext(UserContext)
+	const state = useLocation();
+	if(state?.state?.error){
+		console.log(state.state.error)
+	}
 	return (
 		<section>
+			{state?.state?.error ?
+			<div className="error-message light-shadow">
+				<i className="fa-solid fa-exclamation error-message-icon"></i> {state.state.error}
+			</div>
+			:
+			''
+			}
 			<div className="medium-container">
 				<div className="section bg-light-grey">
 					<h1>Hallo, <span className="blue">{user.fullName}</span></h1>

@@ -7,4 +7,5 @@ export const UserContext = createContext({
     "fullName": '',
     "email": '',
     "user_id": '',
+    "admin": ''
 });

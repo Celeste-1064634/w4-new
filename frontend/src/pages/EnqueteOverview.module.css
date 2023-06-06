@@ -1,5 +1,5 @@
 .surveyBox{
-    border-radius: 5px;
+    /* border-radius: 5px; */
     border: 1px solid transparent;
     background-color: #e8edef;
     margin-bottom: 20px;
@@ -8,7 +8,7 @@
 }
 
 .surveyContent{
-    padding: 10px 15px;
+    padding: 12px 20px;
     display: flex;
     justify-content: space-between;
 }
@@ -34,6 +34,7 @@
     color: rgb(202, 16, 53);
     scale: 1.2;
     opacity: 1;
+    cursor: pointer;
 }
 
 .editIcon:hover{
@@ -49,15 +50,16 @@
     margin: 0px;
 }
 .infoContainer{
-    padding: 10px;
+    padding: 10px 20px;
     display: flex;
     justify-content: space-between;
     background-color: #f9f9f9;
 }
 
 .border{
-    height: 10px;
-    background: linear-gradient(135deg,#3aa700 0%,#008a89 50%,#1157c4 80%);
+    height: 8px;
+    background: linear-gradient(135deg,#40b800 0%,#01a1a1 50%,#1868e9 80%);
+
 }
 
 .title{
@@ -65,6 +67,7 @@
     transition: 0.1s;
     border-bottom: 1px solid transparent;
     color: black;
+    margin-bottom: 0px;
 }
 
 .title:hover{
@@ -136,4 +139,10 @@
 
 .headerContainer>h1{
     margin: 0;
+}
+
+.iconContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
