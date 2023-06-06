@@ -64,13 +64,14 @@ export default function App() {
       fetchData()
     } else {
       console.log("No auth token")
+      setLoading(false)
     }
   }, [])
   return (
     
     <BrowserRouter>
       <UserContext.Provider value={{ user, setUser }}>
-        {loading && sessionStorage.getItem("token") == '' ?
+        {loading ?
           <Loader></Loader>
           :
           <Routes>
