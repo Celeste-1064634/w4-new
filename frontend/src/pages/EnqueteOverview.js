@@ -64,9 +64,8 @@ function EnqueteOverview() {
                   <Link to={`/vragen/${vragenlijst.survey_id}`} style={{ textDecoration: 'none' }}>
                     <i className={"fa-sharp fa-solid fa-pen-to-square " + styles.editIcon}></i>
                   </Link>
+                  <i onClick={() => handleLinkClick(vragenlijst.survey_id)} className={"fa-solid fa-copy " + styles.shareIcon}></i>
                   <i onClick={() => deleteSurvey(vragenlijst.survey_id)} className={"fa-sharp fa-solid fa-trash " + styles.deleteIcon}></i>
-                  <Button variant="outline-secondary" size="sm" style={{ position: 'absolute', top: '0.5rem', right: '3.5rem' }} onClick={() => handleLinkClick(vragenlijst.survey_id)}>Link</Button>
-
                 </div>
               </div>
               <SurveyInfoContainer id={vragenlijst.survey_id}></SurveyInfoContainer>

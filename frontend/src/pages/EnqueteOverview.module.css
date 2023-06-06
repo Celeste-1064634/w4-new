@@ -30,6 +30,13 @@
 
 }
 
+.shareIcon{
+    font-size: 20px;
+    color: rgb(90, 90, 255);
+    padding: 5px;
+    transition: 0.1s;
+}
+
 .deleteIcon:hover{
     color: rgb(202, 16, 53);
     scale: 1.2;
@@ -38,6 +45,12 @@
 
 .editIcon:hover{
     color: #0872ac;
+    scale: 1.2;
+    opacity: 1;
+}
+
+.shareIcon:hover{
+    color: rgb(60, 60, 230);
     scale: 1.2;
     opacity: 1;
 }
