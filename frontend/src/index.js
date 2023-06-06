@@ -83,7 +83,7 @@ export default function App() {
               <Route path="vragenlijst/nieuw" element={<ProtectedRoute admin={true} path="vragenlijst/nieuw"><NewSurveyMaker/></ProtectedRoute>} />
               <Route path="vragen/:id" element={<ProtectedRoute path="vragen"><AdjustEnquete /></ProtectedRoute>} />
               <Route path="inloggen" element={<Login />} />
-              <Route path="vragenlijst/invullen/:surveyId" element={<ProtectedRoute path="vragenlijst/invullen"><SurveyForm /></ProtectedRoute>} />
+              <Route path="vragenlijst/invullen/:id" element={<ProtectedRoute path="vragenlijst/invullen"><SurveyForm /></ProtectedRoute>} />
             </Route>
           </Routes>
         }

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Card, Form, Button } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import { UserContext } from '../UserContext';
-
+import Loader from "../components/Loader";
 
 const SurveyForm = () => {
   const { id } = useParams();
@@ -11,9 +11,11 @@ const SurveyForm = () => {
   const { user, setUser } = useContext(UserContext);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true)
 
 
   useEffect(() => {
+    setLoading(true)
     const token = sessionStorage.getItem('token');
     fetch(`http://localhost:5000/survey/data/${id}`, {
       headers: {
@@ -29,6 +31,7 @@ const SurveyForm = () => {
         surveyName: data.name,
         questions: data.questions
       });
+      setLoading(false)
     })
     .catch(error => console.error('Error:', error));
   }, [id]);
@@ -85,6 +88,9 @@ const SurveyForm = () => {
   return (
     <div className="container py-5">
       <h1 className="text-center mb-4">{surveyData.surveyName}</h1>
+      {loading &&
+        <Loader></Loader>
+        }
       <Form onSubmit={handleSubmit}>
         {surveyData.questions.length > 0 ? (
           surveyData.questions.map(question => (
