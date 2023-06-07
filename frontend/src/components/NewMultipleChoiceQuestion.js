@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Button } from "react-bootstrap";
 import styles from "./NewMultipleChoiceQuestion.module.css";
 
 function NewMultipleChoiceQuestion(props) {
@@ -25,12 +24,9 @@ function NewMultipleChoiceQuestion(props) {
   ]);
 
   let questionInfo = { type: "multiple choice" }
-
-  function saveQuestion() {
-    questionInfo.question = question
-    questionInfo.options = options
-    props.callbackFunction(questionInfo)
-  }
+  questionInfo.question = question
+  questionInfo.options = options
+  props.callbackFunction(questionInfo)
 
   if (props.value) {
     questionInfo.question = props.value
@@ -73,7 +69,8 @@ function NewMultipleChoiceQuestion(props) {
   }
 
   return (
-    <div onMouseLeave={props.value ? null : saveQuestion} className={styles.containerMultipleChoiceQuestion}>
+    <div 
+        className={styles.containerMultipleChoiceQuestion}>
       <div className={styles.header}>
         <h3>Multiple choice vraag</h3>
         <hr className={styles.sectionLine} />

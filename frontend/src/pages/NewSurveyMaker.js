@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"
 import styles from "./NewSurveyMaker.module.css";
-import { Button } from "react-bootstrap";
 import NewOpenQuestion from "../components/NewOpenQuestion";
 import NewMultipleChoiceQuestion from "../components/NewMultipleChoiceQuestion";
 import NewDatabaseQuestion from "../components/NewDatabaseQuestion";

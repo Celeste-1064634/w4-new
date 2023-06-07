@@ -74,12 +74,14 @@ class QueryModel:
         return self.execute_query(query)
     
     def save_new_survey(self,title, questions, anonymous):
+        # Saves survey shell
         query = f'''INSERT INTO survey(name, archive, anonymous, user_id)
                             VALUES ("{title}", False, {anonymous}, 1)'''
         self.execute_update(query)
         survey_id = self.execute_query('''SELECT max (survey_id) FROM survey''')
         count = 1
 
+        # Loops through all questions and check if they exist in db
         for question in questions:
             q = question["question"]
             query = f'''SELECT EXISTS
@@ -88,6 +90,7 @@ class QueryModel:
                                 WHERE question_text IS "{question["question"]}")'''
             check = self.execute_query(query)[0][0]
 
+            # If check = 0 question does not exist yet and is saved in db
             if question ["type"] ==  "open" and check == 0:
                 query = f'''INSERT INTO question_collection(question_text, archive, type) VALUES("{q}", False, False)'''
                 self.execute_update(query)
@@ -98,8 +101,8 @@ class QueryModel:
                 count+=1
                 self.execute_update(query)
             elif question ["type"] ==  "multiple choice" and check == 0:
+                # Inserts question into db
                 query = f'''INSERT INTO question_collection(question_text, archive, type) VALUES("{q}", False, True)'''
-                print(query)
                 self.execute_update(query)
                 question_id = self.execute_query('''SELECT max (question_collection_id) FROM question_collection''')
                 query = f'''INSERT INTO question(question_collection_id, question_text, sequence, survey_id)
@@ -107,13 +110,13 @@ class QueryModel:
                 self.execute_update(query)
                 count +=1
                 option_counter = 1
+                # Inserts options in db
                 for option in question["options"]:
                     query = f'''INSERT INTO multiple_choice(number, answer, question_collection_id)
                                                                                 VALUES ({option_counter}, "{option}", "{question_id[0][0]}")'''
                     option_counter +=1
-                    print(query)
                     self.execute_update(query)
-                self.execute_update(query)
+            # If question does exist in db add it to survey
             else:
                 query = f'''SELECT question_collection_id FROM question_collection
                                 WHERE question_text = "{q}"'''
