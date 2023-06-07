@@ -233,6 +233,20 @@ def change_sequence(id=None):
         "status": "ok"
     }
 
+@app.route('/survey/updateSequence/<id>', methods=["POST"])
+@jwt_required()
+def update_sequence(id=None):
+    data = request.get_json()
+    print(data)
+    deleted_sequence = data['deleted_sequence']
+    need_update = query_model.execute_query(f"SELECT * FROM question WHERE survey_id = {id} AND sequence > {deleted_sequence}")
+
+    for item in need_update:
+        query_model.commit_query(f"UPDATE question SET sequence = '{(item['sequence']-1)}' WHERE question_id = '{item['question_id']}'")
+    return {
+        "status": "ok"
+    }
+
 @app.route('/add_open_question_to_survey/<id>', methods=["POST"])
 @jwt_required()
 def add_open_question_to_survey(id=None):

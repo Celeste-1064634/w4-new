@@ -117,8 +117,27 @@ const QuestionItem = (data) => {
         console.log(data.question.question_id)
         console.log(data.id)
 
-        fetch("http://127.0.0.1:5000/question/delete/" + data.question.question_id, info)
-        data.fetchSurvey()
+        fetch("http://127.0.0.1:5000/question/delete/" + data.question.question_id, info).then(()=>{
+            // change sequence of items above deleted question with -1
+            let info = {
+                method: "POST",
+                mode: 'cors',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + sessionStorage.getItem("token")
+                },
+                body: JSON.stringify({
+                    survey_id: id,
+                    deleted_sequence: data.question.sequence
+                })
+                
+            }
+            fetch("http://127.0.0.1:5000/survey/updateSequence/"+ data.id, info).then(()=>{
+                data.fetchSurvey()
+
+            })
+           
+        })
     }
 
     return (
