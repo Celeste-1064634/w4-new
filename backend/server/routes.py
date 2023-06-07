@@ -28,8 +28,7 @@ def save_new_survey():
     title = data["title"]
     questions = data["questions"]
     anonymous = data["anonymous"]
-    print(questions)
-    # query_model.save_new_survey(title, questions, anonymous)
+    query_model.save_new_survey(title, questions, anonymous)
     return {
         "status": "ok"
     }
