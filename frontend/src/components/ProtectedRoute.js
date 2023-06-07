@@ -17,7 +17,7 @@ const ProtectedRoute = (props) => {
         
     }
     else if(props.admin == true){
-        console.log(user)
+        // console.log(user)
         if (user.admin != true){
             return <Navigate to={"/"} replace state={{"error": "Je hebt geen toegang"}}/>;
         }
