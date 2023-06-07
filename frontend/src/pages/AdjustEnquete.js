@@ -168,6 +168,16 @@ function AdjustEnquete() {
                         <QuestionItem key={vragenlijst.question_id} id={vragenlijst.survey_id} question={vragenlijst} survey={survey} moveQuestion={moveQuestion} fetchSurvey={fetchSurvey}> </QuestionItem>
                     ))}
 
+                    <div className={styles.btnSaveNewSurvey}>
+                        <Link to="/vragenlijsten">
+                            <button className={styles.submitBtn} type="submit">
+                                <span>Terug</span>
+                                <i style={{ opacity: 0 }} className="fa-solid fa-reply"></i>
+                            </button>
+                        </Link>
+
+                    </div>
+
                 </div>
 
             </div>
