@@ -284,10 +284,16 @@ def update_mc():
 @jwt_required()
 def submit_survey():
     data = request.get_json()
-    print("DATA", data)
-    # survey_id = data['survey_id']
-    user_id = data['user_id']
-    answers = data['answers']
+
+    survey_id = data.get('survey_id')
+    survey_info = query_model.execute_query_by_id(f"SELECT * FROM survey WHERE survey_id = {survey_id}")
+
+    if survey_info["anonymous"]:
+        user_id = None
+    else:
+        user_id = current_user['user_id']  
+
+    answers = data.get('answers', [])
 
     try:
         for answer in answers:
