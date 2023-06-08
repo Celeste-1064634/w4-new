@@ -3,6 +3,7 @@ import { Card, Form, Button } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import { UserContext } from '../UserContext';
 import Loader from "../components/Loader";
+import styles from "./SurveyForm.module.css";
 
 const SurveyForm = () => {
   const { id } = useParams();
@@ -12,7 +13,8 @@ const SurveyForm = () => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true)
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const questionsPerPage = 5;
 
   useEffect(() => {
     setLoading(true)
@@ -38,16 +40,21 @@ const SurveyForm = () => {
 
   const handleChange = (id, answer) => {
     let item = { question_id: id, answer: answer, user_id: user.user_id };
-    let cache = answers
-    let index = cache.map(e=>e.question_id).indexOf(id)
+    let newAnswers = [...answers];
+    let index = newAnswers.map(e => e.question_id).indexOf(id);
     console.log(index)
     if(index != -1){
-      cache[index].answer = answer
-      setAnswers(cache)
-    }else{
-      setAnswers(prev => [...prev, item]);
+      if (answer.trim() === '') {
+        newAnswers.splice(index, 1);
+      } else {
+        newAnswers[index].answer = answer;
+      }
+    } else {
+      newAnswers.push(item);
     }
+    setAnswers(newAnswers);
   };
+  
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -78,11 +85,23 @@ const SurveyForm = () => {
       setMessage("Bedankt voor het invullen van de vragenlijst, u wordt nu doorgestuurd naar de homepage.");
       setTimeout(() => {
         navigate('/');
-      }, 4000);
+      }, 2000);
     })
     .catch(error => {
       console.error('Error:', error);
     });
+  };
+
+  const handleNextPage = () => {
+    if (currentPage !== Math.ceil(surveyData.questions.length / questionsPerPage)) {
+      setCurrentPage(prev => prev + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage !== 1) {
+      setCurrentPage(prev => prev - 1);
+    }
   };
 
   return (
@@ -90,10 +109,13 @@ const SurveyForm = () => {
       <h1 className="text-center mb-4">{surveyData.surveyName}</h1>
       {loading &&
         <Loader></Loader>
-        }
+      }
+      <p>{answers.length} / {surveyData.questions.length} vragen beantwoord.</p>
       <Form onSubmit={handleSubmit}>
         {surveyData.questions.length > 0 ? (
-          surveyData.questions.map(question => (
+          surveyData.questions
+          .slice((currentPage - 1) * questionsPerPage, currentPage * questionsPerPage)
+          .map(question => (
             <Card key={question.question_id} className="mb-4">
               <Card.Body>
                 <Card.Title>{question.question_text}</Card.Title>
@@ -105,11 +127,17 @@ const SurveyForm = () => {
                       id={`${question.question_id}-${choice.multiple_choice_id}`}
                       name={`question-${question.question_id}`}
                       label={`${choice.number}. ${choice.answer}`}
+                      checked={answers.find(a => a.question_id === question.question_id)?.answer === choice.number}
                       onChange={() => handleChange(question.question_id, choice.number)}
                     />
                   ))
                 ) : (
-                  <Form.Control type="text" placeholder="Antwoord" onChange={(e) => handleChange(question.question_id, e.target.value)} />
+                  <Form.Control 
+                    type="text" 
+                    placeholder="Antwoord" 
+                    value={answers.find(a => a.question_id === question.question_id)?.answer || ''} 
+                    onChange={(e) => handleChange(question.question_id, e.target.value)} 
+                  />
                 )}
               </Card.Body>
             </Card>
@@ -119,6 +147,11 @@ const SurveyForm = () => {
         )}
         <Button variant="primary" type="submit">Submit</Button>
       </Form>
+      <div className="d-flex justify-content-center">
+      <i className={`fa-sharp fa-solid fa-chevron-left ${styles.chevronIcon} ${currentPage === 1 ? styles.disabledIcon : ""}`} onClick={handlePrevPage}></i>
+      <p>{currentPage} of {Math.ceil(surveyData.questions.length / questionsPerPage)}</p>
+      <i className={`fa-sharp fa-solid fa-chevron-right ${styles.chevronIcon} ${currentPage === Math.ceil(surveyData.questions.length / questionsPerPage) ? styles.disabledIcon : ""}`} onClick={handleNextPage}></i>
+      </div>
       {message && (
         <div className="alert alert-success mt-3" role="alert">
           {message}
