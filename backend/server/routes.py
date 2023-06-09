@@ -26,7 +26,9 @@ def get_surveys():
 def save_new_survey():
     data = request.get_json()
     title = data["title"]
-    query_model.save_new_survey(title)
+    questions = data["questions"]
+    anonymous = data["anonymous"]
+    query_model.save_new_survey(title, questions, anonymous)
     return {
         "status": "ok"
     }
@@ -39,10 +41,10 @@ def save_new_survey():
 def get_questions_for_survey(id=None):
     print(current_user)
     # Fetch survey name
-    survey_name = query_model.execute_query_by_id(f"SELECT name FROM survey WHERE survey_id = {id}")['name']
+    survey = query_model.execute_query_by_id(f"SELECT name, anonymous FROM survey WHERE survey_id = {id}")
+    survey_name = survey['name']
     # Fetch all questions with survey_id
     data = query_model.execute_query(f"SELECT * FROM question WHERE survey_id = {id} ORDER BY sequence")
-    
     questions = []
     for question in data:
         item = query_model.execute_query_by_id(f"SELECT * FROM question_collection WHERE question_collection_id = {question['question_collection_id']}")
@@ -63,13 +65,21 @@ def get_questions_for_survey(id=None):
 
             answers = []
             for answer in answers_data:
-                user_item = query_model.execute_query_by_id(f"SELECT user_id, email, first_name, last_name FROM user WHERE user_id = {answer['user_id']}")
-                user = {
-                    "user_id": user_item['user_id'],
-                    "email": user_item['email'],
-                    "first_name": user_item['first_name'],
-                    "last_name": user_item['last_name']
-                }
+                if  not survey['anonymous']:
+                    user_item = query_model.execute_query_by_id(f"SELECT user_id, email, first_name, last_name FROM user WHERE user_id = {answer['user_id']}")
+                    user = {
+                        "user_id": user_item['user_id'],
+                        "email": user_item['email'],
+                        "first_name": user_item['first_name'],
+                        "last_name": user_item['last_name']
+                    }
+                else:
+                    user = {
+                        "user_id": None,
+                        "email": 'Anonymous',
+                        "first_name": 'Anonymous',
+                        "last_name": 'Anonymous'
+                    }
 
                 answers.append({
                     'answer_id': answer['answer_id'],
@@ -115,6 +125,7 @@ def create_token():
                            first_name=result['first_name'],
                            last_name=result['last_name'],
                            email=result['email'],
+                           admin=result['admin']
                            )
 
     print("geen gebruiker / ongeldige wachtwoord, email")
@@ -132,7 +143,9 @@ def user_lookup_callback(_jwt_header, jwt_data):
         "firstName": result['first_name'],
         "lastName": result['last_name'],
         "fullName": f'{result["first_name"]} {result["last_name"]}',
-        "email": result['email']
+        "email": result['email'],
+        "user_id": result['user_id'],
+        "admin": result['admin']
     }
 
 # used for sending user data by jwt token to frontend
@@ -227,3 +240,88 @@ def change_sequence(id=None):
     return {
         "status": "ok"
     }
+
+@app.route('/survey/updateSequence/<id>', methods=["POST"])
+@jwt_required()
+def update_sequence(id=None):
+    data = request.get_json()
+    print(data)
+    deleted_sequence = data['deleted_sequence']
+    need_update = query_model.execute_query(f"SELECT * FROM question WHERE survey_id = {id} AND sequence > {deleted_sequence}")
+
+    for item in need_update:
+        query_model.commit_query(f"UPDATE question SET sequence = '{(item['sequence']-1)}' WHERE question_id = '{item['question_id']}'")
+    return {
+        "status": "ok"
+    }
+
+@app.route('/add_open_question_to_survey/<id>', methods=["POST"])
+@jwt_required()
+def add_open_question_to_survey(id=None):
+    data = request.get_json()
+    question = data["question"]
+    sequence = data["sequence"]
+    query_model.add_open_question_to_survey(id, question, sequence)
+    return {
+        "status": "ok"
+    }
+
+@app.route('/add_mc_question_to_survey/<id>', methods=["POST"])
+@jwt_required()
+def add_mc_question_to_survey(id=None):
+    data = request.get_json()
+    question = data["question"]
+    sequence = data["sequence"]
+    answers = data["answers"]
+    query_model.add_mc_question_to_survey(id, question, sequence, answers)
+    return {
+        "status": "ok"
+    }
+
+@app.route('/question/multiplechoice/edit', methods=["POST"])
+@jwt_required()
+def update_mc():
+    data = request.get_json()
+    choices = data["choices"]
+    query_model.edit_mc_choices(choices)
+    return {
+        "status": "ok"
+    }
+
+@app.route('/survey/submit', methods=['POST'])
+@jwt_required()
+def submit_survey():
+    data = request.get_json()
+
+    survey_id = data.get('survey_id')
+    survey_info = query_model.execute_query_by_id(f"SELECT * FROM survey WHERE survey_id = {survey_id}")
+
+    if survey_info["anonymous"]:
+        user_id = None
+    else:
+        user_id = current_user['user_id']  
+
+    answers = data.get('answers', [])
+
+    try:
+        for answer in answers:
+            query_model.commit_query(f"INSERT INTO answer (question_id, user_id, answer) VALUES ('{answer['question_id']}', '{user_id}', '{answer['answer']}')")
+
+    except Exception as e:
+        return jsonify({"message": str(e)}), 500
+
+    return jsonify({"message": "Successfully submitted survey"}), 200
+
+@app.route('/check_admin', methods=["GET"])
+@jwt_required()
+def check_admin():
+    print(current_user)
+    if current_user['admin']== True:
+        return {
+            "admin": True
+        }
+    else:
+        return {
+            "admin": False
+        }
+

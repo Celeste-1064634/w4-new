@@ -79,8 +79,8 @@
 
 .answer-details{
 	max-height: 0px;
-	overflow-y: auto;
 	overflow: hidden;
+	overflow-y: auto;
 	transition: 0.5s;
 }
 

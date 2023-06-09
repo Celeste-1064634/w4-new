@@ -311,3 +311,46 @@ input:focus, textarea:focus{
 	border-style: solid;
 	outline: transparent;
 }
+
+.error-message{
+	position: absolute;
+	right: 10px;
+	top: 110px;
+	padding: 20px 30px;
+	padding-left: 10px;
+	border: 1px solid rgba(218, 13, 13, 0.274);
+	background-color: rgb(252, 252, 252);
+	border-left: 10px solid rgb(218, 13, 13);
+	z-index: 100000;
+	opacity: 1;
+	animation: fade ease-out 5s forwards;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.error-message-icon{
+	color: rgb(218, 13, 13);
+	border: 2px solid rgb(218, 13, 13);
+	border-radius: 50%;
+	width: 25px;
+	height: 25px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+}
+
+@keyframes fade {
+	30% {
+	  opacity: 1;
+	}
+	90% {
+		opacity: 0;
+		display: none;
+	}
+	100%{
+		opacity: 0;
+		display: none;
+	}
+  }

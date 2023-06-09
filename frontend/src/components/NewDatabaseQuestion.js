@@ -3,7 +3,7 @@ import styles from "./NewDatabaseQuestion.module.css";
 import NewOpenQuestion from "./NewOpenQuestion";
 import NewMultipleChoiceQuestion from "./NewMultipleChoiceQuestion";
 
-function NewDatabaseQuestion() {
+function NewDatabaseQuestion(props) {
   const [questions, setQuestions] = useState([]);
   const [output, setOutput] = useState(0);
   const [newQuestion, setnewQuestion] = useState("");
@@ -49,7 +49,7 @@ function NewDatabaseQuestion() {
   }
 
   return (
-    <div>
+    <>
       {output === 0 && (
         <div
           key={Math.random() * 100}
@@ -58,11 +58,12 @@ function NewDatabaseQuestion() {
           <table className={styles.tableDatabaseQuestion}>
             <thead className={styles.tableHeader}>
               <tr>
-                <th>Vragen uit de database</th>
+                <th><h3>Vragen uit de database</h3></th>
               </tr>
             </thead>
+            <hr className={styles.sectionLine}/>
             <tbody>
-              <td className={styles.tableBody}>
+              {/* <td className={styles.tableBody}> */}
                 {questions.map((question) => {
                   return (
                     <tr
@@ -74,18 +75,20 @@ function NewDatabaseQuestion() {
                       }
                       key={question.id}
                     >
-                      {question.question}
+        
+                      <i class="fa-solid fa-plus"></i> {" "+question.question}
+                
                     </tr>
                   );
                 })}
-              </td>
+              {/* </td> */}
             </tbody>
           </table>
         </div>
       )}
-      {output === 1 && <NewOpenQuestion value={newQuestion} />}
-      {output === 2 && <NewMultipleChoiceQuestion value={newQuestion} options={options} />}
-    </div>
+      {output === 1 && <NewOpenQuestion value={newQuestion} callbackFunction={props.callbackFunction}/>}
+      {output === 2 && <NewMultipleChoiceQuestion value={newQuestion} options={options} callbackFunction={props.callbackFunction}/>}
+    </>
   );
 }
 
