@@ -90,7 +90,14 @@ const Answers = () => {
                                         <>
                                             {question.answers.map((answer) => (
                                                 <div key={answer.answer_id} className="answer-item">
+                                                    { answer.user.user_id == null
+                                                    ?
+                                                    <div className="user-part"><i style={{ backgroundColor: getColor() }} className="fa fa-solid fa-user user-icon"></i>Verborgen</div>
+                                                    
+                                                    :
                                                     <div className="user-part"><i style={{ backgroundColor: getColor() }} className="fa fa-solid fa-user user-icon"></i>{answer.user.first_name} {answer.user.last_name}</div>
+
+                                                    }
                                                     {answer.answer}
                                                 </div>
                                             ))}

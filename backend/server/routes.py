@@ -41,10 +41,10 @@ def save_new_survey():
 def get_questions_for_survey(id=None):
     print(current_user)
     # Fetch survey name
-    survey_name = query_model.execute_query_by_id(f"SELECT name FROM survey WHERE survey_id = {id}")['name']
+    survey = query_model.execute_query_by_id(f"SELECT name, anonymous FROM survey WHERE survey_id = {id}")
+    survey_name = survey['name']
     # Fetch all questions with survey_id
     data = query_model.execute_query(f"SELECT * FROM question WHERE survey_id = {id} ORDER BY sequence")
-    
     questions = []
     for question in data:
         item = query_model.execute_query_by_id(f"SELECT * FROM question_collection WHERE question_collection_id = {question['question_collection_id']}")
@@ -65,13 +65,21 @@ def get_questions_for_survey(id=None):
 
             answers = []
             for answer in answers_data:
-                user_item = query_model.execute_query_by_id(f"SELECT user_id, email, first_name, last_name FROM user WHERE user_id = {answer['user_id']}")
-                user = {
-                    "user_id": user_item['user_id'],
-                    "email": user_item['email'],
-                    "first_name": user_item['first_name'],
-                    "last_name": user_item['last_name']
-                }
+                if  not survey['anonymous']:
+                    user_item = query_model.execute_query_by_id(f"SELECT user_id, email, first_name, last_name FROM user WHERE user_id = {answer['user_id']}")
+                    user = {
+                        "user_id": user_item['user_id'],
+                        "email": user_item['email'],
+                        "first_name": user_item['first_name'],
+                        "last_name": user_item['last_name']
+                    }
+                else:
+                    user = {
+                        "user_id": None,
+                        "email": 'Anonymous',
+                        "first_name": 'Anonymous',
+                        "last_name": 'Anonymous'
+                    }
 
                 answers.append({
                     'answer_id': answer['answer_id'],
