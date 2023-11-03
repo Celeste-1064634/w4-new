@@ -3,3 +3,4 @@ Faker
 flask_bcrypt
 flask-jwt-extended
 flask-cors
+werkzeug>=3.0.1 # not directly required, pinned by Snyk to avoid a vulnerability
